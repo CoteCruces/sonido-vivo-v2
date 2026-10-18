@@ -6,9 +6,10 @@ type Props = {
     nombre : string;
     valor: string;
     alCambiar: (valor: string) => void;
+    placeholder?: string; //Se agrega para mostrar texto de ejemplo en los campos de entrada del formulario
 };
 
-function CampoFormulario({etiqueta, tipo, nombre, valor, alCambiar}: Props){
+function CampoFormulario({etiqueta, tipo, nombre, valor, alCambiar, placeholder}: Props){
     return(
         <div className = "mb-3">
             <label className = "form-label">
@@ -18,7 +19,8 @@ function CampoFormulario({etiqueta, tipo, nombre, valor, alCambiar}: Props){
             tipo = {tipo} 
             nombre = {nombre}
             valor = {valor}
-            alCambiar =  {alCambiar}/>
+            alCambiar =  {alCambiar}
+            placeholder = {placeholder}/>
         </div>
     );
 }
