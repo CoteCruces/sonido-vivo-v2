@@ -1,8 +1,8 @@
 import Boton from "../atomos/Boton";
 
-function CardProducto(){
+function CardCatalogo(){
     return(
-        <div className = "card producto" style=  {{ width: '18rem'}}>
+        <div className = "card catalogo" style=  {{ width: '18rem'}}>
             <img 
                 src = "/img/GuitarraAcusticaFolkYamahaF310.png"
                 className = "card-img-top"
@@ -18,4 +18,4 @@ function CardProducto(){
         </div>
     )
 }
-export default CardProducto;
+export default CardCatalogo;

@@ -1,7 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './componentes/organismos/Navbar.tsx';
 import Inicio from './componentes/paginas/Inicio.tsx';
-import Productos from './componentes/paginas/Productos.tsx';
+import Catalogo from './componentes/paginas/Catalogo.tsx';
+import Nosotros from './componentes/paginas/Nosotros.tsx';
+import Noticias from './componentes/paginas/Noticias.tsx';
+import Contactanos from './componentes/paginas/Contactanos.tsx';
 
 function App(){
   return(
@@ -13,8 +16,20 @@ function App(){
           element = {<Inicio />} 
         />
         <Route
-          path = "/productos"
-          element = {<Productos />} 
+          path = "/catalogo"
+          element = {<Catalogo />} 
+        />
+        <Route
+          path = "/nosotros"
+          element = {<Nosotros />} 
+        />
+        <Route
+          path = "/noticias"
+          element = {<Noticias />} 
+        />
+        <Route
+          path = "/contactanos"
+          element = {<Contactanos />} 
         />
 
       </Routes>
