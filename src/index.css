@@ -1,113 +1,251 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 100%; /*Tenia 1126px;  este nuevo hace que ocupe todo el ancho de la pantalla*/
-  max-width: none; /*Tenia 100%; Este nuevo Elimina el limite de 1126px*/
-  margin: 0; /*Tenia 0 auto; este nuevo Quita el centrado automático tipo caja*/
-  text-align: center;
-  border-inline: none; /*Tenia 1px solid var(--border); Este nuevo Elimina las líneas verticales a los lados*/
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
 body {
+  background-color: rgb(248, 245, 238);
+}
+
+.carousel {
+  height: 600px;
+}
+
+.carousel img {
+  height: 600px;
+  object-fit: cover;
+}
+
+.carousel-text {
+  position: absolute;
+  bottom: 15%;
+  left: 10%;
+  background-color: rgba(44, 62, 80, 0.8);
+  color: rgb(221, 235, 222);
+  transform: translate(0, -250px);
+  padding: 3rem 2rem;
+  font-size: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  width: 80%;
+}
+
+footer {
+  background-color: #2b3035;
+  padding: 20px 0;
+  color: white;
+}
+
+.card {
+  width: 18rem;
+  height: 620px;
+  margin: 0 auto;
+  text-align: center;
+  font-style: oblique;
+  color: rgb(110, 92, 75);
+}
+/*
+.card img {
+    height: 400px;
+    width: 150px;
+    margin: 0 auto;
+}*/
+.card img {
+  width: 100%; /* Ocupa todo el ancho de la tarjeta */
+  height: 350px; /* Dale la altura que quieras en px o % */
+  object-fit: cover; /* Corta y ajusta la imagen sin deformarla */
+  object-position: center; /* Centra la imagen para que no se corten las caras */
+  margin: 0 auto;
+}
+
+#carrito-container .card {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  text-align: left;
+  font-style: normal;
+}
+
+#carrito-container .card img {
+  height: auto;
+  width: 100%;
   margin: 0;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+.destacado {
+  color: rgb(8, 7, 7);
+  text-align: center;
+}
+
+#titulo {
+  font-size: 20px;
+  text-align: center;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  color: black;
+  text-align: center;
+}
+
+.mensaje-carrito {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #30ee0a;
+  color: white;
+  padding: 24px 50px;
+  border-radius: 28px;
+  font-size: 36px;
+  font-weight: bold;
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+/* Los estilos de cada página son los del CSS original, encapsulados por ruta. */
+.sitio {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.sitio > main {
+  flex: 1 0 auto;
+}
+.nav-original {
+  padding: 0;
+}
+.nav-original > .navbar {
+  width: 100%;
+}
+.nav-original .nav-original-sesion .nav-link,
+.nav-original .nav-original-registro .nav-link,
+.nav-original .nav-original-separador p {
+  transform: translateX(120px);
+}
+.nav-original .nav-link.active {
+  color: var(--bs-navbar-active-color);
+}
+.nav-original-busqueda form {
+  white-space: nowrap;
+}
+/* nosotros.css: .card max-width 650, imágenes a 400px. */
+.tema-nosotros .card,
+.tema-contacto .card {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 650px;
+  height: auto;
+  text-align: center;
+  font-style: oblique;
+  color: rgb(110, 92, 75);
+}
+.tema-nosotros .card img,
+.tema-contacto .card img {
+  height: 400px;
+  width: 100%;
+  margin: 0 auto;
+  object-fit: fill;
+}
+/* noticias.css: .card con ancho fijo de 650px. */
+.tema-noticias .card,
+.tema-gestion .card,
+.tema-cuenta .card,
+.tema-login .card,
+.tema-registro .card {
+  margin: 0 auto;
+  width: 650px;
+  height: auto;
+  text-align: center;
+  font-style: oblique;
+  color: rgb(110, 92, 75);
+}
+.tema-noticias .card img,
+.tema-gestion .card img,
+.tema-cuenta .card img,
+.tema-login .card img,
+.tema-registro .card img {
+  height: 400px;
+  width: 100%;
+  margin: 0 auto;
+  object-fit: fill;
+}
+.tema-gestion .card.w-100 {
+  width: 100% !important;
+  max-width: none;
+}
+.tema-noticias .card.noticia-detalle-card {
+  color: var(--bs-body-color);
+}
+.tema-noticias .card.noticia-detalle-card img {
+  height: 400px;
+  max-height: 400px;
+  object-fit: cover;
+}
+/* style.css: cards 18rem/620px, imágenes recortadas a 350px. */
+.tema-catalogo .card {
+  width: 18rem;
+  height: 620px;
+}
+.tema-inicio .card {
+  height: 620px;
+}
+.tema-inicio .card img,
+.tema-catalogo .card img {
+  height: 350px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  margin: 0 auto;
+}
+.tema-detalle .card {
+  height: auto;
+}
+.tema-detalle .card img {
+  height: auto;
+  object-fit: contain;
+}
+/* Páginas de confirmación y 404 usan tarjetas Bootstrap estándar. */
+.tema-formulario .card {
+  height: auto;
+  width: auto;
+  max-width: none;
+  text-align: initial;
+  font-style: normal;
+  color: inherit;
+}
+/* pago.html usa solo Bootstrap, sin ninguno de los estilos propios. */
+.tema-cuenta {
+  background: #f8f9fa;
+}
+.tema-pago {
+  background: #fff;
+}
+.tema-pago .card {
+  height: auto;
+  width: auto;
+  max-width: none;
+  text-align: initial;
+  font-style: normal;
+  color: inherit;
+}
+.tema-pago .card img {
+  height: auto;
+  width: auto;
+  object-fit: contain;
+}
+.tema-pago footer {
+  background: #fff;
+  color: #6c757d;
+  border-top: 1px solid #dee2e6;
+  padding: 1rem 0;
+}
+@media (max-width: 991.98px) {
+  .nav-original .nav-original-sesion .nav-link,
+  .nav-original .nav-original-registro .nav-link,
+  .nav-original .nav-original-separador p {
+    transform: none;
+  }
+  .nav-original-busqueda .form-control {
+    max-width: 65vw;
+  }
+  .tema-gestion .card,
+  .tema-cuenta .card,
+  .tema-login .card,
+  .tema-registro .card {
+    max-width: calc(100vw - 32px);
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
-
-

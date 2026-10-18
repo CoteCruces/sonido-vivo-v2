@@ -1,11 +1,11 @@
 import CardNosotros from "../moleculas/CardNosotros";
-
-function Nosotros(){
-    return(
-        <div className = "container">
-            <h1>¿Quiénes somos?</h1>
-            <CardNosotros />
-        </div>
-    )
+export default function Nosotros() {
+  return (
+    <main>
+      <div className="container mt-4">
+        <CardNosotros />
+      </div>
+      <br />
+    </main>
+  );
 }
-export default Nosotros;

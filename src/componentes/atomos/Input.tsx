@@ -1,22 +1,7 @@
-type Props = {
-    tipo : string;
-    nombre : string;
-    valor : string; //valor actual del campo
-    alCambiar: (valor: string) => void; //funcion que actualiza el valor
-    placeholder?: string;
-};
-
-function Input({tipo, nombre, valor, alCambiar, placeholder}: Props){
-
-    return(
-      <input
-        type={tipo}
-        name={nombre}
-        className="form-control"
-        value={valor}
-        onChange={(e) => alCambiar(e.target.value)}
-        placeholder={placeholder}
-      />
-    );
+import type { InputHTMLAttributes } from "react";
+export default function Input({
+  className = "",
+  ...props
+}: InputHTMLAttributes<HTMLInputElement>) {
+  return <input className={`form-control ${className}`} {...props} />;
 }
-export default Input;
