@@ -4,9 +4,9 @@ function CardProducto(){
     return(
         <div className = "card producto" style=  {{ width: '18rem'}}>
             <img 
-                src = "/img/GuitarraAcusticaFolkYamahaF310.jpg"
+                src = "/img/GuitarraAcusticaFolkYamahaF310.png"
                 className = "card-img-top"
-                alt = "GuitarraAcusticaFolkYamahaF310"
+                alt = "Imagen no disponible"
             />
                 <div className = "card-body">
                     <h5 className = "card-title">Guitarra Acústica Folk Yamaha F310</h5>
