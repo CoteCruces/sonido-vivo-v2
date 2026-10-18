@@ -64,6 +64,7 @@
 
 body {
   margin: 0;
+  background-color:silver !important; /*Cabia el color del cuerpo de todas las paginas*/
 }
 
 h1,
