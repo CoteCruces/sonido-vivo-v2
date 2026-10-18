@@ -13,7 +13,7 @@ function Navbar(){
                     <Link className = "nav-link text-white" to = "/catalogo">Catálogo</Link>
                     <Link className = "nav-link text-white" to = "/nosotros">Nosotros</Link>
                     <Link className = "nav-link text-white" to = "/noticias">Noticias</Link>
-                    <Link className = "nav-link text-white" to = "/contactanos">Contactanos</Link>
+                    <Link className = "nav-link text-white" to = "/contactanos">Contáctanos</Link>
                 </div>
             </div>
         </nav>
