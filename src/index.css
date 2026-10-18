@@ -51,11 +51,11 @@
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%; /*Tenia 1126px;  este nuevo hace que ocupe todo el ancho de la pantalla*/
+  max-width: none; /*Tenia 100%; Este nuevo Elimina el limite de 1126px*/
+  margin: 0; /*Tenia 0 auto; este nuevo Quita el centrado automático tipo caja*/
   text-align: center;
-  border-inline: 1px solid var(--border);
+  border-inline: none; /*Tenia 1px solid var(--border); Este nuevo Elimina las líneas verticales a los lados*/
   min-height: 100svh;
   display: flex;
   flex-direction: column;
