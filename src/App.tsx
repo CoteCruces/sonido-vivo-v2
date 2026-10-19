@@ -8,6 +8,7 @@ import Contactanos from './componentes/paginas/Contactanos.tsx';
 import DetalleProducto from "./componentes/paginas/DetalleProducto";
 import Login from "./componentes/paginas/Login";
 import Registro from "./componentes/paginas/Registro";
+import DetalleNoticia from "./componentes/paginas/DetalleNoticia";
 
 function App(){
   return(
@@ -26,9 +27,13 @@ function App(){
           path = "/nosotros"
           element = {<Nosotros />} 
         />
+        <Route 
+          path="/noticias" 
+          element={<Noticias />} 
+        />
         <Route
-          path = "/noticias"
-          element = {<Noticias />} 
+          path="/noticias/:id"
+          element={<DetalleNoticia />}
         />
         <Route
           path = "/contactanos"
