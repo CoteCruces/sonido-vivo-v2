@@ -37,7 +37,7 @@ function CardCatalogo({ producto }: Props) {
                 </p>
 
                 <div className="mt-auto">
-                    <Boton />
+                    <Boton id={producto.id} />
                 </div>
             </div>
         </div>

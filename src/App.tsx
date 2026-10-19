@@ -5,6 +5,7 @@ import Catalogo from './componentes/paginas/Catalogo.tsx';
 import Nosotros from './componentes/paginas/Nosotros.tsx';
 import Noticias from './componentes/paginas/Noticias.tsx';
 import Contactanos from './componentes/paginas/Contactanos.tsx';
+import DetalleProducto from "./componentes/paginas/DetalleProducto";
 
 function App(){
   return(
@@ -30,6 +31,10 @@ function App(){
         <Route
           path = "/contactanos"
           element = {<Contactanos />} 
+        />
+        <Route
+          path="/producto/:id"
+          element={<DetalleProducto />}
         />
 
       </Routes>
