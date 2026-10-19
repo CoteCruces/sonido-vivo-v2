@@ -1,5 +1,4 @@
 import BotonLeerMas from "../atomos/BotonLeerMas";
-import BotonSubir from "../atomos/BotonSubir";
 
 function CardNoticias(){
     return(
