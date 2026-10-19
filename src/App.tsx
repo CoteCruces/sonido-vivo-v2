@@ -7,6 +7,7 @@ import Noticias from './componentes/paginas/Noticias.tsx';
 import Contactanos from './componentes/paginas/Contactanos.tsx';
 import DetalleProducto from "./componentes/paginas/DetalleProducto";
 import Login from "./componentes/paginas/Login";
+import Registro from "./componentes/paginas/Registro";
 
 function App(){
   return(
@@ -40,6 +41,10 @@ function App(){
         <Route
           path="/login"
           element={<Login />}
+        />
+        <Route 
+          path="/registro" 
+          element={<Registro />} 
         />
 
       </Routes>
