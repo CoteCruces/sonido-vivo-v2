@@ -2,100 +2,110 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link } from "react-router-dom";
-import CampoFormulario from "../moleculas/CampoFormulario";
 
 function FormularioLogin() {
+
     const [correo, setCorreo] = useState("");
     const [clave, setClave] = useState("");
-    const [error, setError] = useState("");
-    const [mensaje, setMensaje] = useState("");
+    const [errores, setErrores] = useState({
+        correo: "",
+        clave: ""
+    });
 
-    const manejarEnvio = (e: FormEvent<HTMLFormElement>) => {
+    const validarFormulario = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setError("");
-        setMensaje("");
+        const nuevosErrores = {
+            correo: "",
+            clave: ""
+        };
 
-        // Validar correo
+        // Validación de correo
         if (correo.trim() === "") {
-            setError("Debe ingresar su correo electrónico.");
-            return;
+            nuevosErrores.correo = "El correo es obligatorio.";
+        } else if (
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)
+        ) {
+            nuevosErrores.correo = "Ingrese un correo válido.";
         }
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-            setError("Debe ingresar un correo válido.");
-            return;
-        }
-
-        // Validar contraseña
+        // Validación de contraseña
         if (clave.trim() === "") {
-            setError("Debe ingresar su contraseña.");
+            nuevosErrores.clave = "La contraseña es obligatoria.";
+        } else if (clave.length < 4 || clave.length > 10) {
+            nuevosErrores.clave =
+                "La contraseña debe tener entre 4 y 10 caracteres.";
+        }
+
+        setErrores(nuevosErrores);
+
+        // Verificar si existen errores
+        if (nuevosErrores.correo || nuevosErrores.clave) {
             return;
         }
 
-        if (clave.length < 4 || clave.length > 10) {
-            setError(
-                "La contraseña debe tener entre 4 y 10 caracteres."
-            );
-            return;
-        }
-
-        // Por ahora solo se valida el formulario
-        setMensaje(
-            "Formulario válido. Falta conectar la autenticación."
-        );
+        alert("Formulario validado correctamente");
     };
 
     return (
-        <form onSubmit={manejarEnvio} noValidate>
+        <form onSubmit={validarFormulario} noValidate>
 
-            <CampoFormulario
-                etiqueta="Correo Electrónico *"
-                tipo="email"
-                nombre="correo"
-                valor={correo}
-                alCambiar={setCorreo}
-                placeholder="correo@ejemplo.com"
-            />
+            <div className="mb-3">
+                <label className="form-label">
+                    Correo Electrónico
+                </label>
 
-            <CampoFormulario
-                etiqueta="Contraseña *"
-                tipo="password"
-                nombre="clave"
-                valor={clave}
-                alCambiar={setClave}
-                placeholder="Entre 4 y 10 caracteres"
-            />
+                <input
+                    type="email"
+                    className={`form-control ${
+                        errores.correo ? "is-invalid" : ""
+                    }`}
+                    value={correo}
+                    onChange={(e) => setCorreo(e.target.value)}
+                    placeholder="correo@ejemplo.com"
+                />
 
-            {error && (
-                <div className="alert alert-danger" role="alert">
-                    {error}
-                </div>
-            )}
+                {errores.correo && (
+                    <div className="invalid-feedback">
+                        {errores.correo}
+                    </div>
+                )}
+            </div>
 
-            {mensaje && (
-                <div className="alert alert-info" role="status">
-                    {mensaje}
-                </div>
-            )}
+            <div className="mb-3">
+                <label className="form-label">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    className={`form-control ${
+                        errores.clave ? "is-invalid" : ""
+                    }`}
+                    value={clave}
+                    onChange={(e) => setClave(e.target.value)}
+                    placeholder="Ingrese su contraseña"
+                />
+
+                {errores.clave && (
+                    <div className="invalid-feedback">
+                        {errores.clave}
+                    </div>
+                )}
+            </div>
 
             <button
                 type="submit"
-                className="btn btn-primary w-100 py-2 fw-bold"
+                className="btn btn-primary w-100"
             >
                 Entrar
             </button>
 
             <div className="text-center mt-3">
-                <small className="text-muted">
-                    ¿No tienes cuenta?{" "}
-                    <Link
-                        to="/registro"
-                        className="text-primary fw-bold"
-                    >
-                        Regístrate aquí
-                    </Link>
-                </small>
+                ¿No tienes cuenta?{" "}
+                <Link to="/registro">
+                    Regístrate aquí
+                </Link>
             </div>
 
         </form>

@@ -1,27 +1,47 @@
-import Input from "../atomos/Input";
 
-type Props = {
-    etiqueta :string;
-    tipo : string;
-    nombre : string;
+interface Props {
+    etiqueta: string;
+    tipo?: string;
+    nombre: string;
     valor: string;
     alCambiar: (valor: string) => void;
-    placeholder?: string; //Se agrega para mostrar texto de ejemplo en los campos de entrada del formulario
-};
+    placeholder?: string;
+    error?: string;
+}
 
-function CampoFormulario({etiqueta, tipo, nombre, valor, alCambiar, placeholder}: Props){
-    return(
-        <div className = "mb-3">
-            <label className = "form-label">
+function CampoFormulario({
+    etiqueta,
+    tipo = "text",
+    nombre,
+    valor,
+    alCambiar,
+    placeholder,
+    error
+}: Props) {
+    return (
+        <div className="mb-3">
+            <label htmlFor={nombre} className="form-label fw-semibold">
                 {etiqueta}
             </label>
-            <Input 
-            tipo = {tipo} 
-            nombre = {nombre}
-            valor = {valor}
-            alCambiar =  {alCambiar}
-            placeholder = {placeholder}/>
+
+            <input
+                id={nombre}
+                name={nombre}
+                type={tipo}
+                className={`form-control ${error ? "is-invalid" : ""}`}
+                value={valor}
+                onChange={(e) => alCambiar(e.target.value)}
+                placeholder={placeholder}
+                aria-invalid={Boolean(error)}
+            />
+
+            {error && (
+                <div className="invalid-feedback">
+                    {error}
+                </div>
+            )}
         </div>
     );
 }
+
 export default CampoFormulario;
