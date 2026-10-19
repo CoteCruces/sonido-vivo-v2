@@ -54,10 +54,10 @@ function Carrusel() {
     <div
       style={{
         position: "relative",
-        width: "75%",
-        maxWidth: "900px",
-        height: "600px",
-        margin: "30px auto",
+        width: "100%",
+        maxWidth: "1500px",
+        height: "500px",
+        margin: "-25px auto",
         borderRadius: "30px",
         overflow: "hidden",
         boxShadow: "0 8px 8px rgba(0,0,0,0.2)",
