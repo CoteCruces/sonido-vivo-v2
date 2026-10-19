@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 const diapositivas = [
@@ -27,165 +28,137 @@ function Carrusel() {
   const [indice, setIndice] = useState(0);
 
   useEffect(() => {
-    const reloj = window.setInterval(
-      () => setIndice((i) => (i + 1) % diapositivas.length),
-      3000,
-    );
-    return () => window.clearInterval(reloj);
+    const intervalo = setInterval(() => {
+      setIndice((actual) =>
+        (actual + 1) % diapositivas.length
+      );
+    }, 3000);
+
+    return () => clearInterval(intervalo);
   }, []);
+
+  const siguiente = () => {
+    setIndice((actual) =>
+      (actual + 1) % diapositivas.length
+    );
+  };
+
+  const anterior = () => {
+    setIndice((actual) =>
+      (actual - 1 + diapositivas.length) %
+      diapositivas.length
+    );
+  };
 
   return (
     <div
-      id="carouselExampleAutoplaying"
-      className="carousel slide w-75 mx-auto"
       style={{
-        borderRadius: 30,
+        position: "relative",
+        width: "100%",
+        maxWidth: "1500px",
+        height: "500px",
+        margin: "-25px auto",
+        borderRadius: "30px",
         overflow: "hidden",
         boxShadow: "0 8px 8px rgba(0,0,0,0.2)",
       }}
     >
-      <div className="carousel-inner">
-        {diapositivas.map((d, i) => (
-          <div
-            className={`carousel-item ${i === indice ? "active" : ""}`}
-            key={d.imagen}
-          >
-            <img
-              src={d.imagen}
-              className="d-block w-100"
-              alt="Imagen no disponible"
-            />
-            {d.lineas.length > 0 && (
-              <div className="carousel-text">
-                {d.lineas.map((linea, j) => (
-                  <span key={linea}>
-                    <strong>{linea}</strong>
-                    {j < d.lineas.length - 1 && <br />}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+      {diapositivas.map((diapositiva, i) => (
+        <div
+          key={i}
+          aria-hidden={indice !== i}
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: indice === i ? 1 : 0,
+            transition: "opacity 0.6s ease-in-out",
+            zIndex: indice === i ? 1 : 0,
+          }}
+        >
+          <img
+            src={diapositiva.imagen}
+            alt={`Diapositiva ${i + 1}`}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+
+          {diapositiva.lineas.length > 0 && (
+            <div
+              style={{
+                position: "absolute",
+                top: "25%",
+                left: "10%",
+                width: "80%",
+                padding: "2rem",
+                backgroundColor: "rgba(44,62,80,0.8)",
+                color: "rgb(221,235,222)",
+                textAlign: "center",
+                fontSize: "clamp(16px, 2.5vw, 30px)",
+                borderRadius: "8px",
+              }}
+            >
+              {diapositiva.lineas.map((linea, j) => (
+                <div key={j}>
+                  <strong>{linea}</strong>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
 
       <button
-        className="carousel-control-prev"
         type="button"
-        onClick={() =>
-          setIndice(
-            (i) => (i + diapositivas.length - 1) % diapositivas.length,
-          )
-        }
+        onClick={anterior}
         aria-label="Anterior"
+        style={{
+          position: "absolute",
+          left: "15px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 5,
+          background: "rgba(0,0,0,0.3)",
+          color: "white",
+          border: "none",
+          borderRadius: "50%",
+          fontSize: "36px",
+          width: "45px",
+          height: "45px",
+          lineHeight: "1",
+          cursor: "pointer",
+        }}
       >
-        <span className="carousel-control-prev-icon" aria-hidden="true" />
-        <span className="visually-hidden">Previous</span>
+        ‹
       </button>
 
       <button
-        className="carousel-control-next"
         type="button"
-        onClick={() => setIndice((i) => (i + 1) % diapositivas.length)}
+        onClick={siguiente}
         aria-label="Siguiente"
+        style={{
+          position: "absolute",
+          right: "15px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 5,
+          background: "rgba(0,0,0,0.3)",
+          color: "white",
+          border: "none",
+          borderRadius: "50%",
+          fontSize: "36px",
+          width: "45px",
+          height: "45px",
+          lineHeight: "1",
+          cursor: "pointer",
+        }}
       >
-        <span className="carousel-control-next-icon" aria-hidden="true" />
-        <span className="visually-hidden">Next</span>
+        ›
       </button>
     </div>
   );
 }
 
 export default Carrusel;
-
-
-
-
-
-/*
-function Carrusel() {
-  return (
-    <div 
-      id="carouselExampleAutoplaying" 
-      className="carousel slide mx-auto" 
-      data-bs-ride="carousel"
-      data-bs-interval="3000"
-      style={{ 
-        maxWidth: "900px", // Ajusta el ancho máximo 
-        borderRadius: "30px", 
-        overflow: "hidden", 
-        boxShadow: "0 8px 8px rgba(0, 0, 0, 0.2)" 
-      }}
-    >
-      <div className="carousel-inner">
-
-        <div className="carousel-item active">
-          <img 
-            src="/imgCarrusel/descuentos.jpg" 
-            className="d-block w-100" 
-            height="800" 
-            alt="Imagen no disponible" 
-            style={{ objectFit: "cover" }}
-          />
-          <div className="carousel-text"> 
-            <strong>Aprovecha Octubre </strong><br /> 
-            <strong>con descuentos de hasta un 30%</strong>
-          </div>
-        </div>
-
-        <div className="carousel-item">
-          <img 
-            src="/imgCarrusel/guitarra ibanez.jpg" 
-            className="d-block w-100" 
-            height="800" 
-            alt="Imagen no disponible"
-            style={{ objectFit: "cover" }}
-          />
-          <div className="carousel-text">
-            <strong>Guitarra Ibanez edición limitada 
-              <br />solo por este mes
-              <br />Antes: $750.000 Ahora: $450.000
-            </strong>
-          </div>
-        </div>
-
-        <div className="carousel-item">
-          <img 
-            src="/imgCarrusel/bateria.jpg" 
-            className="d-block w-100" 
-            height="800" 
-            alt="Imagen no disponible"
-            style={{ objectFit: "cover" }}
-          />
-          <div className="carousel-text">
-            <strong>Batería Acústica Pearl <br /> Ahora: $599.000</strong>
-          </div>
-        </div>
-
-        <div className="carousel-item">
-          <img 
-            src="/imgCarrusel/sonido vivo.jpg" 
-            className="d-block w-100" 
-            height="800" 
-            alt="Imagen no disponible" 
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-
-      </div>
-
-      {/* Controles de navegación 
-      <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span className="visually-hidden">Previous</span>
-      </button>
-      <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-        <span className="visually-hidden">Next</span>
-      </button>
-    </div>
-  );
-}
-
-export default Carrusel;
-*/
