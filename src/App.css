@@ -161,6 +161,82 @@
   }
 }
 
+
+/* Contenedor principal */
+.carrusel-sonido {
+  width: 75%;
+  max-width: 900px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Mantener el mismo tamaño en todas las imágenes */
+.carrusel-contenedor {
+  position: relative;
+  width: 100%;
+  height: 800px;
+}
+
+/* Diapositivas */
+.carrusel-diapositiva {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+/* Diapositiva visible */
+.carrusel-diapositiva.activa {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Imágenes */
+.carrusel-imagen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Texto sobre las imágenes */
+.carrusel-sonido .carousel-text {
+  position: absolute;
+  bottom: 10%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: clamp(18px, 2.5vw, 30px);
+  text-shadow: 2px 2px 5px black;
+  padding: 15px;
+  z-index: 2;
+}
+
+/* Flechas */
+.carrusel-sonido .carousel-control-prev,
+.carrusel-sonido .carousel-control-next {
+  z-index: 3;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 768px) {
+  .carrusel-sonido {
+    width: 95%;
+    border-radius: 15px;
+  }
+
+  .carrusel-contenedor {
+    height: 380px;
+  }
+}
+
+
 .ticks {
   position: relative;
   width: 100%;
