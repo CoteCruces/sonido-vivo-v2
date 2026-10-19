@@ -10,13 +10,13 @@ function Navbar(){
             <div className = "container-fluid">
                 <span className = "navbar-brand text-white">Sonido Vivo</span>
                 <div className = "navbar-nav">
-                    <Link className = "nav-link text-primary" to = "/">Inicio</Link>
+                    <Link className = "nav-link" to = "/">
                     <img
-                      src="/imagenes/icons/home.png"
+                      src="/imgIcons/home.png"
                       alt="Inicio"
-                      width="24"
-                      height="24"
-                    />
+                      width="30"
+                      height="30"
+                    /></Link>
                     <Link className = "nav-link text-primary" to = "/catalogo">Catálogo</Link>
                     <Link className = "nav-link text-primary" to = "/nosotros">Nosotros</Link>
                     <Link className = "nav-link text-primary" to = "/noticias">Noticias</Link>

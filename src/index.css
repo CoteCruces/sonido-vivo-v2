@@ -112,3 +112,24 @@ code {
 }
 
 
+/* Estilo para que el texto quede flotando sobre la imagen del carrusel */
+.carousel-item {
+  position: relative;
+}
+
+.carousel-text {
+  position:fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(27, 54, 93, 0.85); /* Fondo azul marino semitransparente */
+  color: white;
+  padding: 25px 40px;
+  border-radius: 15px;
+  text-align: center;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  font-size: 1.25rem;
+  z-index: 10;
+}
