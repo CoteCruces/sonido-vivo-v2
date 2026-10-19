@@ -6,6 +6,7 @@ import Nosotros from './componentes/paginas/Nosotros.tsx';
 import Noticias from './componentes/paginas/Noticias.tsx';
 import Contactanos from './componentes/paginas/Contactanos.tsx';
 import DetalleProducto from "./componentes/paginas/DetalleProducto";
+import Login from "./componentes/paginas/Login";
 
 function App(){
   return(
@@ -35,6 +36,10 @@ function App(){
         <Route
           path="/producto/:id"
           element={<DetalleProducto />}
+        />
+        <Route
+          path="/login"
+          element={<Login />}
         />
 
       </Routes>
