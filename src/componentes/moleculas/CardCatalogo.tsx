@@ -1,6 +1,6 @@
 
 import Boton from "../atomos/Boton";
-import type { Producto } from "../datos/productos";
+import type { Producto } from "../utilidades/tipos";
 
 interface Props {
     producto: Producto;
@@ -16,6 +16,11 @@ function CardCatalogo({ producto }: Props) {
                 src={producto.imagen}
                 className="card-img-top"
                 alt={producto.nombre}
+                style={{
+                    width: "100%",
+                    height: "350px",
+                    objectFit: "contain"
+                }}
             />
 
             <div className="card-body d-flex flex-column">

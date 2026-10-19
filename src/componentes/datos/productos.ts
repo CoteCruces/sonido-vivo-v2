@@ -11,7 +11,7 @@ export const productos: Producto[] = [
       "La Yamaha F310 es una de las guitarras acústicas más recomendadas para quienes recién comienzan. Su tapa de abeto entrega un sonido brillante y equilibrado, mientras que los aros y el fondo de meranti aportan calidez. Cuerpo tipo dreadnought, mástil de nato y diapasón de palo de rosa. Incluye cuerdas de acero de fábrica.",
     precio: 129990,
     stock: 8,
-    imagen: "imagenes/cards/1.png",
+    imagen: "/img/GuitarraAcusticaFolkYamahaF310.png",
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ export const productos: Producto[] = [
       'La Fender CD-60S cuenta con tapa de abeto sólido (no laminado), lo que mejora notablemente la resonancia y la proyección del sonido a medida que el instrumento se "abre" con el uso. Aros y fondo de caoba, mástil de arce, diapasón de nogal. Muy recomendada para quienes buscan dar el salto desde una guitarra de entrada a una de nivel intermedio.',
     precio: 189990,
     stock: 5,
-    imagen: "imagenes/cards/2.jpg",
+    imagen: "/img/GuitarraAcusticaDreadnoughtFenderCD-60S.jpg",
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ export const productos: Producto[] = [
       "La Yamaha C40 es una guitarra clásica de tamaño completo (4/4), con cuerdas de nailon, tapa de abeto y aros/fondo de meranti. Es el modelo más utilizado en escuelas de música y academias por su bajo costo de mantención, tensión cómoda para los dedos y sonido cálido, ideal para técnica clásica y flamenca.",
     precio: 89990,
     stock: 10,
-    imagen: "imagenes/cards/3.jpg",
+    imagen: "/img/GuitarraAcusticaClasicaYamahaC40.jpg",
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ export const productos: Producto[] = [
       "La Takamine GN20CE combina un cuerpo tipo NEX (más pequeño y cómodo que un dreadnought) con un sistema de amplificación TK-40D que incluye ecualizador y afinador integrado. Tapa de abeto sólido, aros y fondo de caoba. Perfecta para presentaciones en vivo, ya que se puede conectar directamente a un amplificador o consola.",
     precio: 349990,
     stock: 3,
-    imagen: "imagenes/cards/4.jpg",
+    imagen: "/img/GuitarraElectroAcusticaTakamineGN20CE.jpg",
   },
   {
     id: 5,
@@ -56,7 +56,7 @@ export const productos: Producto[] = [
       "La Yamaha JR1 es una guitarra acústica de tamaño 3/4, pensada para niños y niñas entre 6 y 10 años o para adultos de contextura pequeña. Mantiene la calidad de construcción típica de Yamaha en un formato compacto, con tapa de abeto y cuerpo de meranti, ideal como primer instrumento.",
     precio: 79990,
     stock: 6,
-    imagen: "imagenes/cards/5.jpg",
+    imagen: "/img/GuitarraNinosYamahaJR1.jpg",
   },
   {
     id: 6,
@@ -67,7 +67,7 @@ export const productos: Producto[] = [
       "La Squier Affinity Stratocaster es la puerta de entrada al mundo Fender. Cuerpo de álamo, mástil de arce con diapasón de arce o laurel según acabado, y configuración de pastillas SSS (single-single-single) con selector de 5 posiciones, el clásico sonido Stratocaster. Requiere amplificador (no incluido).",
     precio: 249990,
     stock: 5,
-    imagen: "imagenes/cards/6.jpg",
+    imagen: "/img/GuitarraElectricaStratocasterSquierAffinityStrat.jpg",
   },
   {
     id: 7,
@@ -78,7 +78,7 @@ export const productos: Producto[] = [
       "La guitarra eléctrica Epiphone Les Paul Standard 60s pertenece a la nueva colección Inspired by Gibson y vienen a recrear las características sonoras de las Les Paul de los 60s. Cuerpo de caoba con tapa de arce, mástil de caoba con diapasón de palorrosa y dos pastillas humbucker Alnico Classic. Incluye estuche rígido.",
     precio: 329990,
     stock: 4,
-    imagen: "imagenes/cards/7.jpg",
+    imagen: "/img/GuitarraElectricaLesPaulEpiphoneLesPaulStd.jpg",
   },
   {
     id: 8,
@@ -89,7 +89,7 @@ export const productos: Producto[] = [
       "El Epiphone SG Standard de la nueva colección Inspired by Gibson, recrea el legendario clásico de la década de 1960 que impulsó la primera generación de bandas de hard rock y heavy metal, incluidas The Who, Cream, AC / DC y Black Sabbath. La guitarra presenta el histórico perfil SG con golpeador batwing, un par de humbuckers Alnico Classic PRO ™ de Epiphone y afinadores Epiphone Deluxe de relación 18: 1. Este modelo Epiphone inspirado en Gibson Original también tiene el cabezal Kalamazoo, cuello enrollado para una sensación cómoda, tuerca GraphTech® NuBone ™, cableado apropiado para la época y potenciómetros CTS. La carcasa rígida o EpiLite opcional está disponible. Disponible en acabados brillantes Heritage Cherry, Ebony y Alpine White.",
     precio: 319990,
     stock: 3,
-    imagen: "imagenes/cards/GuitarraEléctricaSGEpiphone.jpg",
+    imagen: "/img/GuitarraElectricaSGEpiphone.jpg",
   },
   {
     id: 9,
@@ -100,7 +100,7 @@ export const productos: Producto[] = [
       "La Squier Telecaster® Sonic™ está lista para lanzar cualquier aventura musical a la velocidad de la luz, ofreciendo el estilo icónico de Fender® y un tono inspirador para los músicos en cualquier etapa. Esta Tele® luce un perfil de mástil delgado y atractivo en forma de C y un cuerpo delgado y liviano para una comodidad óptima al tocar, mientras un par de cápsulas de bobina simple Squier® repican con claridad cristalina para una amplia variedad de tonos versátiles. Otros detalles de este modelo incluyen un puente fijo de 6 selletas para una entonación confiable, clavijeros de engranajes sellados para una afinación suave y precisa y hardware cromado duradero que seguramente llamará la atención.",
     precio: 239990,
     stock: 4,
-    imagen: "imagenes/cards/GuitarraElectricaTelecaster.jpg",
+    imagen: "/img/GuitarraElectricaTelecaster.jpg",
   },
   {
     id: 10,
@@ -111,7 +111,7 @@ export const productos: Producto[] = [
       "El Epiphone Inspired by Gibson ES-335 Figured honra al inmortal ES-335, el delgado arco semihueco que llevó la clase de arco a la era del rock. Con un bloque central de arce sólido para mayor resistencia al apoyo y a la retroalimentación, humbuckers Alnico Classic PRO, afinadores rotomáticos Grover y una parte superior de chapa de arce de llama en impresionantes acabados brillantes de Blueberry Burst y Raspberry Tea Burst que seguramente llamarán la atención. Carcasa rígida opcional o EpiLite disponible por separado.",
     precio: 549990,
     stock: 2,
-    imagen: "imagenes/cards/GuitarraElectricaES335.jpg",
+    imagen: "/img/GuitarraElectricaES335.jpg",
   },
   {
     id: 11,
@@ -122,7 +122,7 @@ export const productos: Producto[] = [
       "El squier precision bass es el bajo eléctrico perfecto para dar el salto al auténtico sonido Fender®. Ligero, cómodo y versátil, su configuración PJ te permite explorar graves profundos y tonos brillantes con total libertad. Diseñado para inspirar desde el primer ensayo hasta el escenario, es la base sólida que todo bajista necesita para destacar.",
     precio: 299990,
     stock: 5,
-    imagen: "imagenes/cards/BajoEléctricoAffinityPJ.jpg",
+    imagen: "/img/BajoElectricoAffinityPJ.jpg",
   },
   {
     id: 12,
@@ -133,7 +133,7 @@ export const productos: Producto[] = [
       "Su mástil de arce (Maple) presenta un confortable contorno en C de principios de los años 60, ofreciendo un tacto clásico y fluido. El diapasón de palisandro (Rosewood) mantiene el tradicional radio vintage de 7.25 acompañado de trastes Vintage Tall, asegurando una gran comodidad en la ejecución. En el apartado electrónico, incorpora un par de pastillas de bobina simple de estilo vintage de los '60s, encargadas de entregar el legendario gruñido rítmico, definición y pegada características del J Bass®.",
     precio: 699990,
     stock: 2,
-    imagen: "imagenes/cards/JazzBassFender.jpg",
+    imagen: "/img/JazzBassFender.jpg",
   },
   {
     id: 13,
@@ -143,7 +143,7 @@ export const productos: Producto[] = [
     descripcionLarga: "",
     precio: 429990,
     stock: 2,
-    imagen: "imagenes/cards/BajoAcústicoYamahaAPX700II.jpg",
+    imagen: "/img/BajoAcusticoYamahaAPX700II.jpg",
   },
   {
     id: 14,
@@ -154,7 +154,7 @@ export const productos: Producto[] = [
       "La Pearl Roadshow es una batería acústica completa, versátil y confiable, pensada para músicos que buscan un set listo para tocar con buen sonido, presencia y respaldo de marca. Su configuración permite usarla en práctica, clases, ensayos, estudio o presentaciones, manteniendo una base sólida para distintos estilos musicales.",
     precio: 599990,
     stock: 2,
-    imagen: "imagenes/cards/BateriaAcustica.jpg",
+    imagen: "/img/BateriaAcustica.jpg",
   },
   {
     id: 15,
@@ -165,7 +165,7 @@ export const productos: Producto[] = [
       "TD-02K Empieza tu aventura de batería con buen pie. La serie TD-02 te ofrece la mejor experiencia básica de batería electrónica del mundo a un precio asequible, respaldados por décadas de innovación de V-Drums, estos kits compactos y superexpresivos son mucho mejores que la suma de sus partes.",
     precio: 799990,
     stock: 2,
-    imagen: "imagenes/cards/BateríaElectrónicaRolandTD-02KV.jpg",
+    imagen: "/img/BateriaElectronicaRolandTD-02KV.jpg",
   },
   {
     id: 16,
@@ -176,7 +176,7 @@ export const productos: Producto[] = [
       "Experimenta un sonido de caja versátil y con gran respuesta con un casco de Aluminio Sin Soldadura de 1.2mm: Proporciona un sonido brillante, seco y articulado con una rápida caída y gran sensibilidad. La construcción sin soldadura mejora la resonancia y la estabilidad de la afinación.",
     precio: 89990,
     stock: 4,
-    imagen: "imagenes/cards/CajaSnarePearlSTE1450.jpg",
+    imagen: "/img/CajaSnarePearlSTE1450.jpg",
   },
   {
     id: 17,
@@ -187,7 +187,7 @@ export const productos: Producto[] = [
       "Reconocidos por su impactante acabado brillante, los HiHats Custom cuentan con ranuras tonales únicas y perfiles inferiores. Juntos, estos atributos producen un platillo con un sonido más suave, vidrioso y brillante con más elasticidad cuando se golpea. Son estas cualidades las que han hecho que el sonido de A Custom sea particularmente buscado en el estudio.",
     precio: 149990,
     stock: 3,
-    imagen: "imagenes/cards/PlatilloHi-HatZildjianASeries.jpg",
+    imagen: "/img/PlatilloHi-HatZildjianASeries.jpg",
   },
   {
     id: 18,
@@ -198,7 +198,7 @@ export const productos: Producto[] = [
       "El platillo Crash Zildjian Planet Z ZP16C de 16 pulgadas ofrece un ataque brillante, rápido y un sostén corto pero potente, perfecto para acentuar compases y dar dinámica a tus ejecuciones. Diseñado para estudiantes y bateristas en desarrollo, este Crash proporciona la legendaria musicalidad y durabilidad de Zildjian a un nivel accesible.",
     precio: 129990,
     stock: 3,
-    imagen: "imagenes/cards/PlatilloCrash16.jpg",
+    imagen: "/img/PlatilloCrash16.jpg",
   },
   {
     id: 19,
@@ -208,7 +208,7 @@ export const productos: Producto[] = [
     descripcionLarga: "",
     precio: 249990,
     stock: 4,
-    imagen: "imagenes/cards/TecladoDigitalYamahaPSR-E373.jpg",
+    imagen: "/img/TecladoDigitalYamahaPSR-E373.jpg",
   },
   {
     id: 20,
@@ -219,7 +219,7 @@ export const productos: Producto[] = [
       "La serie P le ofrece el sonido dinámico de gran calidad y la respuesta de pulsación de piano natural que se espera de Yamaha, fabricantes de pianos acústicos de talla mundial durante más de un siglo. Estos pianos distintivos de Yamaha, junto con un sistema de altavoces estéreo incorporado de gran calidad, se proporcionan en un tamaño compacto.",
     precio: 499990,
     stock: 2,
-    imagen: "imagenes/cards/PianoDigitalYamahaP-45.jpg",
+    imagen: "/img/PianoDigitalYamahaP-45.jpg",
   },
   {
     id: 21,
@@ -230,7 +230,7 @@ export const productos: Producto[] = [
       "El Arturia Keylab Essential 49 mk3 White es un controlador MIDI diseñado para entregar un ritmo de trabajo fluido a la hora de hacer música. Este controlador entrega a músicos y productores la posibilidad de controlar cualquier DAW o hardware con todos los controles esenciales en la punta de sus dedos, herramientas creativas a su disposición y el software musical más inspirador incluido.",
     precio: 129990,
     stock: 5,
-    imagen: "imagenes/cards/SintetizadorArturiaMiniLabMKII.jpg",
+    imagen: "/img/SintetizadorArturiaMiniLabMKII.jpg",
   },
   {
     id: 22,
@@ -241,7 +241,7 @@ export const productos: Producto[] = [
       "El M-Audio Hammer 88 es un controlador de teclado premium diseñado para músicos profesionales, semiprofesionales o estudiantes que buscan una experiencia realista similar a la de un piano de cola para usar con instrumentos virtuales o módulos de sonido.",
     precio: 339990,
     stock: 2,
-    imagen: "imagenes/cards/TecladoMIDIM-Audio.jpg",
+    imagen: "/img/TecladoMIDIM-Audio.jpg",
   },
   {
     id: 23,
@@ -252,7 +252,7 @@ export const productos: Producto[] = [
       "POTENCIA Y CALIDAD DE SONIDO Este amplificador ofrece una potencia de 15W RMS, ideal para practicar y presentaciones pequeñas. Su diseño compacto y ligero facilita su transporte.",
     precio: 99990,
     stock: 5,
-    imagen: "imagenes/cards/AmplificadorGuitarra15WFenderFrontman.jpg",
+    imagen: "/img/AmplificadorGuitarra15WFenderFrontman.jpg",
   },
   {
     id: 24,
@@ -263,7 +263,7 @@ export const productos: Producto[] = [
       "Si lo que buscas es un equipo que se caracterice por tener una distorsión única y mayor calidez de sonidos clásicos y orgánicos, este amplificador valvular es ideal para ti. Cantidad de canales al contar con 2 canales, te permitirán alcanzar tonos limpios y reproducir todos los géneros de música.",
     precio: 299990,
     stock: 3,
-    imagen: "imagenes/cards/AmplificadorGuitarra40WMarshall.jpg",
+    imagen: "/img/AmplificadorGuitarra40WMarshall.jpg",
   },
   {
     id: 25,
@@ -274,7 +274,7 @@ export const productos: Producto[] = [
       "Este Amplificador es la herramienta perfecta para bajistas que necesitan gran potencia en un formato compacto, ideal para presentaciones en vivo, ensayos exigentes o giras. Este combo compacto se convierte en el favorito de clubes gracias a su capacidad de integrarse perfectamente en la mezcla, ofreciendo un sonido claro, balanceado y con presencia profesional.",
     precio: 449990,
     stock: 2,
-    imagen: "imagenes/cards/AmplificadorBajo100WHartke.jpg",
+    imagen: "/img/AmplificadorBajo100WHartke.jpg",
   },
   {
     id: 26,
@@ -285,7 +285,7 @@ export const productos: Producto[] = [
       "El Loudbox Mini Charge es un amplificador portátil alimentado por batería diseñado para reproducir fielmente el sonido de los instrumentos acústicos y una diversa variedad de acompañamientos vocales o grabados. Con la adición de conectividad inalámbrica Bluetooth®, ahora puedes agregar fácil y ordenadamente pistas de acompañamiento u otro acompañamiento a tus actuaciones, atascos o donde sea que tu Loudbox Mini Charge te lleve a ti y a tu música. ¿Dónde lo vas a llevar?",
     precio: 499990,
     stock: 2,
-    imagen: "imagenes/cards/AmplificadorAcustico40W.jpg",
+    imagen: "/img/AmplificadorAcustico40W.jpg",
   },
   {
     id: 27,
@@ -296,7 +296,7 @@ export const productos: Producto[] = [
       "Fabricado para manejar la voz con claridad y cuidado, el patrón polar cardioide uniforme reproduce cada nota con precisión. Deja atrás el ruido de fondo. En cualquier escenario, desde el espectáculo del club nocturno hasta el estadio, el SM58 ofrece un sonido cálido y nítido una y otra vez.",
     precio: 149990,
     stock: 8,
-    imagen: "imagenes/cards/Cardioide.jpg",
+    imagen: "/img/Cardioide.jpg",
   },
   {
     id: 28,
@@ -307,7 +307,7 @@ export const productos: Producto[] = [
       "El Shure SM57 es un micrófono dinámico cardioide de uso versátil y robusto, reconocido como uno de los mejores micrófonos de la historia. Es una elección popular tanto para escenarios en vivo como para grabaciones en estudio, gracias a su capacidad para capturar una amplia gama de fuentes de sonido con precisión y detalle.",
     precio: 139990,
     stock: 6,
-    imagen: "imagenes/cards/SM57.jpg",
+    imagen: "/img/SM57.jpg",
   },
   {
     id: 29,
@@ -318,7 +318,7 @@ export const productos: Producto[] = [
       "Calidad de sonido superior: captura audio rico y detallado con el diseño del condensador AT2020, perfecto para voces, instrumentos y podcasting. Experimenta claridad de grado profesional.",
     precio: 199990,
     stock: 4,
-    imagen: "imagenes/cards/AT2020.jpg",
+    imagen: "/img/AT2020.jpg",
   },
   {
     id: 30,
@@ -329,7 +329,7 @@ export const productos: Producto[] = [
       "Perfecto para podcasting, transmisión de juegos, llamadas de Skype, YouTube o música. Salida de auriculares sin latencia, volumen de auriculares y silencio de micrófono",
     precio: 299990,
     stock: 5,
-    imagen: "imagenes/cards/Yeti.jpg",
+    imagen: "/img/Yeti.jpg",
   },
   {
     id: 31,
@@ -340,7 +340,7 @@ export const productos: Producto[] = [
       "El DS1 te permitirá añadir un poco de distorsión fuerte, manteniendo los matices de tu interpretación con sus dinámicas. Además, dispone de un controlador de tono para moldear tu sonido a gusto.",
     precio: 79990,
     stock: 7,
-    imagen: "imagenes/cards/DS-1.jpg",
+    imagen: "/img/DS-1.jpg",
   },
   {
     id: 32,
@@ -351,7 +351,7 @@ export const productos: Producto[] = [
       "Boss RV-6 pedal de reverberación digital - Operación mono o estéreo - Entrada de pedal de expresión - Pedal de reverberación compacto y versátil con sonido rico y expansivo. Esfera en sofisticados tonos de reverberación de nivel superior rápidamente con controles simples. Algoritmos de grado de estudio desarrollados con tecnología BOSS de vanguardia. Ocho modos de sonido proporcionan una amplia gama de efectos de reverberación listos para jugar. Los modos Shimmer, Dynamic, y Delay+Reverb ofrecen texturas exuberantes e inmersivas buscadas por los modernos playersInput para controlar nivel de reverberación con un pedal de expresión opcionalSoporta funcionamiento mono o estéreo.",
     precio: 179990,
     stock: 4,
-    imagen: "imagenes/cards/PedalReverb.jpg",
+    imagen: "/img/PedalReverb.jpg",
   },
   {
     id: 33,
@@ -362,7 +362,7 @@ export const productos: Producto[] = [
       "Un historial completo de procesamiento de tonos BOSS listo para conciertos está a su disposición, desde múltiples Overdrives y Distorsiones hasta wahs, efectos de modulación, cambios de tono, retrasos y más.",
     precio: 349990,
     stock: 2,
-    imagen: "imagenes/cards/ME-80.jpg",
+    imagen: "/img/ME-80.jpg",
   },
   {
     id: 34,
@@ -373,7 +373,7 @@ export const productos: Producto[] = [
       "Con una pantalla LED brillante y fácil de leer, permite afinar tu instrumento de forma rápida y precisa, incluso en entornos oscuros o con mucha luz. Cuenta con modos de afinación cromática y afinación por semitonos, así como la función de afinación plana hasta dos semitonos.",
     precio: 89990,
     stock: 8,
-    imagen: "imagenes/cards/TU-3.jpg",
+    imagen: "/img/TU-3.jpg",
   },
   {
     id: 35,
@@ -384,7 +384,7 @@ export const productos: Producto[] = [
       "Con 600 ms de tiempo de retardo con modulación opcional y un diseño de tres perillas que controla Delay, Mix y Regen. Además, hay dos potenciómetros de recorte internos que ofrecen un ancho ajustable por el usuario y un control de velocidad de la modulación para aún más opciones tonales.",
     precio: 179990,
     stock: 4,
-    imagen: "imagenes/cards/CarbonCopy.jpg",
+    imagen: "/img/CarbonCopy.jpg",
   },
   {
     id: 36,
@@ -395,7 +395,7 @@ export const productos: Producto[] = [
       "El pedal Ibanez Tube Screamer Ts9 Overdrive es un equipo esencial para los guitarristas que buscan un tono de alta calidad. Fabricado en Japón por la reconocida marca Ibanez, este pedal simula el sonido característico de un amplificador de válvulas, proporcionando una distorsión increíble para los estilos de rock y blues.",
     precio: 99990,
     stock: 6,
-    imagen: "imagenes/cards/TS9.jpg",
+    imagen: "/img/TS9.jpg",
   },
   {
     id: 37,
@@ -406,7 +406,7 @@ export const productos: Producto[] = [
       "Las cuerdas para guitarra eléctrica Ernie Ball Nickel Wound están hechas de alambre de acero niquelado envuelto alrededor de un alambre de núcleo de acero en forma de hexágono estañado. Las cuerdas lisas están hechas de acero con alto contenido de carbono estañado especialmente templado, lo que produce un tono bien equilibrado para su guitarra.",
     precio: 8990,
     stock: 25,
-    imagen: "imagenes/cards/SuperSlinky.jpg",
+    imagen: "/img/SuperSlinky.jpg",
   },
   {
     id: 38,
@@ -417,7 +417,7 @@ export const productos: Producto[] = [
       "Las cuerdas para guitarra acústica Ernie Ball Earthwood Bronze están hechas de alambre de 80% cobre y 20% zinc envuelto alrededor de un alambre con núcleo de acero chapado en latón con forma hexagonal. Estas cuerdas de guitarra acústica proporcionan un sonido nítido y resonante con matices agradables.",
     precio: 10990,
     stock: 20,
-    imagen: "imagenes/cards/Earthwood.jpg",
+    imagen: "/img/Earthwood.jpg",
   },
   {
     id: 39,
@@ -428,7 +428,7 @@ export const productos: Producto[] = [
       "Las cuerdas para bajo eléctrico Ernie Ball Nickel Wound de escala corta están hechas de acero niquelado envuelto alrededor de un alambre de núcleo de acero con forma hexagonal.",
     precio: 14990,
     stock: 12,
-    imagen: "imagenes/cards/Slinky.jpg",
+    imagen: "/img/Slinky.jpg",
   },
   {
     id: 40,
@@ -439,7 +439,7 @@ export const productos: Producto[] = [
       "Las características principales de los picapuntos Fender 351 incluyen sus clásicos 351 forma, disponible en un espesor medio que se adapta a una variedad de juegos estilos. El paquete de 12 viene en colores variados, lo que le permite elegir una selección que coincide con su personalidad o estado de ánimo.",
     precio: 3990,
     stock: 50,
-    imagen: "imagenes/cards/Fender351.jpg",
+    imagen: "/img/Fender351.jpg",
   },
   {
     id: 41,
@@ -450,7 +450,7 @@ export const productos: Producto[] = [
       "El Dunlop® Trigger® Capo le permite cambiar la llave rápida y fácilmente con un apretón de la mano. La fuerte abrazadera de acción de resorte de este capo lo mantiene firmemente en su lugar, mientras que su perfil delgado le asegura que puede mover el diapasón hacia arriba y hacia abajo sin obstáculos.",
     precio: 12990,
     stock: 15,
-    imagen: "imagenes/cards/Dunlop.jpg",
+    imagen: "/img/Dunlop.jpg",
   },
   {
     id: 42,
@@ -461,7 +461,7 @@ export const productos: Producto[] = [
       "Detección precisa de tono: Este afinador cuenta con tecnología de detección precisa de tono para garantizar que tu instrumento se mantenga afinado, brindándote el mejor sonido.",
     precio: 8990,
     stock: 20,
-    imagen: "imagenes/cards/Snark.jpg",
+    imagen: "/img/Snark.jpg",
   },
   {
     id: 43,
@@ -472,7 +472,7 @@ export const productos: Producto[] = [
       "Una conexión de calidad comienza con un cable de calidad. Y con el Monster Standard 100, usarás un cable que suena tan bien como se ve. Así que, ya sea que estés dando conciertos, grabando en el estudio o improvisando en el garaje, el Standard 100 es una excelente opción para iniciarte.",
     precio: 12990,
     stock: 15,
-    imagen: "imagenes/cards/S100.jpg",
+    imagen: "/img/S100.jpg",
   },
   {
     id: 44,
@@ -483,7 +483,7 @@ export const productos: Producto[] = [
       "Una conexión de calidad comienza con un cable de calidad. Y con el Monster Standard 100, usarás un cable que suena tan bien como se ve. Así que, ya sea que estés dando conciertos, grabando en el estudio o improvisando en el garaje, el Standard 100 es una excelente opción para iniciarte.",
     precio: 17990,
     stock: 10,
-    imagen: "imagenes/cards/S100.jpg",
+    imagen: "/img/S100.jpg",
   },
   {
     id: 45,
@@ -494,7 +494,7 @@ export const productos: Producto[] = [
       "Construcción en aluminio reforzado que soporta una carga máxima de 15 kg para instrumentos de cuerda de distintos pesos. Estructura de pie con capacidad para 1 instrumento que permite el acceso inmediato a guitarras eléctricas y bajos.",
     precio: 22990,
     stock: 12,
-    imagen: "imagenes/cards/GS302B.jpg",
+    imagen: "/img/GS302B.jpg",
   },
   {
     id: 46,
@@ -505,7 +505,7 @@ export const productos: Producto[] = [
       "Soporte de pared que ahorra espacio y facilita la exhibición vertical de tu guitarra o bajo. Estructura de metal que garantiza resistencia y durabilidad, soportando hasta 7 kg sin problemas.",
     precio: 18990,
     stock: 10,
-    imagen: "imagenes/cards/WAH-202.jpg",
+    imagen: "/img/WAH-202.jpg",
   },
   {
     id: 47,
@@ -516,7 +516,7 @@ export const productos: Producto[] = [
       "La Scarlett Solo (2.ª generación) de Focusrite te permite empezar a grabar de forma más rápida, sencilla y con mejores resultados que nunca. Esta interfaz de audio compacta cuenta con un preamplificador de micrófono Scarlett de sonido natural, una entrada para instrumentos rediseñada y una latencia ultrabaja. Es muy fácil de usar: basta con conectarla mediante un único cable USB, junto con el micrófono y los instrumentos, para empezar a grabar audio con calidad de estudio.",
     precio: 149990,
     stock: 4,
-    imagen: "imagenes/cards/SCARLETT-SOLO.jpg",
+    imagen: "/img/SCARLETT-SOLO.jpg",
   },
   {
     id: 48,
@@ -527,7 +527,7 @@ export const productos: Producto[] = [
       "Los auriculares profesionales de monitorización ATH-M20x son una introducción ideal a la serie M. El diseño y los materiales de alta calidad proporcionan una experiencia de escucha confortable, con audio mejorado y aislamiento sonoro eficiente.",
     precio: 79990,
     stock: 6,
-    imagen: "imagenes/cards/ATH-M20x.jpg",
+    imagen: "/img/ATH-M20x.jpg",
   },
   {
     id: 49,
@@ -538,7 +538,7 @@ export const productos: Producto[] = [
       "El Audio Technica ATHM50X es el modelo más aclamado de la serie M, elogiado por reputados ingenieros de audio y críticos de audio profesional año tras año. Los auriculares ATH-M50x ofrecen la misma calidad de sonido, pero además disponen ahora de un cable desconectable.",
     precio: 219990,
     stock: 4,
-    imagen: "imagenes/cards/ATH-M50x.jpg",
+    imagen: "/img/ATH-M50x.jpg",
   },
   {
     id: 50,
@@ -549,7 +549,7 @@ export const productos: Producto[] = [
       "Los monitores de referencia de campo cercano de la serie HS son la encarnación de esta filosofía, ofreciendo una imagen de sonido concisa, alta resolución y respuesta plana.",
     precio: 349990,
     stock: 2,
-    imagen: "imagenes/cards/HS5.jpg",
+    imagen: "/img/HS5.jpg",
   },
   {
     id: 51,
@@ -560,6 +560,6 @@ export const productos: Producto[] = [
       "Filtro antipop para grabaciones vocales a corta distancia, apto para todo tipo de micrófonos. Se puede fijar a soportes de micrófono. Longitud del cuello de cisne: aprox. 240 mm. Diámetro del filtro: aprox. 130 mm.",
     precio: 14990,
     stock: 8,
-    imagen: "imagenes/cards/MZP-40.jpg",
+    imagen: "/img/MZP-40.jpg",
   },
 ];
