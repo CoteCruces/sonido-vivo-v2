@@ -230,3 +230,31 @@ export function editarUsuarioAdmin(
 
     return datosPublicos(cuentas[indice]);
 }
+
+
+export function eliminarUsuario(run: string): boolean {
+
+    // Obtener las cuentas guardadas
+    const cuentas = leerCuentas();
+
+    // Comprobar si el usuario existe
+    const existe = cuentas.some(
+        (cuenta) =>
+            normalizarRUN(cuenta.run) === normalizarRUN(run)
+    );
+
+    if (!existe) {
+        return false;
+    }
+
+    // Eliminar la cuenta seleccionada
+    const nuevasCuentas = cuentas.filter(
+        (cuenta) =>
+            normalizarRUN(cuenta.run) !== normalizarRUN(run)
+    );
+
+    // Guardar los cambios en localStorage
+    guardarCuentas(nuevasCuentas);
+
+    return true;
+}

@@ -3,9 +3,10 @@ import BotonAdmin from "../atomos/BotonAdmin";
 
 interface Props {
     usuario: Usuario;
+    onEliminar: (run: string) => void;
 }
 
-function FilaUsuarioAdmin({ usuario }: Props) {
+function FilaUsuarioAdmin({ usuario, onEliminar }: Props) {
     return (
         <tr>
             <td>{usuario.run}</td>
@@ -39,6 +40,7 @@ function FilaUsuarioAdmin({ usuario }: Props) {
                     <BotonAdmin
                         texto="Eliminar"
                         color="danger"
+                        onClick={() => onEliminar(usuario.run)}
                     />
                 </div>
             </td>
