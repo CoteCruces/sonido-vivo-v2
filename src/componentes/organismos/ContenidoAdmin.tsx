@@ -64,6 +64,7 @@ function ContenidoAdmin() {
                         descripcion="Agrega nuevos instrumentos, actualiza precios, controla el stock o edita la información del catálogo."
                         icono="journal-album"
                         color="primary"
+                        destino="/admin/productos"
                     />
                 </div>
 

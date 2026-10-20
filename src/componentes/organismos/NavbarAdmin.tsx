@@ -47,9 +47,12 @@ function NavbarAdmin() {
                             Inicio Panel
                         </Link>
 
-                        <span className="nav-link disabled">
+                        <Link
+                            className="nav-link"
+                            to="/admin/productos"
+                        >
                             Mantenedor Productos
-                        </span>
+                        </Link>
 
                         <span className="nav-link disabled">
                             Mantenedor Usuarios

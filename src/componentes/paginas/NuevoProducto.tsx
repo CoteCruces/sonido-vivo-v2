@@ -1,33 +1,45 @@
 
+import NavbarAdmin from "../organismos/NavbarAdmin";
+import FooterAdmin from "../organismos/FooterAdmin";
 import FormularioNuevoProducto from "../organismos/FormularioNuevoProducto";
 
 function NuevoProducto() {
     return (
-        <main className="container my-5">
+        <div className="panel-admin d-flex flex-column min-vh-100">
 
-            <div className="row justify-content-center">
+            <NavbarAdmin />
 
-                <div className="col-12 col-lg-9">
+            <main className="container my-5 flex-grow-1">
 
-                    <div className="card border-0 shadow rounded-4 text-dark">
+                <div className="row justify-content-center">
+                    <div className="col-12 col-lg-9">
 
-                        <div className="card-body p-4 p-md-5">
+                        <div className="card shadow-sm border-0 rounded-4">
 
-                            <h2 className="fw-bold mb-4">
-                                Agregar Nuevo Producto
-                            </h2>
+                            <div className="card-body p-4 p-md-5 text-dark">
 
-                            <FormularioNuevoProducto />
+                                <h2 className="fw-bold mb-3">
+                                    Agregar Nuevo Producto
+                                </h2>
 
+                                <p className="text-muted mb-4">
+                                    Completa los datos para agregar
+                                    un producto al catálogo.
+                                </p>
+
+                                <FormularioNuevoProducto />
+
+                            </div>
                         </div>
 
                     </div>
-
                 </div>
 
-            </div>
+            </main>
 
-        </main>
+            <FooterAdmin />
+
+        </div>
     );
 }
 

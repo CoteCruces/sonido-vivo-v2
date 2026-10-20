@@ -12,6 +12,8 @@ import DetalleNoticia from "./componentes/paginas/DetalleNoticia";
 import Footer from "./componentes/organismos/Footer";
 import NuevoProducto from "./componentes/paginas/NuevoProducto";
 import PanelAdmin from "./componentes/paginas/PanelAdmin";
+import AdministrarProductos from "./componentes/paginas/AdministrarProductos";
+
 
 
 function App() {
@@ -65,6 +67,15 @@ function App() {
                     <Route
                         path="/admin"
                         element={<PanelAdmin />}
+                    />
+                    <Route
+                        path="/admin/productos"
+                        element={<AdministrarProductos />}
+                    />
+
+                    <Route
+                        path="/admin/productos/nuevo"
+                        element={<NuevoProducto />}
                     />
                 </Routes>
 

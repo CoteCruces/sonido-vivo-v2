@@ -5,30 +5,6 @@ import { useNavigate } from "react-router-dom";
 import CampoFormulario from "../moleculas/CampoFormulario";
 import { crearProducto } from "../servicios/productosService";
 
-type DatosFormulario = {
-    nombre: string;
-    categoria: string;
-    descripcion: string;
-    descripcionLarga: string;
-    precio: string;
-    stock: string;
-    imagen: string;
-};
-
-type Errores = Partial<
-    Record<keyof DatosFormulario, string>
->;
-
-const datosIniciales: DatosFormulario = {
-    nombre: "",
-    categoria: "",
-    descripcion: "",
-    descripcionLarga: "",
-    precio: "",
-    stock: "",
-    imagen: ""
-};
-
 const categorias = [
     "Guitarras Acústicas",
     "Guitarras Eléctricas",
@@ -42,74 +18,75 @@ const categorias = [
     "Estudio y Grabación"
 ];
 
-function FormularioNuevoProducto() {
+type DatosProducto = {
+    nombre: string;
+    categoria: string;
+    descripcion: string;
+    descripcionLarga: string;
+    precio: string;
+    stock: string;
+    imagen: string;
+};
 
+type Errores = Partial<Record<keyof DatosProducto, string>>;
+
+function FormularioNuevoProducto() {
     const navigate = useNavigate();
 
-    const [datos, setDatos] =
-        useState<DatosFormulario>(datosIniciales);
+    const [datos, setDatos] = useState<DatosProducto>({
+        nombre: "",
+        categoria: "",
+        descripcion: "",
+        descripcionLarga: "",
+        precio: "",
+        stock: "",
+        imagen: ""
+    });
 
-    const [errores, setErrores] =
-        useState<Errores>({});
-
+    const [errores, setErrores] = useState<Errores>({});
     const [errorGeneral, setErrorGeneral] = useState("");
 
-    // Actualizar los campos
     const actualizar = (
-        campo: keyof DatosFormulario,
+        campo: keyof DatosProducto,
         valor: string
     ) => {
-        setDatos((anteriores) => ({
-            ...anteriores,
-            [campo]: valor
-        }));
-
-        setErrores((anteriores) => ({
-            ...anteriores,
-            [campo]: ""
-        }));
+        setDatos(prev => ({ ...prev, [campo]: valor }));
+        setErrores(prev => ({ ...prev, [campo]: "" }));
+        setErrorGeneral("");
     };
 
-    // Validaciones con JavaScript
-    const manejarEnvio = (e: FormEvent<HTMLFormElement>) => {
+    const guardar = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const nuevosErrores: Errores = {};
 
-        if (datos.nombre.trim() === "") {
-            nuevosErrores.nombre =
-                "El nombre es obligatorio.";
+        // Validaciones con JavaScript
+        if (!datos.nombre.trim()) {
+            nuevosErrores.nombre = "Ingrese el nombre.";
         }
 
-        if (datos.categoria === "") {
-            nuevosErrores.categoria =
-                "Seleccione una categoría.";
+        if (!categorias.includes(datos.categoria)) {
+            nuevosErrores.categoria = "Seleccione una categoría.";
         }
 
-        if (datos.descripcion.trim() === "") {
-            nuevosErrores.descripcion =
-                "Ingrese una descripción.";
+        if (!datos.descripcion.trim()) {
+            nuevosErrores.descripcion = "Ingrese una descripción.";
         }
 
         if (
             !/^\d+$/.test(datos.precio) ||
             Number(datos.precio) <= 0
         ) {
-            nuevosErrores.precio =
-                "Ingrese un precio entero mayor a 0.";
+            nuevosErrores.precio = "Ingrese un precio válido.";
         }
 
         if (!/^\d+$/.test(datos.stock)) {
-            nuevosErrores.stock =
-                "El stock debe ser un número entero mayor o igual a 0.";
+            nuevosErrores.stock = "Ingrese un stock válido.";
         }
 
-        if (datos.imagen.trim() === "") {
+        if (!datos.imagen.trim().startsWith("/")) {
             nuevosErrores.imagen =
-                "Ingrese la ruta de la imagen.";
-        } else if (!datos.imagen.startsWith("/")) {
-            nuevosErrores.imagen =
-                "La ruta debe comenzar con /.";
+                "La imagen debe tener una ruta que comience con /.";
         }
 
         setErrores(nuevosErrores);
@@ -129,36 +106,29 @@ function FormularioNuevoProducto() {
                 imagen: datos.imagen.trim()
             });
 
-            // Volver al catálogo
-            navigate("/catalogo");
+            navigate("/admin/productos");
 
         } catch {
-            setErrorGeneral(
-                "No se pudo guardar el producto."
-            );
+            setErrorGeneral("No se pudo guardar el producto.");
         }
     };
 
     return (
-        <form onSubmit={manejarEnvio} noValidate>
-
+        <form onSubmit={guardar} noValidate>
             <div className="row g-3">
 
                 <div className="col-md-6">
                     <CampoFormulario
-                        etiqueta="Nombre del producto *"
+                        etiqueta="Nombre del Producto *"
                         nombre="nombre"
                         valor={datos.nombre}
-                        alCambiar={(v) =>
-                            actualizar("nombre", v)
-                        }
-                        placeholder="Ej: Guitarra Yamaha"
+                        alCambiar={v => actualizar("nombre", v)}
                         error={errores.nombre}
                     />
                 </div>
 
                 <div className="col-md-6">
-                    <label className="form-label fw-semibold">
+                    <label className="form-label">
                         Categoría *
                     </label>
 
@@ -167,19 +137,13 @@ function FormularioNuevoProducto() {
                             errores.categoria ? "is-invalid" : ""
                         }`}
                         value={datos.categoria}
-                        onChange={(e) =>
+                        onChange={e =>
                             actualizar("categoria", e.target.value)
                         }
                     >
-                        <option value="">
-                            Seleccione una categoría
-                        </option>
-
-                        {categorias.map((categoria) => (
-                            <option
-                                key={categoria}
-                                value={categoria}
-                            >
+                        <option value="">Seleccione una categoría</option>
+                        {categorias.map(categoria => (
+                            <option key={categoria} value={categoria}>
                                 {categoria}
                             </option>
                         ))}
@@ -197,47 +161,32 @@ function FormularioNuevoProducto() {
                         etiqueta="Descripción *"
                         nombre="descripcion"
                         valor={datos.descripcion}
-                        alCambiar={(v) =>
-                            actualizar("descripcion", v)
-                        }
-                        placeholder="Descripción breve del producto"
+                        alCambiar={v => actualizar("descripcion", v)}
                         error={errores.descripcion}
                     />
                 </div>
 
                 <div className="col-12">
-                    <label
-                        htmlFor="descripcionLarga"
-                        className="form-label fw-semibold"
-                    >
-                        Descripción larga
+                    <label className="form-label">
+                        Descripción Larga
                     </label>
-
                     <textarea
-                        id="descripcionLarga"
                         className="form-control"
                         rows={4}
                         value={datos.descripcionLarga}
-                        onChange={(e) =>
-                            actualizar(
-                                "descripcionLarga",
-                                e.target.value
-                            )
+                        onChange={e =>
+                            actualizar("descripcionLarga", e.target.value)
                         }
-                        placeholder="Características detalladas..."
                     />
                 </div>
 
                 <div className="col-md-6">
                     <CampoFormulario
                         etiqueta="Precio *"
-                        nombre="precio"
                         tipo="number"
+                        nombre="precio"
                         valor={datos.precio}
-                        alCambiar={(v) =>
-                            actualizar("precio", v)
-                        }
-                        placeholder="Ej: 129990"
+                        alCambiar={v => actualizar("precio", v)}
                         error={errores.precio}
                     />
                 </div>
@@ -245,26 +194,21 @@ function FormularioNuevoProducto() {
                 <div className="col-md-6">
                     <CampoFormulario
                         etiqueta="Stock *"
-                        nombre="stock"
                         tipo="number"
+                        nombre="stock"
                         valor={datos.stock}
-                        alCambiar={(v) =>
-                            actualizar("stock", v)
-                        }
-                        placeholder="Ej: 10"
+                        alCambiar={v => actualizar("stock", v)}
                         error={errores.stock}
                     />
                 </div>
 
                 <div className="col-12">
                     <CampoFormulario
-                        etiqueta="Ruta de la imagen *"
+                        etiqueta="Ruta de la Imagen *"
                         nombre="imagen"
                         valor={datos.imagen}
-                        alCambiar={(v) =>
-                            actualizar("imagen", v)
-                        }
-                        placeholder="/img/NuevoProducto.jpg"
+                        alCambiar={v => actualizar("imagen", v)}
+                        placeholder="/img/NombreImagen.jpg"
                         error={errores.imagen}
                     />
                 </div>
@@ -288,7 +232,7 @@ function FormularioNuevoProducto() {
                     <button
                         type="button"
                         className="btn btn-secondary"
-                        onClick={() => navigate("/catalogo")}
+                        onClick={() => navigate("/admin/productos")}
                     >
                         Cancelar
                     </button>
