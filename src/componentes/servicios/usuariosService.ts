@@ -258,3 +258,81 @@ export function eliminarUsuario(run: string): boolean {
 
     return true;
 }
+
+
+export type DatosCrearUsuarioAdmin = DatosRegistroUsuario & {
+    rol: "Cliente" | "Administrador";
+};
+
+export function crearUsuarioAdmin(
+    datos: DatosCrearUsuarioAdmin
+): Usuario {
+
+    // Obtener las cuentas registradas
+    const cuentas = leerCuentas();
+
+    // Normalizar los datos
+    const correo = normalizarCorreo(datos.correo);
+    const run = normalizarRUN(datos.run);
+
+    // Verificar correo duplicado
+    const correoExiste = cuentas.some(
+        (cuenta) =>
+            normalizarCorreo(cuenta.correo) === correo
+    );
+
+    if (correoExiste) {
+        throw new Error(
+            "El correo electrónico ya está registrado."
+        );
+    }
+
+    // Verificar RUN duplicado
+    const runExiste = cuentas.some(
+        (cuenta) =>
+            normalizarRUN(cuenta.run) === run
+    );
+
+    if (runExiste) {
+        throw new Error(
+            "El RUN ya está registrado."
+        );
+    }
+
+    // Validar campos obligatorios
+    if (
+        !datos.nombre.trim() ||
+        !datos.apellidos.trim() ||
+        !correo ||
+        !run ||
+        !datos.clave
+    ) {
+        throw new Error(
+            "Todos los campos obligatorios deben completarse."
+        );
+    }
+
+    // Validar rol
+    if (
+        datos.rol !== "Cliente" &&
+        datos.rol !== "Administrador"
+    ) {
+        throw new Error("El rol seleccionado no es válido.");
+    }
+
+    // Crear la cuenta
+    const nuevaCuenta: CuentaGuardada = {
+        ...datos,
+        run: datos.run.trim(),
+        correo,
+        nombre: datos.nombre.trim(),
+        apellidos: datos.apellidos.trim(),
+        rol: datos.rol
+    };
+
+    // Guardar en localStorage
+    guardarCuentas([...cuentas, nuevaCuenta]);
+
+    // Devolver el usuario sin su contraseña
+    return datosPublicos(nuevaCuenta);
+}

@@ -16,6 +16,7 @@ import EditarProducto from "./componentes/paginas/EditarProducto";
 import MiCuenta from "./componentes/paginas/MiCuenta";
 import AdministrarUsuarios from "./componentes/paginas/AdministrarUsuarios";
 import EditarUsuario from "./componentes/paginas/EditarUsuario";
+import NuevoUsuario from "./componentes/paginas/NuevoUsuario";
 
 
 function App() {
@@ -95,6 +96,11 @@ function App() {
                     <Route
                       path="/admin/usuarios/editar/:run"
                       element={<EditarUsuario />}
+                    />
+
+                    <Route
+                      path="/admin/usuarios/nuevo"
+                      element={<NuevoUsuario />}
                     />
 
                 </Routes>

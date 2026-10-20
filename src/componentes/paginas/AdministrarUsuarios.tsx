@@ -25,11 +25,23 @@ function AdministrarUsuarios() {
                         </p>
                     </div>
 
-                    <BotonAdmin
-                        texto="Volver al Panel"
-                        color="primary"
-                        destino="/admin"
-                    />
+                    
+                    <div className="d-flex flex-wrap gap-2">
+
+                        <BotonAdmin
+                            texto="Nuevo Usuario"
+                            color="success"
+                            destino="/admin/usuarios/nuevo"
+                        />
+
+                        <BotonAdmin
+                            texto="Volver al Panel"
+                            color="primary"
+                            destino="/admin"
+                        />
+
+                    </div>
+
 
                 </div>
 
