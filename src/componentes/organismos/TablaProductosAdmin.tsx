@@ -1,14 +1,49 @@
 
 import { useState } from "react";
 import FilaProductoAdmin from "../moleculas/FilaProductoAdmin";
-import { obtenerProductos } from "../servicios/productosService";
+import { obtenerProductos, eliminarProducto} from "../servicios/productosService";
 import type { Producto } from "../utilidades/tipos";
 
 function TablaProductosAdmin() {
 
-    const [productos] = useState<Producto[]>(
+    const [productos, setProductos] = useState<Producto[]>(
         obtenerProductos
     );
+
+    
+    const manejarEliminar = (id: number) => {
+
+        // Buscar el producto
+        const producto = productos.find(
+            (p) => p.id === id
+        );
+
+        if (!producto) return;
+
+        // Pedir confirmación
+        const confirmar = window.confirm(
+            `¿Estás seguro de eliminar "${producto.nombre}"?`
+        );
+
+        if (!confirmar) return;
+
+        try {
+            // Eliminar mediante el servicio
+            const eliminado = eliminarProducto(id);
+
+            if (!eliminado) {
+                alert("No se encontró el producto.");
+                return;
+            }
+
+            // Actualizar la tabla
+            setProductos(obtenerProductos());
+
+        } catch {
+            alert("No se pudo eliminar el producto.");
+        }
+    };
+
 
     return (
         <div className="card shadow-sm border-0 rounded-4">
@@ -44,6 +79,7 @@ function TablaProductosAdmin() {
                                 <FilaProductoAdmin
                                     key={producto.id}
                                     producto={producto}
+                                    onEliminar={manejarEliminar}
                                 />
                             ))}
                         </tbody>

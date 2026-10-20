@@ -100,3 +100,29 @@ export function actualizarProducto(
 
     return productoActualizado;
 }
+
+
+export function eliminarProducto(id: number): boolean {
+
+    // Obtener todos los productos
+    const lista = obtenerProductos();
+
+    // Comprobar si existe
+    const existe = lista.some(
+        (producto) => producto.id === id
+    );
+
+    if (!existe) {
+        return false;
+    }
+
+    // Quitar el producto seleccionado
+    const nuevaLista = lista.filter(
+        (producto) => producto.id !== id
+    );
+
+    // Guardar la lista actualizada
+    guardarProductos(nuevaLista);
+
+    return true;
+}

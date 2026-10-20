@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
     producto: Producto;
+    onEliminar: (id: number) => void;
 }
 
-function FilaProductoAdmin({ producto }: Props) {
+function FilaProductoAdmin({ producto, onEliminar }: Props) {
     const navigate = useNavigate();
     return (
         <tr>
@@ -59,7 +60,11 @@ function FilaProductoAdmin({ producto }: Props) {
                         }
                     />
 
-                    <BotonAccionProducto accion="Eliminar" />
+                    <BotonAccionProducto
+                        accion="Eliminar"
+                        deshabilitado={false}
+                        onClick={() => onEliminar(producto.id)}
+                    />
                 </div>
             </td>
 
