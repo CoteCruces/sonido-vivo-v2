@@ -66,3 +66,37 @@ export function crearProducto(
 
     return nuevoProducto;
 }
+
+
+export function actualizarProducto(
+    id: number,
+    datos: Omit<Producto, "id">
+): Producto | null {
+
+    // Obtener todos los productos
+    const lista = obtenerProductos();
+
+    // Buscar el producto por ID
+    const indice = lista.findIndex(
+        (producto) => producto.id === id
+    );
+
+    // Si no existe, retornar null
+    if (indice === -1) {
+        return null;
+    }
+
+    // Actualizar el producto manteniendo su ID
+    const productoActualizado: Producto = {
+        ...datos,
+        id
+    };
+
+    // Reemplazar el producto anterior
+    lista[indice] = productoActualizado;
+
+    // Guardar los cambios en localStorage
+    guardarProductos(lista);
+
+    return productoActualizado;
+}

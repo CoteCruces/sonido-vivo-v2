@@ -13,6 +13,7 @@ import Footer from "./componentes/organismos/Footer";
 import NuevoProducto from "./componentes/paginas/NuevoProducto";
 import PanelAdmin from "./componentes/paginas/PanelAdmin";
 import AdministrarProductos from "./componentes/paginas/AdministrarProductos";
+import EditarProducto from "./componentes/paginas/EditarProducto";
 
 
 
@@ -77,6 +78,11 @@ function App() {
                         path="/admin/productos/nuevo"
                         element={<NuevoProducto />}
                     />
+
+                    <Route
+                      path="/admin/productos/editar/:id"
+                      element={<EditarProducto />}
+                  />
                 </Routes>
 
             </div>

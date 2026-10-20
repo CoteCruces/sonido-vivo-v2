@@ -3,7 +3,8 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import CampoFormulario from "../moleculas/CampoFormulario";
-import { crearProducto } from "../servicios/productosService";
+import { crearProducto, actualizarProducto } from "../servicios/productosService";
+import type { Producto } from "../utilidades/tipos";
 
 const categorias = [
     "Guitarras Acústicas",
@@ -30,18 +31,24 @@ type DatosProducto = {
 
 type Errores = Partial<Record<keyof DatosProducto, string>>;
 
-function FormularioNuevoProducto() {
+interface Props {
+    producto?: Producto;
+}
+
+function FormularioNuevoProducto({ producto }: Props) {
     const navigate = useNavigate();
 
+    
     const [datos, setDatos] = useState<DatosProducto>({
-        nombre: "",
-        categoria: "",
-        descripcion: "",
-        descripcionLarga: "",
-        precio: "",
-        stock: "",
-        imagen: ""
+        nombre: producto?.nombre ?? "",
+        categoria: producto?.categoria ?? "",
+        descripcion: producto?.descripcion ?? "",
+        descripcionLarga: producto?.descripcionLarga ?? "",
+        precio: producto ? String(producto.precio) : "",
+        stock: producto ? String(producto.stock) : "",
+        imagen: producto?.imagen ?? ""
     });
+
 
     const [errores, setErrores] = useState<Errores>({});
     const [errorGeneral, setErrorGeneral] = useState("");
@@ -95,22 +102,41 @@ function FormularioNuevoProducto() {
             return;
         }
 
-        try {
-            crearProducto({
-                nombre: datos.nombre.trim(),
-                categoria: datos.categoria,
-                descripcion: datos.descripcion.trim(),
-                descripcionLarga: datos.descripcionLarga.trim(),
-                precio: Number(datos.precio),
-                stock: Number(datos.stock),
-                imagen: datos.imagen.trim()
-            });
+        
+    try {
+        const datosProducto = {
+            nombre: datos.nombre.trim(),
+            categoria: datos.categoria,
+            descripcion: datos.descripcion.trim(),
+            descripcionLarga: datos.descripcionLarga.trim(),
+            precio: Number(datos.precio),
+            stock: Number(datos.stock),
+            imagen: datos.imagen.trim()
+        };
 
-            navigate("/admin/productos");
+        if (producto) {
+            // EDITAR PRODUCTO EXISTENTE
+            const actualizado = actualizarProducto(
+                producto.id,
+                datosProducto
+            );
+
+            if (!actualizado) {
+                setErrorGeneral("No se encontró el producto.");
+                return;
+            }
+
+        } else {
+            // CREAR PRODUCTO NUEVO
+            crearProducto(datosProducto);
+        }
+
+        navigate("/admin/productos");
 
         } catch {
-            setErrorGeneral("No se pudo guardar el producto.");
+            setErrorGeneral("No se pudieron guardar los cambios.");
         }
+
     };
 
     return (
@@ -222,11 +248,8 @@ function FormularioNuevoProducto() {
                 )}
 
                 <div className="col-12 d-flex gap-3 mt-4">
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                    >
-                        Guardar Producto
+                    <button type="submit" className="btn btn-primary">
+                        {producto ? "Guardar Cambios" : "Guardar Producto"}
                     </button>
 
                     <button

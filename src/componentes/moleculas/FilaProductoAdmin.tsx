@@ -1,12 +1,14 @@
 
 import type { Producto } from "../utilidades/tipos";
 import BotonAccionProducto from "../atomos/BotonAccionProducto";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     producto: Producto;
 }
 
 function FilaProductoAdmin({ producto }: Props) {
+    const navigate = useNavigate();
     return (
         <tr>
 
@@ -49,7 +51,13 @@ function FilaProductoAdmin({ producto }: Props) {
             {/* Acciones */}
             <td>
                 <div className="d-flex gap-2">
-                    <BotonAccionProducto accion="Editar" />
+                    <BotonAccionProducto
+                        accion="Editar"
+                        deshabilitado={false}
+                        onClick={() =>
+                            navigate(`/admin/productos/editar/${producto.id}`)
+                        }
+                    />
 
                     <BotonAccionProducto accion="Eliminar" />
                 </div>
