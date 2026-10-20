@@ -35,7 +35,7 @@ function BuscadorNavbar() {
                 value={texto}
                 onChange={(e) => setTexto(e.target.value)}
                 style={{
-                    width: "350px",
+                    width: "300px",
                     maxWidth: "100%",
                     minWidth: 0
                 }}

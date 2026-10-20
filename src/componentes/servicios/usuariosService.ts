@@ -336,3 +336,64 @@ export function crearUsuarioAdmin(
     // Devolver el usuario sin su contraseña
     return datosPublicos(nuevaCuenta);
 }
+
+
+const CLAVE_DEMO_INICIALIZADA = "sonidoVivoDemoInicializadaV1";
+
+// Crear las cuentas de prueba una sola vez
+export function inicializarUsuariosDemo(): void {
+
+    // Evitar volver a crear las cuentas
+    if (
+        localStorage.getItem(CLAVE_DEMO_INICIALIZADA) === "1"
+    ) {
+        return;
+    }
+
+    // Conservar los usuarios que ya están registrados
+    const cuentas = leerCuentas();
+
+    const cuentasDemo: CuentaGuardada[] = [
+        {
+            run: "18.765.432-7",
+            nombre: "Usuario",
+            apellidos: "Demo",
+            correo: "cliente@sonidovivo.test",
+            clave: "Cliente123",
+            rol: "Cliente"
+        },
+        {
+            run: "17.654.321-3",
+            nombre: "Administrador",
+            apellidos: "Demo",
+            correo: "admin@sonidovivo.test",
+            clave: "Admin123",
+            rol: "Administrador"
+        }
+    ];
+
+    // Agregar cada cuenta solo si no existe
+    for (const demo of cuentasDemo) {
+
+        const existe = cuentas.some(
+            (cuenta) =>
+                normalizarCorreo(cuenta.correo) ===
+                    normalizarCorreo(demo.correo) ||
+                normalizarRUN(cuenta.run) ===
+                    normalizarRUN(demo.run)
+        );
+
+        if (!existe) {
+            cuentas.push(demo);
+        }
+    }
+
+    // Guardar los usuarios
+    guardarCuentas(cuentas);
+
+    // Marcar que la inicialización ya se realizó
+    localStorage.setItem(
+        CLAVE_DEMO_INICIALIZADA,
+        "1"
+    );
+}

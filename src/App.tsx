@@ -17,6 +17,7 @@ import MiCuenta from "./componentes/paginas/MiCuenta";
 import AdministrarUsuarios from "./componentes/paginas/AdministrarUsuarios";
 import EditarUsuario from "./componentes/paginas/EditarUsuario";
 import NuevoUsuario from "./componentes/paginas/NuevoUsuario";
+import RutaAdmin from "./componentes/utilidades/RutaAdmin";
 
 
 function App() {
@@ -64,10 +65,20 @@ function App() {
                       element={<Registro />} 
                     />
 
+                    <Route 
+                      path="/mi-cuenta" 
+                      element={<MiCuenta />} 
+                    />
+
+                    
+                {/* Rutas exclusivas del administrador */}
+                <Route element={<RutaAdmin />}>
+
                     <Route
                         path="/admin"
                         element={<PanelAdmin />}
                     />
+
                     <Route
                         path="/admin/productos"
                         element={<AdministrarProductos />}
@@ -79,29 +90,27 @@ function App() {
                     />
 
                     <Route
-                      path="/admin/productos/editar/:id"
-                      element={<EditarProducto />}
-                    />
-
-                    <Route 
-                      path="/mi-cuenta" 
-                      element={<MiCuenta />} 
+                        path="/admin/productos/editar/:id"
+                        element={<EditarProducto />}
                     />
 
                     <Route
-                      path="/admin/usuarios"
-                      element={<AdministrarUsuarios />}
+                        path="/admin/usuarios"
+                        element={<AdministrarUsuarios />}
                     />
 
                     <Route
-                      path="/admin/usuarios/editar/:run"
-                      element={<EditarUsuario />}
+                        path="/admin/usuarios/nuevo"
+                        element={<NuevoUsuario />}
                     />
 
                     <Route
-                      path="/admin/usuarios/nuevo"
-                      element={<NuevoUsuario />}
+                        path="/admin/usuarios/editar/:run"
+                        element={<EditarUsuario />}
                     />
+
+                </Route>
+
 
                 </Routes>
 
