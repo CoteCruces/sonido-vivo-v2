@@ -14,6 +14,7 @@ import PanelAdmin from "./componentes/paginas/PanelAdmin";
 import AdministrarProductos from "./componentes/paginas/AdministrarProductos";
 import EditarProducto from "./componentes/paginas/EditarProducto";
 import MiCuenta from "./componentes/paginas/MiCuenta";
+import AdministrarUsuarios from "./componentes/paginas/AdministrarUsuarios";
 
 
 function App() {
@@ -83,6 +84,11 @@ function App() {
                     <Route 
                       path="/mi-cuenta" 
                       element={<MiCuenta />} 
+                    />
+
+                    <Route
+                      path="/admin/usuarios"
+                      element={<AdministrarUsuarios />}
                     />
 
                 </Routes>

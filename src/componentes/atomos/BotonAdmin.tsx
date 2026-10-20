@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 interface Props {
     texto: string;
-    color: "primary" | "success";
+    color: "primary" | "success" | "warning" | "danger";
     destino?: string;
 }
 

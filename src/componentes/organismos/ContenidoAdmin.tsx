@@ -2,6 +2,7 @@ import "../../Admin.css";
 import CardEstadistica from "../moleculas/CardEstadistica";
 import CardGestion from "../moleculas/CardGestion";
 import { productos } from "../datos/productos";
+import { obtenerUsuarios } from "../servicios/usuariosService";
 
 function ContenidoAdmin() {
     return (
@@ -38,7 +39,7 @@ function ContenidoAdmin() {
                 <div className="col-12 col-md-4">
                     <CardEstadistica
                         titulo="Usuarios"
-                        cantidad="0 Registrados"
+                        cantidad={`${obtenerUsuarios().length} Registrados`}
                         icono="people"
                         color="success"
                     />
@@ -74,6 +75,7 @@ function ContenidoAdmin() {
                         descripcion="Administra los accesos de clientes, crea cuentas de administradores y modifica roles del sistema."
                         icono="person-gear"
                         color="success"
+                        destino="/admin/usuarios"
                     />
                 </div>
 
