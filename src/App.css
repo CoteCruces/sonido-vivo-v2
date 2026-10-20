@@ -260,3 +260,19 @@
 }
 
 
+/* FOOTER */
+
+.footer-original {
+    background-color: #2b3035;
+    color: white;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.footer-original small {
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+
+

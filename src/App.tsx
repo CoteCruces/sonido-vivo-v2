@@ -9,12 +9,15 @@ import DetalleProducto from "./componentes/paginas/DetalleProducto";
 import Login from "./componentes/paginas/Login";
 import Registro from "./componentes/paginas/Registro";
 import DetalleNoticia from "./componentes/paginas/DetalleNoticia";
+import Footer from "./componentes/organismos/Footer";
 
 function App(){
   return(
     <>
       <Navbar />
-      <Routes>
+
+      <main className="flex-grow-1 pb-5"> 
+        <Routes>
         <Route
           path = "/"
           element = {<Inicio />} 
@@ -52,7 +55,9 @@ function App(){
           element={<Registro />} 
         />
 
-      </Routes>
+        </Routes>
+      </main>
+      <Footer />
     </>
   )
 }
