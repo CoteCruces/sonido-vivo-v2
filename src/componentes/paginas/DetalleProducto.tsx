@@ -1,12 +1,12 @@
 
 import { Link, useParams } from "react-router-dom";
-import { productos } from "../datos/productos";
+import { obtenerProductos } from "../servicios/productosService";
 
 function DetalleProducto() {
     const { id } = useParams();
 
-    const producto = productos.find(
-        (p) => p.id === Number(id)
+    const producto = obtenerProductos().find(
+    (p) => p.id === Number(id)
     );
 
     if (!producto) {

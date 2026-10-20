@@ -1,0 +1,26 @@
+
+/* PANEL DE ADMINISTRACIÓN */
+
+.panel-admin {
+    width: 100%;
+    text-align: left;
+}
+
+.panel-admin .card {
+    width: 100%;
+    max-width: none;
+    color: #212529;
+}
+
+.panel-admin .card h2 {
+    font-size: 28px;
+    color: #212529;
+}
+
+.footer-admin {
+    background-color: #2b3035;
+    color: white;
+    padding: 20px 0;
+    width: 100%;
+    text-align: center;
+}

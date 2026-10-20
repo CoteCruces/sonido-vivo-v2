@@ -1,0 +1,84 @@
+import "../../Admin.css";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+function NavbarAdmin() {
+    const [abierto, setAbierto] = useState(false);
+
+    return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-warning">
+            <div className="container">
+
+                <Link
+                    className="navbar-brand fw-bold d-flex align-items-center gap-2"
+                    to="/admin"
+                >
+                    <i className="bi bi-shield-lock-fill" />
+                    Sonido Vivo
+
+                    <span className="badge bg-danger ms-2">
+                        Admin
+                    </span>
+                </Link>
+
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    onClick={() => setAbierto(!abierto)}
+                    aria-expanded={abierto}
+                    aria-controls="navAdmin"
+                    aria-label="Abrir menú"
+                >
+                    <span className="navbar-toggler-icon" />
+                </button>
+
+                <div
+                    id="navAdmin"
+                    className={`collapse navbar-collapse ${
+                        abierto ? "show" : ""
+                    }`}
+                >
+                    <div className="navbar-nav me-auto">
+
+                        <Link
+                            className="nav-link active fw-bold"
+                            to="/admin"
+                        >
+                            Inicio Panel
+                        </Link>
+
+                        <span className="nav-link disabled">
+                            Mantenedor Productos
+                        </span>
+
+                        <span className="nav-link disabled">
+                            Mantenedor Usuarios
+                        </span>
+
+                    </div>
+
+                    <div className="d-flex flex-wrap gap-3">
+
+                        <Link
+                            to="/"
+                            className="btn btn-outline-light btn-sm"
+                        >
+                            Ir al Sitio Público
+                        </Link>
+
+                        <Link
+                            to="/login"
+                            className="btn btn-danger btn-sm"
+                        >
+                            Salir
+                        </Link>
+
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    );
+}
+
+export default NavbarAdmin;
