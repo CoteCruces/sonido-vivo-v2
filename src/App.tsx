@@ -8,7 +8,6 @@ import Contactanos from './componentes/paginas/Contactanos.tsx';
 import DetalleProducto from "./componentes/paginas/DetalleProducto";
 import Login from "./componentes/paginas/Login";
 import Registro from "./componentes/paginas/Registro";
-import DetalleNoticia from "./componentes/paginas/DetalleNoticia";
 import Footer from "./componentes/organismos/Footer";
 import NuevoProducto from "./componentes/paginas/NuevoProducto";
 import PanelAdmin from "./componentes/paginas/PanelAdmin";
@@ -44,10 +43,7 @@ function App() {
                       path="/noticias" 
                       element={<Noticias />} 
                     />
-                    <Route
-                      path="/noticias/:id"
-                      element={<DetalleNoticia />}
-                    />
+                    
                     <Route
                       path = "/contactanos"
                       element = {<Contactanos />} 

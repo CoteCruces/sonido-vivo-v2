@@ -1,19 +1,8 @@
-
-import { Link } from "react-router-dom";
-
-interface Props {
-    id: number;
+function BotonLeerMas(){
+    return(
+        <button className = "btn btn-primary">
+            Leer Más
+        </button>
+    )
 }
-
-function BotonLeerMas({ id }: Props) {
-    return (
-        <Link
-            to={`/noticias/${id}`}
-            className="btn btn-primary"
-        >
-            Leer más
-        </Link>
-    );
-}
-
 export default BotonLeerMas;

@@ -5,18 +5,12 @@ import CampoFormulario from "../moleculas/CampoFormulario";
 
 function FormularioContacto() {
 
+    // Estados para guardar los datos
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
     const [mensaje, setMensaje] = useState("");
 
-    const [errores, setErrores] = useState({
-        nombre: "",
-        correo: "",
-        mensaje: ""
-    });
-
-    const [exito, setExito] = useState("");
-
+    // Validaciones
     const manejarEnvio = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -24,56 +18,57 @@ function FormularioContacto() {
         const correoLimpio = correo.trim();
         const mensajeLimpio = mensaje.trim();
 
-        const nuevosErrores = {
-            nombre: "",
-            correo: "",
-            mensaje: ""
-        };
-
-        // Validar nombre
+        // 1. Validar nombre completo
         if (nombreLimpio === "") {
-            nuevosErrores.nombre =
-                "Debe ingresar su nombre y apellido.";
-        } else if (nombreLimpio.length < 6) {
-            nuevosErrores.nombre =
-                "Debe tener al menos 6 caracteres.";
-        } else if (nombreLimpio.split(/\s+/).length < 2) {
-            nuevosErrores.nombre =
-                "Debe ingresar nombre y apellido.";
-        }
-
-        // Validar correo
-        if (correoLimpio === "") {
-            nuevosErrores.correo =
-                "Debe ingresar su correo.";
-        } else if (
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoLimpio)
-        ) {
-            nuevosErrores.correo =
-                "Debe ingresar un correo válido.";
-        }
-
-        // Validar mensaje
-        if (mensajeLimpio === "") {
-            nuevosErrores.mensaje =
-                "Debe ingresar un mensaje.";
-        } else if (mensajeLimpio.length < 30) {
-            nuevosErrores.mensaje =
-                "El mensaje debe tener al menos 30 caracteres.";
-        } else if (mensajeLimpio.length > 500) {
-            nuevosErrores.mensaje =
-                "El mensaje no puede superar los 500 caracteres.";
-        }
-
-        setErrores(nuevosErrores);
-        setExito("");
-
-        if (Object.values(nuevosErrores).some(error => error !== "")) {
+            alert("Debe ingresar su nombre y apellido.");
             return;
         }
 
-        setExito("Formulario validado correctamente.");
+        if (nombreLimpio.length < 6) {
+            alert("El nombre completo debe tener al menos 6 caracteres.");
+            return;
+        }
 
+        const palabrasNombre = nombreLimpio.split(/\s+/);
+
+        if (palabrasNombre.length < 2) {
+            alert("Por favor ingrese su nombre y apellido.");
+            return;
+        }
+
+        // 2. Validar correo
+        if (correoLimpio === "") {
+            alert("Debe ingresar su correo.");
+            return;
+        }
+
+        const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!regexCorreo.test(correoLimpio)) {
+            alert("Debe ingresar un correo válido.");
+            return;
+        }
+
+        // 3. Validar mensaje
+        if (mensajeLimpio === "") {
+            alert("Debe ingresar un mensaje.");
+            return;
+        }
+
+        if (mensajeLimpio.length < 30) {
+            alert("El mensaje debe tener al menos 30 caracteres.");
+            return;
+        }
+
+        if (mensajeLimpio.length > 500) {
+            alert("El mensaje no puede superar los 500 caracteres.");
+            return;
+        }
+
+        // Todas las validaciones fueron correctas
+        alert("Formulario validado correctamente.");
+
+        // Limpiar campos
         setNombre("");
         setCorreo("");
         setMensaje("");
@@ -82,89 +77,47 @@ function FormularioContacto() {
     return (
         <form onSubmit={manejarEnvio} noValidate>
 
-            {/* Nombre */}
             <CampoFormulario
-                etiqueta="Nombre Completo *"
+                etiqueta="Nombre Completo"
                 tipo="text"
                 nombre="nombre"
                 valor={nombre}
-                alCambiar={(valor) => {
-                    setNombre(valor);
-                    setErrores(prev => ({ ...prev, nombre: "" }));
-                    setExito("");
-                }}
+                alCambiar={setNombre}
                 placeholder="Ej: Juan Flores"
-                error={errores.nombre}
             />
 
-            {/* Correo */}
             <CampoFormulario
-                etiqueta="Correo Electrónico *"
+                etiqueta="Correo Electrónico"
                 tipo="email"
                 nombre="correo"
                 valor={correo}
-                alCambiar={(valor) => {
-                    setCorreo(valor);
-                    setErrores(prev => ({ ...prev, correo: "" }));
-                    setExito("");
-                }}
+                alCambiar={setCorreo}
                 placeholder="ejemplo@correo.com"
-                error={errores.correo}
             />
 
-            {/* Mensaje */}
-            <div className="mb-4">
-
+            <div className="mb-3">
                 <label
                     htmlFor="mensaje"
                     className="form-label fw-semibold"
                 >
-                    Mensaje *
+                    Mensaje
                 </label>
 
                 <textarea
                     id="mensaje"
-                    className={`form-control ${
-                        errores.mensaje ? "is-invalid" : ""
-                    }`}
+                    className="form-control"
                     rows={5}
                     value={mensaje}
-                    onChange={(e) => {
-                        setMensaje(e.target.value);
-                        setErrores(prev => ({
-                            ...prev,
-                            mensaje: ""
-                        }));
-                        setExito("");
-                    }}
+                    onChange={(e) => setMensaje(e.target.value)}
                     placeholder="Escribe tu mensaje aquí..."
                 />
-
-                {errores.mensaje && (
-                    <div className="invalid-feedback">
-                        {errores.mensaje}
-                    </div>
-                )}
-
-                <small className="text-muted">
-                    {mensaje.length}/500 caracteres
-                </small>
-
             </div>
 
-            {/* Mensaje de validación */}
-            {exito && (
-                <div className="alert alert-success" role="status">
-                    {exito}
-                </div>
-            )}
-
-            {/* Botón */}
             <button
                 type="submit"
-                className="btn btn-primary w-100 py-2 fw-bold"
+                className="btn btn-primary"
             >
-                Enviar Mensaje
+                Enviar mensaje
             </button>
 
         </form>
