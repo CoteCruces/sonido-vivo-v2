@@ -33,6 +33,7 @@ function FilaUsuarioAdmin({ usuario }: Props) {
                     <BotonAdmin
                         texto="Editar"
                         color="warning"
+                        destino={`/admin/usuarios/editar/${encodeURIComponent(usuario.run)}`}
                     />
 
                     <BotonAdmin

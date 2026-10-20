@@ -180,3 +180,53 @@ export function actualizarPerfil(
     // Devolver el usuario sin contraseña
     return datosPublicos(cuentas[indice]);
 }
+
+
+export type DatosEditarUsuario = Pick<
+    Usuario,
+    "nombre" | "apellidos" | "rol"
+>;
+
+export function editarUsuarioAdmin(
+    run: string,
+    datos: DatosEditarUsuario
+): Usuario | null {
+
+    const cuentas = leerCuentas();
+
+    // Buscar el usuario por RUN
+    const indice = cuentas.findIndex(
+        (cuenta) =>
+            normalizarRUN(cuenta.run) === normalizarRUN(run)
+    );
+
+    if (indice === -1) {
+        return null;
+    }
+
+    // Validar los datos
+    if (!datos.nombre.trim() || !datos.apellidos.trim()) {
+        throw new Error(
+            "El nombre y los apellidos son obligatorios."
+        );
+    }
+
+    if (
+        datos.rol !== "Cliente" &&
+        datos.rol !== "Administrador"
+    ) {
+        throw new Error("El rol seleccionado no es válido.");
+    }
+
+    // Actualizar sin modificar RUN, correo ni contraseña
+    cuentas[indice] = {
+        ...cuentas[indice],
+        nombre: datos.nombre.trim(),
+        apellidos: datos.apellidos.trim(),
+        rol: datos.rol
+    };
+
+    guardarCuentas(cuentas);
+
+    return datosPublicos(cuentas[indice]);
+}
