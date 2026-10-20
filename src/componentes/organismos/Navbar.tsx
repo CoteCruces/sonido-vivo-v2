@@ -43,6 +43,15 @@ function Navbar() {
                     
                 <BuscadorNavbar />
 
+                    <Link className="nav-link" to="/">
+                        <img
+                            src="/imgIcons/cart.png"
+                            alt="Carrito"
+                            width="30"
+                            height="30"
+                        />
+                    </Link>
+
                     <div className="d-flex align-items-center ms-auto gap-3">
 
                         <Link className="nav-link text-primary" to="/login">
