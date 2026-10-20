@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link } from "react-router-dom";
 import CampoFormulario from "../moleculas/CampoFormulario";
+import { registrarUsuario } from "../servicios/usuariosService";
 
 const regionesYComunas = [
     {
@@ -107,6 +108,8 @@ function FormularioRegistro() {
 
     const [mensaje, setMensaje] = useState("");
 
+    const [errorRegistro, setErrorRegistro] = useState("");
+
     // Actualizar campos y limpiar su error
     const actualizar = (
         campo: keyof DatosRegistro,
@@ -123,13 +126,15 @@ function FormularioRegistro() {
         }));
 
         setMensaje("");
+
+        setErrorRegistro("");
     };
 
     const comunas = regionesYComunas.find(
         (item) => item.region === datos.region
     )?.comunas || [];
 
-    // VALIDACIONES CON JAVASCRIPT
+    // VALIDACIONES
     const validarFormulario = (
         e: FormEvent<HTMLFormElement>
     ) => {
@@ -248,11 +253,37 @@ function FormularioRegistro() {
             return;
         }
 
-        // Formulario válido
-        setMensaje(
-            "Formulario validado correctamente. " +
-            "El registro aún no está conectado a un servidor."
-        );
+        
+        try {
+            // Registrar al usuario mediante el servicio
+            registrarUsuario({
+                run: datos.run,
+                nombre: datos.nombre,
+                apellidos: datos.apellidos,
+                correo: datos.correo,
+                fechaNacimiento: datos.fechaNacimiento,
+                direccion: datos.direccion,
+                region: datos.region,
+                comuna: datos.comuna,
+                clave: datos.clave
+            });
+
+            // Mostrar confirmación
+            setErrorRegistro("");
+            setMensaje(
+                "Cuenta creada correctamente. " +
+                "Ahora puedes iniciar sesión."
+            );
+
+        } catch (error) {
+            // Mostrar correo o RUN duplicado
+            setErrorRegistro(
+                error instanceof Error
+                    ? error.message
+                    : "No se pudo registrar el usuario."
+            );
+        }
+
     };
 
     return (
@@ -467,6 +498,20 @@ function FormularioRegistro() {
                         </div>
                     </div>
                 )}
+
+                
+                {/* Errores al registrar la cuenta */}
+                {errorRegistro && (
+                    <div className="col-12">
+                        <div
+                            className="alert alert-danger"
+                            role="alert"
+                        >
+                            {errorRegistro}
+                        </div>
+                    </div>
+                )}
+
 
                 {/* Botón de registro */}
                 <div className="col-12">

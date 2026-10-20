@@ -1,16 +1,23 @@
-
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { autenticarUsuario } from "../servicios/usuariosService";
+import { iniciarSesion } from "../servicios/sesionesService";
 
 function FormularioLogin() {
 
+    const navigate = useNavigate();
+
     const [correo, setCorreo] = useState("");
     const [clave, setClave] = useState("");
+
     const [errores, setErrores] = useState({
         correo: "",
         clave: ""
     });
+
+    const [errorLogin, setErrorLogin] = useState("");
 
     const validarFormulario = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -22,47 +29,92 @@ function FormularioLogin() {
 
         // Validación de correo
         if (correo.trim() === "") {
-            nuevosErrores.correo = "El correo es obligatorio.";
+            nuevosErrores.correo =
+                "El correo es obligatorio.";
         } else if (
             !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)
         ) {
-            nuevosErrores.correo = "Ingrese un correo válido.";
+            nuevosErrores.correo =
+                "Ingrese un correo válido.";
         }
 
         // Validación de contraseña
         if (clave.trim() === "") {
-            nuevosErrores.clave = "La contraseña es obligatoria.";
-        } else if (clave.length < 4 || clave.length > 10) {
+            nuevosErrores.clave =
+                "La contraseña es obligatoria.";
+        } else if (
+            clave.length < 4 ||
+            clave.length > 10
+        ) {
             nuevosErrores.clave =
                 "La contraseña debe tener entre 4 y 10 caracteres.";
         }
 
         setErrores(nuevosErrores);
+        setErrorLogin("");
 
-        // Verificar si existen errores
+        // Detener si hay errores de validación
         if (nuevosErrores.correo || nuevosErrores.clave) {
             return;
         }
 
-        alert("Formulario validado correctamente");
+        // Comprobar correo y contraseña
+        const usuario = autenticarUsuario(correo, clave);
+
+        if (!usuario) {
+            setErrorLogin(
+                "Correo electrónico o contraseña incorrectos."
+            );
+            return;
+        }
+
+        try {
+            // Guardar la sesión
+            iniciarSesion(usuario);
+
+            // Redirigir según el rol
+            if (usuario.rol === "Administrador") {
+                navigate("/admin", { replace: true });
+            } else {
+                navigate("/", { replace: true });
+            }
+
+        } catch {
+            setErrorLogin(
+                "No se pudo iniciar la sesión."
+            );
+        }
     };
 
     return (
         <form onSubmit={validarFormulario} noValidate>
 
+            {/* Correo electrónico */}
             <div className="mb-3">
-                <label className="form-label">
+                <label
+                    htmlFor="correoLogin"
+                    className="form-label"
+                >
                     Correo Electrónico
                 </label>
 
                 <input
+                    id="correoLogin"
                     type="email"
                     className={`form-control ${
                         errores.correo ? "is-invalid" : ""
                     }`}
                     value={correo}
-                    onChange={(e) => setCorreo(e.target.value)}
+                    onChange={(e) => {
+                        setCorreo(e.target.value);
+                        setErrores(prev => ({
+                            ...prev,
+                            correo: ""
+                        }));
+                        setErrorLogin("");
+                    }}
                     placeholder="correo@ejemplo.com"
+                    autoComplete="email"
                 />
 
                 {errores.correo && (
@@ -72,19 +124,32 @@ function FormularioLogin() {
                 )}
             </div>
 
+            {/* Contraseña */}
             <div className="mb-3">
-                <label className="form-label">
+                <label
+                    htmlFor="claveLogin"
+                    className="form-label"
+                >
                     Contraseña
                 </label>
 
                 <input
+                    id="claveLogin"
                     type="password"
                     className={`form-control ${
                         errores.clave ? "is-invalid" : ""
                     }`}
                     value={clave}
-                    onChange={(e) => setClave(e.target.value)}
+                    onChange={(e) => {
+                        setClave(e.target.value);
+                        setErrores(prev => ({
+                            ...prev,
+                            clave: ""
+                        }));
+                        setErrorLogin("");
+                    }}
                     placeholder="Ingrese su contraseña"
+                    autoComplete="current-password"
                 />
 
                 {errores.clave && (
@@ -94,6 +159,17 @@ function FormularioLogin() {
                 )}
             </div>
 
+            {/* Error de autenticación */}
+            {errorLogin && (
+                <div
+                    className="alert alert-danger"
+                    role="alert"
+                >
+                    {errorLogin}
+                </div>
+            )}
+
+            {/* Botón de inicio de sesión */}
             <button
                 type="submit"
                 className="btn btn-primary w-100"
@@ -101,6 +177,7 @@ function FormularioLogin() {
                 Entrar
             </button>
 
+            {/* Enlace a Registro */}
             <div className="text-center mt-3">
                 ¿No tienes cuenta?{" "}
                 <Link to="/registro">

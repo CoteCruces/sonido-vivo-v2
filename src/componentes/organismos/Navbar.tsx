@@ -1,6 +1,6 @@
-
 import { Link } from "react-router-dom";
 import BuscadorNavbar from "../moleculas/BuscadorNavbar";
+import MenuSesionNavbar from "../moleculas/MenuSesionNavbar";
 
 function Navbar() {
     return (
@@ -53,17 +53,7 @@ function Navbar() {
                     </Link>
 
                     <div className="d-flex align-items-center ms-auto gap-3">
-
-                        <Link className="nav-link text-primary" to="/login">
-                            Iniciar Sesión
-                        </Link>
-
-                        <span className="text-primary">|</span>
-
-                        <Link className="nav-link text-primary" to="/registro">
-                            Crear Cuenta
-                        </Link>
-
+                        <MenuSesionNavbar />
                     </div>
 
                 </div>

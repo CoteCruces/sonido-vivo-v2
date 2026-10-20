@@ -1,8 +1,17 @@
 import "../../Admin.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { cerrarSesion } from "../servicios/sesionesService";
 
 function NavbarAdmin() {
+    const navigate = useNavigate();
+
+    const salir = () => {
+        cerrarSesion();
+        navigate("/login", { replace: true });
+    };
+
     const [abierto, setAbierto] = useState(false);
 
     return (
@@ -69,12 +78,13 @@ function NavbarAdmin() {
                             Ir al Sitio Público
                         </Link>
 
-                        <Link
-                            to="/login"
+                        <button
+                            type="button"
+                            onClick={salir}
                             className="btn btn-danger btn-sm"
                         >
                             Salir
-                        </Link>
+                        </button>
 
                     </div>
 

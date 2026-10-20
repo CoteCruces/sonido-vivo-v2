@@ -16,14 +16,19 @@ export type Noticia = {
   contenidoCompleto: string;
   imagen: string;
 };
+
 export type Usuario = {
-  run: string;
-  nombre: string;
-  apellidos: string;
-  correo: string;
-  rol: string;
-  direccion?: string;
+    run: string;
+    nombre: string;
+    apellidos: string;
+    correo: string;
+    rol: string;
+    direccion?: string;
+    fechaNacimiento?: string;
+    region?: string;
+    comuna?: string;
 };
+
 export type ItemCarrito = { id: number; cantidad: number };
 export type Pedido = {
   id: string;

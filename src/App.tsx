@@ -13,7 +13,7 @@ import NuevoProducto from "./componentes/paginas/NuevoProducto";
 import PanelAdmin from "./componentes/paginas/PanelAdmin";
 import AdministrarProductos from "./componentes/paginas/AdministrarProductos";
 import EditarProducto from "./componentes/paginas/EditarProducto";
-
+import MiCuenta from "./componentes/paginas/MiCuenta";
 
 
 function App() {
@@ -78,7 +78,13 @@ function App() {
                     <Route
                       path="/admin/productos/editar/:id"
                       element={<EditarProducto />}
-                  />
+                    />
+
+                    <Route 
+                      path="/mi-cuenta" 
+                      element={<MiCuenta />} 
+                    />
+
                 </Routes>
 
             </div>
