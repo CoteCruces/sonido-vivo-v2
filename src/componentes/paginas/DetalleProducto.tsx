@@ -39,7 +39,7 @@ function DetalleProducto() {
                             className="img-fluid"
                             style={{
                                 width: "100%",
-                                height: "500px",
+                                height: "400px",
                                 objectFit: "contain",
                                 padding: "15px"
                             }}
