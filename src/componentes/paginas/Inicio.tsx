@@ -8,4 +8,4 @@ function Inicio(){
         </div>
     )
 }
-export default Inicio;
+export default Inicio;CDATASection.apply
