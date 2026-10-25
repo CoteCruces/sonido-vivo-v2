@@ -1,10 +1,16 @@
 // @vitest-environment jsdom
 
-import { test, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { test, expect, afterEach } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import Boton from "../componentes/atomos/Boton";
+
+// Limpia los componentes HTML después de cada prueba. Esto asegura que no haya interferencias entre pruebas 
+// y que cada prueba comience con un estado limpio.
+afterEach(() => {
+    cleanup();
+});
 
 test("El botón permite ver el producto seleccionado", () => {
 
