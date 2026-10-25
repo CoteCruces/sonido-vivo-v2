@@ -22,3 +22,9 @@ npm run test
 
 También:
 npx vitest run
+
+Instalar herramienta para generar reportes:
+npm install -D @vitest/coverage-v8@5.0.5
+
+Generar un reporte:
+npx vitest run --coverage
