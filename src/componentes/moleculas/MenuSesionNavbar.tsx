@@ -1,17 +1,11 @@
-import { useMemo } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {obtenerSesion,cerrarSesion} from "../servicios/sesionesService";
+
+import { Link, useNavigate } from "react-router-dom";
+import { obtenerSesion, cerrarSesion } from "../servicios/sesionesService";
 
 function MenuSesionNavbar() {
 
     const navigate = useNavigate();
-    const ubicacion = useLocation();
-
-    // Actualizar la información cuando cambiamos de página
-    const sesion = useMemo(
-        () => obtenerSesion(),
-        [ubicacion.key]
-    );
+    const sesion = obtenerSesion();
 
     const salir = () => {
         cerrarSesion();
@@ -26,14 +20,9 @@ function MenuSesionNavbar() {
                         to="/mi-cuenta"
                         className="nav-link text-primary"
                     >
+                        <i className="bi bi-person-circle me-1"></i>
                         Mi Cuenta
                     </Link>
-                    {/* Usuario con sesión iniciada */}
-                    <span className="text-primary">
-                        {sesion.correo}
-                    </span>
-
-                    <span className="text-primary">|</span>
 
                     <button
                         type="button"
@@ -45,10 +34,9 @@ function MenuSesionNavbar() {
                 </>
             ) : (
                 <>
-                    {/* Usuario sin sesión */}
                     <Link
-                        className="nav-link text-primary"
                         to="/login"
+                        className="nav-link text-primary"
                     >
                         Iniciar Sesión
                     </Link>
@@ -56,8 +44,8 @@ function MenuSesionNavbar() {
                     <span className="text-primary">|</span>
 
                     <Link
-                        className="nav-link text-primary"
                         to="/registro"
+                        className="nav-link text-primary"
                     >
                         Crear Cuenta
                     </Link>

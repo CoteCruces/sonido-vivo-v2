@@ -1,5 +1,6 @@
 
 import type { Usuario } from "../utilidades/tipos";
+import { validarRUN } from "../utilidades/validarRUN";
 
 // Datos necesarios para registrar una cuenta
 export type DatosRegistroUsuario = Omit<Usuario, "rol"> & {
@@ -310,6 +311,11 @@ export function crearUsuarioAdmin(
         throw new Error(
             "Todos los campos obligatorios deben completarse."
         );
+    }
+
+    // Rechazar RUN con dígito verificador incorrecto
+    if (!validarRUN(datos.run)) {
+        throw new Error("Ingrese un RUN válido.");
     }
 
     // Validar rol

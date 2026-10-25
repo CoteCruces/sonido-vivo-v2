@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-function BuscadorNavbar() {
+function BuscadorNavbar({ alBuscar }: { alBuscar?: () => void }) {
     const [texto, setTexto] = useState("");
     const navigate = useNavigate();
 
@@ -11,6 +11,7 @@ function BuscadorNavbar() {
         e.preventDefault();
 
         const busqueda = texto.trim();
+        alBuscar?.();
 
         if (busqueda) {
             navigate(
@@ -23,22 +24,19 @@ function BuscadorNavbar() {
 
     return (
         <form
-            className="hstack gap-2"
+            className="d-flex align-items-center gap-2 w-100"
+            style={{ maxWidth: "350px" }}
             role="search"
             onSubmit={buscar}
         >
             <input
-                className="form-control"
+                className="form-control flex-grow-1"
                 type="search"
                 placeholder="Buscar..."
                 aria-label="Buscar"
                 value={texto}
                 onChange={(e) => setTexto(e.target.value)}
-                style={{
-                    width: "300px",
-                    maxWidth: "100%",
-                    minWidth: 0
-                }}
+                style={{ minWidth: 0 }}
             />
 
             <button

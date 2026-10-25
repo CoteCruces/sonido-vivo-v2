@@ -1,61 +1,66 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import BuscadorNavbar from "../moleculas/BuscadorNavbar";
 import MenuSesionNavbar from "../moleculas/MenuSesionNavbar";
 
 function Navbar() {
+    const [abierto, setAbierto] = useState(false);
+
     return (
         <nav
-            className="navbar bg-dark border-bottom border-body nav-original"
+            className="navbar navbar-expand-xxl bg-dark border-bottom border-body nav-original"
             data-bs-theme="dark"
         >
-            <div className="container-fluid d-flex align-items-center">
-
+            <div className="container-fluid">
                 <span className="navbar-brand text-white">
                     Sonido Vivo
                 </span>
 
-                <div className="d-flex align-items-center flex-grow-1 gap-3">
+                {/* Menú para pantallas pequeñas */}
+                <button
+                    type="button"
+                    className="navbar-toggler"
+                    aria-label="Abrir o cerrar menú"
+                    aria-controls="menuPublico"
+                    aria-expanded={abierto}
+                    onClick={() => setAbierto(!abierto)}
+                >
+                    <span className="navbar-toggler-icon" />
+                </button>
 
-                    <Link className="nav-link" to="/">
-                        <img
-                            src="/imgIcons/home.png"
-                            alt="Inicio"
-                            width="30"
-                            height="30"
-                        />
-                    </Link>
-
-                    <Link className="nav-link text-primary" to="/catalogo">
-                        Catálogo
-                    </Link>
-
-                    <Link className="nav-link text-primary" to="/nosotros">
-                        Nosotros
-                    </Link>
-
-                    <Link className="nav-link text-primary" to="/noticias">
-                        Noticias
-                    </Link>
-
-                    <Link className="nav-link text-primary" to="/contactanos">
-                        Contáctanos
-                    </Link>
-                    
-                <BuscadorNavbar />
-
-                    <Link className="nav-link" to="/">
-                        <img
-                            src="/imgIcons/cart.png"
-                            alt="Carrito"
-                            width="30"
-                            height="30"
-                        />
-                    </Link>
-
-                    <div className="d-flex align-items-center ms-auto gap-3">
-                        <MenuSesionNavbar />
+                <div
+                    id="menuPublico"
+                    className={`collapse navbar-collapse ${abierto ? "show" : ""}`}
+                    onClick={(evento) => {
+                        // Cerrar el menú al usar un enlace o botón
+                        if ((evento.target as HTMLElement).closest('a, button[type="button"]')) {
+                            setAbierto(false);
+                        }
+                    }}
+                >
+                    <div className="navbar-nav align-items-xxl-center gap-xxl-3 me-xxl-3">
+                        <Link className="nav-link" to="/">
+                            <img src="/imgIcons/home.png" alt="Inicio" width="30" height="30" />
+                        </Link>
+                        <Link className="nav-link text-primary" to="/catalogo">Catálogo</Link>
+                        <Link className="nav-link text-primary" to="/nosotros">Nosotros</Link>
+                        <Link className="nav-link text-primary" to="/noticias">Noticias</Link>
+                        <Link className="nav-link text-primary" to="/contactanos">Contáctanos</Link>
                     </div>
 
+                    <div
+                        className="my-3 my-xxl-0 me-xxl-3"
+                        style={{ width: "320px", maxWidth: "100%" }}
+                    >
+                        <BuscadorNavbar alBuscar={() => setAbierto(false)} />
+                    </div>
+
+                    <div className="d-flex flex-wrap align-items-center gap-3 ms-xxl-auto">
+                        <Link className="nav-link" to="/">
+                            <img src="/imgIcons/cart.png" alt="Carrito" width="30" height="30" />
+                        </Link>
+                        <MenuSesionNavbar />
+                    </div>
                 </div>
             </div>
         </nav>

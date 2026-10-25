@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import CampoFormulario from "../moleculas/CampoFormulario";
 import { crearUsuarioAdmin } from "../servicios/usuariosService";
+import { validarRUN } from "../utilidades/validarRUN";
 
 type Rol = "Cliente" | "Administrador";
 
@@ -64,6 +65,8 @@ function FormularioNuevoUsuario() {
 
         if (!datos.run.trim()) {
             nuevosErrores.run = "El RUN es obligatorio.";
+        } else if (!validarRUN(datos.run)) {
+            nuevosErrores.run = "Ingrese un RUN válido.";
         }
 
         if (!datos.nombre.trim()) {

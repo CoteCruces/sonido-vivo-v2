@@ -1,10 +1,14 @@
 import "../../Admin.css";
 import CardEstadistica from "../moleculas/CardEstadistica";
 import CardGestion from "../moleculas/CardGestion";
-import { productos } from "../datos/productos";
+import { obtenerProductos } from "../servicios/productosService";
 import { obtenerUsuarios } from "../servicios/usuariosService";
 
 function ContenidoAdmin() {
+    const productos = obtenerProductos();
+    const usuarios = obtenerUsuarios();
+    const sinStock = productos.filter(producto => producto.stock <= 0).length;
+
     return (
         <main className="container my-5 flex-grow-1">
 
@@ -30,7 +34,7 @@ function ContenidoAdmin() {
                 <div className="col-12 col-md-4">
                     <CardEstadistica
                         titulo="Productos"
-                        cantidad={`${productos.length} Activos`}
+                        cantidad={`${productos.length} Registrados`}
                         icono="box-seam"
                         color="primary"
                     />
@@ -39,7 +43,7 @@ function ContenidoAdmin() {
                 <div className="col-12 col-md-4">
                     <CardEstadistica
                         titulo="Usuarios"
-                        cantidad={`${obtenerUsuarios().length} Registrados`}
+                        cantidad={`${usuarios.length} Registrados`}
                         icono="people"
                         color="success"
                     />
@@ -47,9 +51,9 @@ function ContenidoAdmin() {
 
                 <div className="col-12 col-md-4">
                     <CardEstadistica
-                        titulo="Ventas Hoy"
-                        cantidad="8 Pedidos"
-                        icono="cart-check"
+                        titulo="Sin Stock"
+                        cantidad={`${sinStock} Productos`}
+                        icono="exclamation-triangle"
                         color="warning"
                     />
                 </div>
