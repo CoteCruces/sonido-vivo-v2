@@ -1,3 +1,5 @@
+**Instalación y uso**
+
 Instalar Node y npm si no está instalado:
 https://nodejs.org/download/release/v22.13.1/
 
@@ -28,3 +30,12 @@ npm install -D @vitest/coverage-v8@5.0.5
 
 Generar un reporte:
 npx vitest run --coverage
+
+
+
+**Usuarios de ejemplo:**
+
+admin@sonidovivo.test | Admin123
+
+cliente@sonidovivo.test | Cliente123 
+
