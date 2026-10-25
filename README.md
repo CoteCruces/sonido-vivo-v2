@@ -16,3 +16,9 @@ npm install bootstrap-icons
 
 Instalar para pruebas unitarias:
 npm install -D vitest @testing-library/react jsdom
+
+Para hacer correr las pruebas:
+npm run test
+
+También:
+npx vitest run
