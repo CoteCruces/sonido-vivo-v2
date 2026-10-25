@@ -8,6 +8,7 @@ import {
     autenticarUsuario
 } from "../componentes/servicios/usuariosService";
 
+// Usuario de ejemplo que se utilizará en las pruebas
 const usuarioPrueba = {
     run: "12.345.678-5",
     nombre: "Juan",
