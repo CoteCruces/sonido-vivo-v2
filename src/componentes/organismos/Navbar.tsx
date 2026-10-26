@@ -1,10 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import BuscadorNavbar from "../moleculas/BuscadorNavbar";
 import MenuSesionNavbar from "../moleculas/MenuSesionNavbar";
+import { contarProductosCarrito } from "../servicios/carritoService";
 
 function Navbar() {
     const [abierto, setAbierto] = useState(false);
+
+    
+    const [cantidadCarrito, setCantidadCarrito] = useState(
+        contarProductosCarrito()
+    );
+
+    useEffect(() => {
+        const actualizarContador = () => {
+            setCantidadCarrito(contarProductosCarrito());
+        };
+
+        window.addEventListener(
+            "carritoActualizado",
+            actualizarContador
+        );
+
+        return () => {
+            window.removeEventListener(
+                "carritoActualizado",
+                actualizarContador
+            );
+        };
+    }, []);
+
 
     return (
         <nav
@@ -56,8 +81,21 @@ function Navbar() {
                     </div>
 
                     <div className="d-flex flex-wrap align-items-center gap-3 ms-xxl-auto">
-                        <Link className="nav-link" to="/">
-                            <img src="/imgIcons/cart.png" alt="Carrito" width="30" height="30" />
+                        <Link
+                            className="nav-link position-relative d-inline-block"
+                            to="/carrito"
+                        >
+                            <img
+                                src="/imgIcons/cart.png"
+                                alt="Carrito"
+                                width="30"
+                                height="30"
+                            />
+                            {cantidadCarrito > 0 && (
+                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {cantidadCarrito}
+                                </span>
+                            )}
                         </Link>
                         <MenuSesionNavbar />
                     </div>

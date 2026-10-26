@@ -18,6 +18,7 @@ import AdministrarUsuarios from "./componentes/paginas/AdministrarUsuarios";
 import EditarUsuario from "./componentes/paginas/EditarUsuario";
 import NuevoUsuario from "./componentes/paginas/NuevoUsuario";
 import RutaAdmin from "./componentes/utilidades/RutaAdmin";
+import Carrito from "./componentes/paginas/Carrito";
 
 
 function App() {
@@ -68,6 +69,11 @@ function App() {
                     <Route 
                       path="/mi-cuenta" 
                       element={<MiCuenta />} 
+                    />
+
+                    <Route
+                      path="/carrito"
+                      element={<Carrito />}
                     />
 
                     

@@ -1,9 +1,13 @@
 
 import { Link, useParams } from "react-router-dom";
 import { obtenerProductos } from "../servicios/productosService";
+import { useState } from "react";
+import BotonAgregarCarrito from "../atomos/BotonAgregarCarrito";
+import { agregarAlCarrito } from "../servicios/carritoService";
 
 function DetalleProducto() {
     const { id } = useParams();
+    const [mensaje, setMensaje] = useState("");
 
     const producto = obtenerProductos().find(
     (p) => p.id === Number(id)
@@ -19,6 +23,16 @@ function DetalleProducto() {
             </div>
         );
     }
+
+        const agregar = () => {
+        const agregado = agregarAlCarrito(producto.id);
+
+        if (agregado) {
+            setMensaje("Producto agregado al carrito.");
+        } else {
+            setMensaje("No se puede agregar más unidades de este producto.");
+        }
+    };
 
     return (
         <div className="container my-5">
@@ -82,6 +96,21 @@ function DetalleProducto() {
                             <strong>Stock disponible:</strong>{" "}
                             {producto.stock}
                         </p>
+
+                        
+                        <div className="mt-3">
+                            <BotonAgregarCarrito
+                                alAgregar={agregar}
+                                sinStock={producto.stock <= 0}
+                            />
+                        </div>
+
+                        {mensaje && (
+                            <div className="alert alert-info mt-3" role="status">
+                                {mensaje}
+                            </div>
+                        )}
+
 
                         <Link
                             to="/catalogo"
