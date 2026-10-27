@@ -25,7 +25,7 @@ function CardNoticias(){
                             del lanzamiento de su EP "1.125" en mayo pasado.
                         </p>
                         <div className="mt-4">
-                                <BotonLeerMas />
+                                <BotonLeerMas id={1} />
                         </div>
                         
 
@@ -48,7 +48,7 @@ function CardNoticias(){
                             a miles y miles de personas en la capital colombiana.
                         </p>
                         <div className="mt-4">
-                                <BotonLeerMas />
+                                <BotonLeerMas id={2} />
                         </div>
                 </div>
                 </div>

@@ -20,6 +20,7 @@ import NuevoUsuario from "./componentes/paginas/NuevoUsuario";
 import RutaAdmin from "./componentes/utilidades/RutaAdmin";
 import Carrito from "./componentes/paginas/Carrito";
 import Pago from "./componentes/paginas/Pago";
+import DetalleNoticia from "./componentes/paginas/DetalleNoticia";
 
 
 function App() {
@@ -48,6 +49,11 @@ function App() {
                     <Route 
                       path="/noticias" 
                       element={<Noticias />} 
+                    />
+
+                    <Route
+                      path="/noticias/:id"
+                      element={<DetalleNoticia />}
                     />
                     
                     <Route
