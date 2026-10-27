@@ -136,13 +136,20 @@ function Carrito() {
                         <h2 className="h4">
                             Total: ${total.toLocaleString("es-CL")}
                         </h2>
-
                         <div className="d-flex gap-3 flex-wrap mt-3">
+
                             <Link
                                 to="/catalogo"
                                 className="btn btn-primary"
                             >
                                 Seguir comprando
+                            </Link>
+
+                            <Link
+                                to="/pago"
+                                className="btn btn-success"
+                            >
+                                Ir a pagar
                             </Link>
 
                             <button
@@ -152,7 +159,9 @@ function Carrito() {
                             >
                                 Vaciar carrito
                             </button>
+
                         </div>
+
                     </div>
                 </>
             )}

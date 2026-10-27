@@ -19,6 +19,7 @@ import EditarUsuario from "./componentes/paginas/EditarUsuario";
 import NuevoUsuario from "./componentes/paginas/NuevoUsuario";
 import RutaAdmin from "./componentes/utilidades/RutaAdmin";
 import Carrito from "./componentes/paginas/Carrito";
+import Pago from "./componentes/paginas/Pago";
 
 
 function App() {
@@ -76,6 +77,10 @@ function App() {
                       element={<Carrito />}
                     />
 
+                    <Route
+                      path="/pago"
+                      element={<Pago />}
+                    />
                     
                 {/* Rutas exclusivas del administrador */}
                 <Route element={<RutaAdmin />}>
