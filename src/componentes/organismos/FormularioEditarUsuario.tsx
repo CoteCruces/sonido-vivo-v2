@@ -25,21 +25,44 @@ function FormularioEditarUsuario({ usuario }: Props) {
 
     const [errorGeneral, setErrorGeneral] = useState("");
 
+    
     const guardar = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const nuevosErrores = {
-            nombre: nombre.trim()
-                ? ""
-                : "El nombre es obligatorio.",
+        // Valida que nombres y apellidos no lleven números ni símbolos incorrectos.
+        const soloLetras = /^[\p{L}]+(?:[ '-][\p{L}]+)*$/u;
 
-            apellidos: apellidos.trim()
-                ? ""
-                : "Los apellidos son obligatorios."
+        const nuevosErrores = {
+            nombre: "",
+            apellidos: ""
         };
+
+        // Valida que el nombre no esté vacío, no lleve números y tenga máximo 50 caracteres.
+        if (!nombre.trim()) {
+            nuevosErrores.nombre = "El nombre es obligatorio.";
+        } else if (!soloLetras.test(nombre.trim())) {
+            nuevosErrores.nombre = "El nombre solo puede contener letras.";
+        } else if (nombre.trim().length > 50) {
+            nuevosErrores.nombre = "El nombre no puede superar 50 caracteres.";
+        }
+
+        // Valida que los apellidos no estén vacíos, no lleven números y tengan máximo 100 caracteres.
+        if (!apellidos.trim()) {
+            nuevosErrores.apellidos = "Los apellidos son obligatorios.";
+        } else if (!soloLetras.test(apellidos.trim())) {
+            nuevosErrores.apellidos = "Los apellidos solo pueden contener letras.";
+        } else if (apellidos.trim().length > 100) {
+            nuevosErrores.apellidos = "Los apellidos no pueden superar 100 caracteres.";
+        }
 
         setErrores(nuevosErrores);
         setErrorGeneral("");
+
+        // Valida que el rol seleccionado sea Cliente o Administrador.
+        if (rol !== "Cliente" && rol !== "Administrador") {
+            setErrorGeneral("Seleccione un rol válido.");
+            return;
+        }
 
         if (nuevosErrores.nombre || nuevosErrores.apellidos) {
             return;
@@ -70,6 +93,7 @@ function FormularioEditarUsuario({ usuario }: Props) {
             );
         }
     };
+
 
     return (
         <form onSubmit={guardar} noValidate>

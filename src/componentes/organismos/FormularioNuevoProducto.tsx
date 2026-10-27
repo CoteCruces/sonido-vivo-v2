@@ -67,33 +67,58 @@ function FormularioNuevoProducto({ producto }: Props) {
 
         const nuevosErrores: Errores = {};
 
-        // Validaciones con JavaScript
+        // Valida que el nombre del producto no esté vacío, contenga letras y tenga máximo 100 caracteres.
         if (!datos.nombre.trim()) {
             nuevosErrores.nombre = "Ingrese el nombre.";
+        } else if (!/\p{L}/u.test(datos.nombre)) {
+            nuevosErrores.nombre = "El nombre debe contener letras.";
+        } else if (datos.nombre.trim().length > 100) {
+            nuevosErrores.nombre = "El nombre no puede superar 100 caracteres.";
         }
 
+        // Valida que la categoría corresponda a una de las opciones disponibles.
         if (!categorias.includes(datos.categoria)) {
             nuevosErrores.categoria = "Seleccione una categoría.";
         }
 
+        // Valida que la descripción tenga entre 5 y 500 caracteres.
         if (!datos.descripcion.trim()) {
             nuevosErrores.descripcion = "Ingrese una descripción.";
+        } else if (datos.descripcion.trim().length < 5) {
+            nuevosErrores.descripcion = "La descripción debe tener al menos 5 caracteres.";
+        } else if (datos.descripcion.trim().length > 500) {
+            nuevosErrores.descripcion = "La descripción no puede superar 500 caracteres.";
         }
 
+        // Valida que la descripción larga opcional no supere 2000 caracteres.
+        if (datos.descripcionLarga.trim().length > 2000) {
+            nuevosErrores.descripcionLarga = "La descripción larga no puede superar 2000 caracteres.";
+        }
+
+        // Valida que el precio sea un número entero positivo y seguro.
         if (
             !/^\d+$/.test(datos.precio) ||
+            !Number.isSafeInteger(Number(datos.precio)) ||
             Number(datos.precio) <= 0
         ) {
-            nuevosErrores.precio = "Ingrese un precio válido.";
+            nuevosErrores.precio = "Ingrese un precio entero mayor que cero.";
         }
 
-        if (!/^\d+$/.test(datos.stock)) {
-            nuevosErrores.stock = "Ingrese un stock válido.";
+        // Valida que el stock sea un número entero no negativo y seguro.
+        if (
+            !/^\d+$/.test(datos.stock) ||
+            !Number.isSafeInteger(Number(datos.stock))
+        ) {
+            nuevosErrores.stock = "Ingrese un stock entero de cero o más.";
         }
 
-        if (!datos.imagen.trim().startsWith("/")) {
+        // Valida que la imagen tenga una ruta local con extensión de imagen.
+        const rutaImagen = datos.imagen.trim();
+        if (
+            !/^\/(?!\/)(?!.*\.\.)[^\s<>"']+\.(png|jpe?g|webp|gif|svg|avif)$/i.test(rutaImagen)
+        ) {
             nuevosErrores.imagen =
-                "La imagen debe tener una ruta que comience con /.";
+                "Ingrese una ruta local de imagen válida (por ejemplo /img/foto.jpg).";
         }
 
         setErrores(nuevosErrores);
@@ -197,13 +222,17 @@ function FormularioNuevoProducto({ producto }: Props) {
                         Descripción Larga
                     </label>
                     <textarea
-                        className="form-control"
+                        className={`form-control ${errores.descripcionLarga ? "is-invalid" : ""}`}
                         rows={4}
                         value={datos.descripcionLarga}
                         onChange={e =>
                             actualizar("descripcionLarga", e.target.value)
                         }
+                        aria-invalid={Boolean(errores.descripcionLarga)}
                     />
+                    {errores.descripcionLarga && (
+                        <div className="invalid-feedback d-block">{errores.descripcionLarga}</div>
+                    )}
                 </div>
 
                 <div className="col-md-6">

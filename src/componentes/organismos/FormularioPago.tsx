@@ -38,22 +38,38 @@ function FormularioPago() {
     const pagar = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        // Valida que el nombre completo no lleve números ni símbolos incorrectos.
+        const soloLetras = /^[\p{L}]+(?:[ '-][\p{L}]+)*$/u;
+
         const nuevosErrores = {
             nombre: "",
             correo: "",
             metodo: ""
         };
 
+        // Valida que el nombre completo tenga al menos dos palabras y máximo 100 caracteres.
         if (!nombre.trim()) {
-            nuevosErrores.nombre = "Ingrese su nombre.";
+            nuevosErrores.nombre = "Ingrese su nombre completo.";
+        } else if (!soloLetras.test(nombre.trim())) {
+            nuevosErrores.nombre = "El nombre solo puede contener letras.";
+        } else if (nombre.trim().split(/\s+/).length < 2) {
+            nuevosErrores.nombre = "Ingrese su nombre y apellido.";
+        } else if (nombre.trim().length > 100) {
+            nuevosErrores.nombre = "El nombre no puede superar 100 caracteres.";
         }
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+        // Valida que el correo tenga formato correcto y máximo 100 caracteres.
+        if (!correo.trim()) {
+            nuevosErrores.correo = "Ingrese su correo.";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.trim())) {
             nuevosErrores.correo = "Ingrese un correo válido.";
+        } else if (correo.trim().length > 100) {
+            nuevosErrores.correo = "El correo no puede superar 100 caracteres.";
         }
 
-        if (!metodo) {
-            nuevosErrores.metodo = "Seleccione un método de pago.";
+        // Valida que el método de pago sea uno de los disponibles en el formulario.
+        if (!["Débito", "Crédito", "Transferencia"].includes(metodo)) {
+            nuevosErrores.metodo = "Seleccione un método de pago válido.";
         }
 
         setErrores(nuevosErrores);

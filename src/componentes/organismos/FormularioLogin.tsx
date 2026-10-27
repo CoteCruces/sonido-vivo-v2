@@ -27,19 +27,21 @@ function FormularioLogin() {
             clave: ""
         };
 
-        // Validación de correo
+        // Valida que el correo sea obligatorio, tenga formato correcto y máximo 100 caracteres.
         if (correo.trim() === "") {
             nuevosErrores.correo =
                 "El correo es obligatorio.";
         } else if (
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.trim())
         ) {
             nuevosErrores.correo =
                 "Ingrese un correo válido.";
+        } else if (correo.trim().length > 100) {
+            nuevosErrores.correo = "El correo no puede superar 100 caracteres.";
         }
 
-        // Validación de contraseña
-        if (clave.trim() === "") {
+        // Valida que la contraseña no esté vacía y tenga entre 4 y 10 caracteres.
+        if (!clave.trim()) {
             nuevosErrores.clave =
                 "La contraseña es obligatoria.";
         } else if (
