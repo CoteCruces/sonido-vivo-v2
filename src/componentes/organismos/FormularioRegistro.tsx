@@ -110,77 +110,99 @@ function FormularioRegistro() {
 
         const nuevosErrores: ErroresRegistro = {};
 
-        // Validar RUN
+        // Valida que nombres y apellidos no lleven números ni símbolos incorrectos.
+        const soloLetras = /^[\p{L}]+(?:[ '-][\p{L}]+)*$/u;
+
+        // Valida que el RUN no esté vacío y tenga un dígito verificador correcto.
         if (datos.run.trim() === "") {
             nuevosErrores.run = "El RUN es obligatorio.";
         } else if (!validarRUN(datos.run)) {
             nuevosErrores.run = "Ingrese un RUN válido.";
         }
 
-        // Validar nombre
+        
+        // Valida que el nombre no esté vacío, no lleve números y no supere 50 caracteres.
         if (datos.nombre.trim() === "") {
             nuevosErrores.nombre = "El nombre es obligatorio.";
+        } else if (!soloLetras.test(datos.nombre.trim())) {
+            nuevosErrores.nombre =
+                "El nombre solo puede contener letras.";
         } else if (datos.nombre.trim().length > 50) {
             nuevosErrores.nombre =
                 "El nombre no puede superar 50 caracteres.";
         }
 
-        // Validar apellidos
+        
+        // Valida que los apellidos no estén vacíos, no lleven números y no superen 100 caracteres.
         if (datos.apellidos.trim() === "") {
             nuevosErrores.apellidos =
                 "Los apellidos son obligatorios.";
+        } else if (!soloLetras.test(datos.apellidos.trim())) {
+            nuevosErrores.apellidos =
+                "Los apellidos solo pueden contener letras.";
         } else if (datos.apellidos.trim().length > 100) {
             nuevosErrores.apellidos =
                 "Los apellidos no pueden superar 100 caracteres.";
         }
 
-        // Validar correo
+        // Valida que el correo tenga formato correcto y no supere 100 caracteres.
         if (datos.correo.trim() === "") {
             nuevosErrores.correo =
                 "El correo electrónico es obligatorio.";
         } else if (
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(datos.correo)
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(datos.correo.trim())
         ) {
             nuevosErrores.correo =
                 "Ingrese un correo electrónico válido.";
-        } else if (datos.correo.length > 100) {
+        } else if (datos.correo.trim().length > 100) {
             nuevosErrores.correo =
                 "El correo no puede superar 100 caracteres.";
         }
 
-        // Validar fecha de nacimiento (opcional)
+        // Valida que la fecha de nacimiento exista en el calendario y no sea futura.
         if (datos.fechaNacimiento) {
-            const fecha = new Date(
-                `${datos.fechaNacimiento}T00:00:00`
-            );
-
+            const texto = datos.fechaNacimiento;
+            const [anio, mes, dia] = texto.split("-").map(Number);
+            const fecha = new Date(anio, mes - 1, dia);
             const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
 
-            if (
-                Number.isNaN(fecha.getTime()) ||
-                fecha > hoy
-            ) {
+            const fechaValida =
+                /^\d{4}-\d{2}-\d{2}$/.test(texto) &&
+                anio >= 1900 &&
+                fecha.getFullYear() === anio &&
+                fecha.getMonth() === mes - 1 &&
+                fecha.getDate() === dia;
+
+            if (!fechaValida) {
                 nuevosErrores.fechaNacimiento =
-                    "Ingrese una fecha de nacimiento válida.";
+                    "Ingrese una fecha de nacimiento válida (desde 1900).";
+            } else if (fecha > hoy) {
+                nuevosErrores.fechaNacimiento =
+                    "La fecha de nacimiento no puede ser futura.";
             }
         }
 
-        // Validar dirección
+        // Valida que la dirección esté completa y tenga entre 5 y 300 caracteres.
         if (datos.direccion.trim() === "") {
             nuevosErrores.direccion =
                 "La dirección es obligatoria.";
+        } else if (datos.direccion.trim().length < 5) {
+            nuevosErrores.direccion = "La dirección debe tener al menos 5 caracteres.";
         } else if (datos.direccion.trim().length > 300) {
             nuevosErrores.direccion =
                 "La dirección no puede superar 300 caracteres.";
         }
 
-        // Validar región
+        // Valida que se seleccione una región incluida en las opciones disponibles.
         if (datos.region === "") {
             nuevosErrores.region =
                 "Debe seleccionar una región.";
+        } else if (!regionesYComunas.some(item => item.region === datos.region)) {
+            nuevosErrores.region = "Seleccione una región válida.";
         }
 
-        // Validar comuna
+        // Valida que la comuna corresponda a la región seleccionada.
         if (datos.comuna === "") {
             nuevosErrores.comuna =
                 "Debe seleccionar una comuna.";
@@ -189,8 +211,8 @@ function FormularioRegistro() {
                 "Seleccione una comuna válida.";
         }
 
-        // Validar contraseña
-        if (datos.clave === "") {
+        // Valida que la contraseña no esté vacía y tenga entre 4 y 10 caracteres.
+        if (!datos.clave.trim()) {
             nuevosErrores.clave =
                 "La contraseña es obligatoria.";
         } else if (
@@ -201,7 +223,7 @@ function FormularioRegistro() {
                 "La contraseña debe tener entre 4 y 10 caracteres.";
         }
 
-        // Confirmar contraseña
+        // Valida que la confirmación esté completa y coincida con la contraseña.
         if (datos.confirmarClave === "") {
             nuevosErrores.confirmarClave =
                 "Debe confirmar su contraseña.";

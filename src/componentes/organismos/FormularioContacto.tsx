@@ -18,7 +18,14 @@ function FormularioContacto() {
         const correoLimpio = correo.trim();
         const mensajeLimpio = mensaje.trim();
 
-        // 1. Validar nombre completo
+        // Valida que el nombre completo no lleve números ni símbolos incorrectos.
+        const soloLetras = /^[\p{L}]+(?:[ '-][\p{L}]+)*$/u;
+        if (nombreLimpio && !soloLetras.test(nombreLimpio)) {
+            alert("El nombre solo puede contener letras.");
+            return;
+        }
+
+        // Valida que el nombre completo sea obligatorio y contenga nombre y apellido.
         if (nombreLimpio === "") {
             alert("Debe ingresar su nombre y apellido.");
             return;
@@ -29,6 +36,12 @@ function FormularioContacto() {
             return;
         }
 
+        // Valida que el nombre completo no supere 100 caracteres.
+        if (nombreLimpio.length > 100) {
+            alert("El nombre completo no puede superar 100 caracteres.");
+            return;
+        }
+
         const palabrasNombre = nombreLimpio.split(/\s+/);
 
         if (palabrasNombre.length < 2) {
@@ -36,7 +49,7 @@ function FormularioContacto() {
             return;
         }
 
-        // 2. Validar correo
+        // Valida que el correo sea obligatorio y tenga formato correcto.
         if (correoLimpio === "") {
             alert("Debe ingresar su correo.");
             return;
@@ -49,7 +62,13 @@ function FormularioContacto() {
             return;
         }
 
-        // 3. Validar mensaje
+        // Valida que el correo no supere 100 caracteres.
+        if (correoLimpio.length > 100) {
+            alert("El correo no puede superar 100 caracteres.");
+            return;
+        }
+
+        // Valida que el mensaje sea obligatorio y tenga entre 30 y 500 caracteres.
         if (mensajeLimpio === "") {
             alert("Debe ingresar un mensaje.");
             return;
