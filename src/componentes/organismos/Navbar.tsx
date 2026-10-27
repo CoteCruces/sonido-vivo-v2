@@ -71,6 +71,7 @@ function Navbar() {
                         <Link className="nav-link text-primary" to="/nosotros">Nosotros</Link>
                         <Link className="nav-link text-primary" to="/noticias">Noticias</Link>
                         <Link className="nav-link text-primary" to="/contactanos">Contáctanos</Link>
+                        <Link className="nav-link text-primary" to="/preguntas-frecuentes">Preguntas Frecuentes</Link>
                     </div>
 
                     <div

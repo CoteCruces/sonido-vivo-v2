@@ -21,6 +21,7 @@ import RutaAdmin from "./componentes/utilidades/RutaAdmin";
 import Carrito from "./componentes/paginas/Carrito";
 import Pago from "./componentes/paginas/Pago";
 import DetalleNoticia from "./componentes/paginas/DetalleNoticia";
+import PreguntasFrecuentes from './componentes/paginas/PreguntasFrecuentes.tsx';
 
 
 function App() {
@@ -86,6 +87,11 @@ function App() {
                     <Route
                       path="/pago"
                       element={<Pago />}
+                    />
+
+                    <Route
+                      path="/preguntas-frecuentes"
+                      element={<PreguntasFrecuentes />}
                     />
                     
                 {/* Rutas exclusivas del administrador */}

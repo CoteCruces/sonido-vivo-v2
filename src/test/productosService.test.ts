@@ -1,14 +1,11 @@
 // @vitest-environment jsdom
-
 import { beforeEach, test, expect } from "vitest";
-
 import {
     obtenerProductos,
     crearProducto,
     actualizarProducto,
     eliminarProducto
 } from "../componentes/servicios/productosService";
-
 import type { Producto } from "../componentes/utilidades/tipos";
 
 // Producto de ejemplo que se utilizará en las pruebas
