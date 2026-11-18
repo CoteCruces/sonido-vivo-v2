@@ -11,17 +11,23 @@ public class Usuario {
     private Long id;
 
     private String nombre;
+    
+    @Column(unique = true)
     private String email;
+    
     private String password;
+    
+    private String rol; // Ej: "ADMIN" o "CLIENTE"
 
     // Constructor vacío
     public Usuario() {}
 
     // Constructor con parámetros
-    public Usuario(String nombre, String email, String password) {
+    public Usuario(String nombre, String email, String password, String rol) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
+        this.rol = rol;
     }
 
     // Getters y Setters
@@ -36,4 +42,7 @@ public class Usuario {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getRol() { return rol; }
+    public void setRol(String rol) { this.rol = rol; }
 }

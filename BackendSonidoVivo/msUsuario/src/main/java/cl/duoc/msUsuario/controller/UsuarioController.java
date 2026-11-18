@@ -1,11 +1,11 @@
 package cl.duoc.msUsuario.controller;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import cl.duoc.msUsuario.dto.LoginRequest;
+import cl.duoc.msUsuario.dto.TokenResponse;
 import cl.duoc.msUsuario.model.Usuario;
 import cl.duoc.msUsuario.service.UsuarioService;
 
@@ -19,13 +19,31 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // GET: Obtener todos
+    // POST: Login y emisión de Token JWT
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {
+            String token = usuarioService.autenticar(request.getEmail(), request.getPassword());
+            return ResponseEntity.ok(new TokenResponse(token, "Autenticación exitosa"));
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Error: " + e.getMessage());
+        }
+    }
+
+    // POST: Registro público (encripta contraseña implícitamente)
+    @PostMapping("/registro")
+    public ResponseEntity<Usuario> registrar(@RequestBody Usuario usuario) {
+        Usuario nuevoUsuario = usuarioService.registrar(usuario);
+        return ResponseEntity.ok(nuevoUsuario);
+    }
+
+    
     @GetMapping
     public List<Usuario> obtenerTodos() {
         return usuarioService.listarTodos();
     }
 
-    // GET: Obtener por ID
+    
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> obtenerPorId(@PathVariable Long id) {
         return usuarioService.buscarPorId(id)
@@ -33,10 +51,11 @@ public class UsuarioController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // POST: Crear nuevo
+    // POST: Crear nuevo (vía Admin o CRUD interno)
     @PostMapping
-    public Usuario crear(@RequestBody Usuario usuario) {
-        return usuarioService.guardar(usuario);
+    public ResponseEntity<Usuario> crear(@RequestBody Usuario usuario) {
+        Usuario creado = usuarioService.guardar(usuario);
+        return ResponseEntity.ok(creado);
     }
 
     // PUT: Actualizar existente
