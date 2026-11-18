@@ -51,3 +51,6 @@ http://localhost:8081/swagger-ui/index.html#/
 
 **URL Microservicio GET**
 http://localhost:8090/api/usuarios
+
+**URL EUREKA**
+http://localhost:8761/
