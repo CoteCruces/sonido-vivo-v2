@@ -1,69 +1,173 @@
 const URL_API = "/api/usuarios";
 
-// Datos que devuelve Spring Boot al iniciar sesión.
-export type RespuestaLogin = {
-  token: string;
-  mensaje: string;
+export type RolUsuarioApi = "ADMIN" | "CLIENTE";
+
+export type PerfilUsuarioApi = {
+  id: number;
+  run: string | null;
+  nombre: string;
+  apellidos: string | null;
+  email: string;
+  correo: string;
+  rol: RolUsuarioApi;
+  fechaNacimiento: string | null;
+  direccion: string | null;
+  region: string | null;
+  comuna: string | null;
 };
 
-// Comprueba el correo y la contraseña en el backend.
+export type DatosRegistroUsuarioApi = {
+  run: string;
+  nombre: string;
+  apellidos: string;
+  correo: string;
+  clave: string;
+  fechaNacimiento?: string;
+  direccion?: string;
+  region?: string;
+  comuna?: string;
+};
+
+export type DatosActualizarPerfilApi = {
+  nombre: string;
+  apellidos: string;
+  fechaNacimiento?: string;
+  direccion?: string;
+  region?: string;
+  comuna?: string;
+};
+
+export type DatosCrearUsuarioAdminApi = {
+  run: string;
+  nombre: string;
+  apellidos: string;
+  correo: string;
+  clave: string;
+  rol: RolUsuarioApi | "Administrador" | "Cliente";
+};
+
+export type DatosEditarUsuarioAdminApi = {
+  nombre: string;
+  apellidos: string;
+  rol: RolUsuarioApi | "Administrador" | "Cliente";
+  correo?: string;
+};
+
+type UsuarioRespuesta = {
+  id?: number;
+  run?: string | null;
+  nombre?: string | null;
+  apellidos?: string | null;
+  email?: string | null;
+  correo?: string | null;
+  rol?: string | null;
+  fechaNacimiento?: string | null;
+  direccion?: string | null;
+  region?: string | null;
+  comuna?: string | null;
+};
+
+// Obtener el token guardado en la sesión.
+function obtenerToken(): string {
+  const tokenDirecto = sessionStorage.getItem("sonidoVivoToken");
+
+  if (tokenDirecto) {
+    return tokenDirecto;
+  }
+
+  const sesionGuardada = sessionStorage.getItem("sonidoVivoSesion");
+
+  if (sesionGuardada) {
+    try {
+      const sesion = JSON.parse(sesionGuardada);
+
+      if (sesion.token) {
+        return sesion.token;
+      }
+    } catch {
+      // La sesión guardada no es válida.
+    }
+  }
+
+  throw new Error("Debes iniciar sesión.");
+}
+
+// Convertir roles al formato del backend.
+function convertirRol(rol: string): RolUsuarioApi {
+  return rol === "ADMIN" || rol === "Administrador" ? "ADMIN" : "CLIENTE";
+}
+
+// Normalizar los datos recibidos del backend.
+function normalizarUsuario(datos: UsuarioRespuesta): PerfilUsuarioApi {
+  const email = datos.email ?? datos.correo ?? "";
+
+  return {
+    id: datos.id ?? 0,
+    run: datos.run ?? null,
+    nombre: datos.nombre ?? "",
+    apellidos: datos.apellidos ?? null,
+    email,
+    correo: email,
+    rol: convertirRol(datos.rol ?? "CLIENTE"),
+    fechaNacimiento: datos.fechaNacimiento ?? null,
+    direccion: datos.direccion ?? null,
+    region: datos.region ?? null,
+    comuna: datos.comuna ?? null,
+  };
+}
+
+// Mensajes de error del servidor.
+function mensajeError(estado: number): string {
+  if (estado === 400) return "Los datos enviados no son válidos.";
+  if (estado === 401) return "Tu sesión no es válida o ha expirado.";
+  if (estado === 403)
+    return "No tienes autorización para realizar esta operación.";
+  if (estado === 404) return "No se encontró el usuario.";
+  if (estado === 409) return "El correo o RUN ya está registrado.";
+
+  return `Error de comunicación con el servidor (${estado}).`;
+}
+
+// Comprobar las respuestas HTTP.
+function comprobarRespuesta(respuesta: Response): void {
+  if (!respuesta.ok) {
+    throw new Error(mensajeError(respuesta.status));
+  }
+}
+
+// INICIAR SESIÓN.
 export async function iniciarSesionApi(
   correo: string,
   clave: string,
-): Promise<RespuestaLogin> {
+): Promise<{ token: string }> {
   const respuesta = await fetch(`${URL_API}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      email: correo.trim(),
+      email: correo.trim().toLowerCase(),
       password: clave,
     }),
   });
 
-  // Credenciales incorrectas.
-  if (respuesta.status === 401) {
-    throw new Error("Correo electrónico o contraseña incorrectos.");
-  }
+  comprobarRespuesta(respuesta);
 
-  // Otro error del servidor.
-  if (!respuesta.ok) {
-    throw new Error("No se pudo conectar con el servidor.");
-  }
-
-  const datos: RespuestaLogin = await respuesta.json();
+  const datos: { token: string } = await respuesta.json();
 
   if (!datos.token) {
-    throw new Error("El servidor no devolvió un token válido.");
+    throw new Error("El servidor no devolvió un token JWT.");
   }
 
-  return datos;
+  sessionStorage.setItem("sonidoVivoToken", datos.token);
+
+  return { token: datos.token };
 }
 
-export type DatosRegistroApi = {
-  run: string;
-  nombre: string;
-  apellidos: string;
-  correo: string;
-  fechaNacimiento: string;
-  direccion: string;
-  region: string;
-  comuna: string;
-  clave: string;
-};
-
-export type UsuarioRegistrado = {
-  id: number;
-  nombre: string;
-  email: string;
-  rol: string;
-};
-
-// Registra un usuario nuevo en MySQL.
+// REGISTRAR USUARIO.
 export async function registrarUsuarioApi(
-  datos: DatosRegistroApi,
-): Promise<UsuarioRegistrado> {
+  datos: DatosRegistroUsuarioApi,
+): Promise<PerfilUsuarioApi> {
   const respuesta = await fetch(`${URL_API}/registro`, {
     method: "POST",
     headers: {
@@ -73,94 +177,145 @@ export async function registrarUsuarioApi(
       run: datos.run.trim(),
       nombre: datos.nombre.trim(),
       apellidos: datos.apellidos.trim(),
-      email: datos.correo.trim(),
-      fechaNacimiento: datos.fechaNacimiento,
-      direccion: datos.direccion.trim(),
-      region: datos.region,
-      comuna: datos.comuna,
+      email: datos.correo.trim().toLowerCase(),
       password: datos.clave,
+      fechaNacimiento: datos.fechaNacimiento || null,
+      direccion: datos.direccion?.trim() ?? "",
+      region: datos.region ?? "",
+      comuna: datos.comuna ?? "",
     }),
   });
 
-  if (respuesta.status === 409) {
-    throw new Error("El correo o RUN ya está registrado.");
-  }
+  comprobarRespuesta(respuesta);
 
-  if (respuesta.status === 400) {
-    throw new Error("Los datos del registro no son válidos.");
-  }
-
-  if (!respuesta.ok) {
-    throw new Error("No se pudo registrar el usuario.");
-  }
-
-  return respuesta.json();
+  return normalizarUsuario((await respuesta.json()) as UsuarioRespuesta);
 }
 
-export type PerfilUsuarioApi = {
-  id: number;
-  run: string | null;
-  nombre: string;
-  apellidos: string | null;
-  email: string;
-  rol: string;
-  fechaNacimiento: string | null;
-  direccion: string | null;
-  region: string | null;
-  comuna: string | null;
-};
+// CONSULTAR PERFIL.
+export async function obtenerPerfilApi(
+  token?: string,
+): Promise<PerfilUsuarioApi> {
+  const jwt = token ?? obtenerToken();
 
-// Consulta los datos del usuario autenticado.
-export async function obtenerPerfilApi(): Promise<PerfilUsuarioApi> {
-  // Recuperar el JWT guardado al iniciar sesión.
-  const token = sessionStorage.getItem("sonidoVivoToken");
-
-  if (!token) {
-    throw new Error("Debes iniciar sesión.");
-  }
-
-  // Enviar el token a Spring Boot.
   const respuesta = await fetch(`${URL_API}/perfil`, {
-    method: "GET",
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+
+  comprobarRespuesta(respuesta);
+
+  return normalizarUsuario((await respuesta.json()) as UsuarioRespuesta);
+}
+
+// Alias para mantener compatibilidad con el formulario de cuenta.
+export async function obtenerMiUsuarioApi(
+  token?: string,
+): Promise<PerfilUsuarioApi> {
+  return obtenerPerfilApi(token);
+}
+
+// ACTUALIZAR PERFIL.
+export async function actualizarPerfilApi(
+  datos: DatosActualizarPerfilApi,
+): Promise<PerfilUsuarioApi> {
+  const token = obtenerToken();
+
+  const respuesta = await fetch(`${URL_API}/perfil`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(datos),
+  });
+
+  comprobarRespuesta(respuesta);
+
+  return normalizarUsuario((await respuesta.json()) as UsuarioRespuesta);
+}
+
+// Alias para el formulario de edición de perfil.
+export async function actualizarMiPerfilApi(
+  datos: DatosActualizarPerfilApi,
+): Promise<PerfilUsuarioApi> {
+  return actualizarPerfilApi(datos);
+}
+
+// LISTAR USUARIOS (ADMIN).
+export async function listarUsuariosAdminApi(): Promise<PerfilUsuarioApi[]> {
+  const token = obtenerToken();
+
+  const respuesta = await fetch(URL_API, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  // El token no es válido o ha expirado.
-  if (respuesta.status === 401 || respuesta.status === 403) {
-    throw new Error("Tu sesión no es válida o ha expirado.");
-  }
+  comprobarRespuesta(respuesta);
 
-  if (!respuesta.ok) {
-    throw new Error("No se pudieron obtener los datos del perfil.");
-  }
+  const usuarios: UsuarioRespuesta[] = await respuesta.json();
 
-  return respuesta.json();
+  return usuarios.map(normalizarUsuario);
 }
 
-export type DatosActualizarPerfilApi = {
-  nombre: string;
-  apellidos: string;
-  fechaNacimiento: string;
-  direccion: string;
-  region: string;
-  comuna: string;
-};
+// Alias de listado.
+export async function obtenerUsuariosAdminApi(): Promise<PerfilUsuarioApi[]> {
+  return listarUsuariosAdminApi();
+}
 
-// Actualiza los datos personales del usuario autenticado.
-export async function actualizarPerfilApi(
-  datos: DatosActualizarPerfilApi,
+// CONSULTAR USUARIO POR ID (ADMIN).
+export async function obtenerUsuarioAdminApi(
+  id: number,
 ): Promise<PerfilUsuarioApi> {
-  // Obtener el JWT de la sesión actual.
-  const token = sessionStorage.getItem("sonidoVivoToken");
+  const token = obtenerToken();
 
-  if (!token) {
-    throw new Error("Debes iniciar sesión.");
-  }
+  const respuesta = await fetch(`${URL_API}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-  // Enviar los cambios a Spring Boot.
-  const respuesta = await fetch(`${URL_API}/perfil`, {
+  comprobarRespuesta(respuesta);
+
+  return normalizarUsuario((await respuesta.json()) as UsuarioRespuesta);
+}
+
+// CREAR USUARIO (ADMIN).
+export async function crearUsuarioAdminApi(
+  datos: DatosCrearUsuarioAdminApi,
+): Promise<PerfilUsuarioApi> {
+  const token = obtenerToken();
+
+  const respuesta = await fetch(URL_API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      run: datos.run.trim(),
+      nombre: datos.nombre.trim(),
+      apellidos: datos.apellidos.trim(),
+      email: datos.correo.trim().toLowerCase(),
+      password: datos.clave,
+      rol: convertirRol(datos.rol),
+    }),
+  });
+
+  comprobarRespuesta(respuesta);
+
+  return normalizarUsuario((await respuesta.json()) as UsuarioRespuesta);
+}
+
+// ACTUALIZAR USUARIO (ADMIN).
+export async function actualizarUsuarioAdminApi(
+  id: number,
+  datos: DatosEditarUsuarioAdminApi,
+): Promise<PerfilUsuarioApi> {
+  const token = obtenerToken();
+
+  const respuesta = await fetch(`${URL_API}/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -169,243 +324,42 @@ export async function actualizarPerfilApi(
     body: JSON.stringify({
       nombre: datos.nombre.trim(),
       apellidos: datos.apellidos.trim(),
-      fechaNacimiento: datos.fechaNacimiento,
-      direccion: datos.direccion.trim(),
-      region: datos.region,
-      comuna: datos.comuna,
+      rol: convertirRol(datos.rol),
+      ...(datos.correo ? { email: datos.correo.trim().toLowerCase() } : {}),
     }),
   });
 
-  // Comprobar problemas de autenticación.
-  if (respuesta.status === 401 || respuesta.status === 403) {
-    throw new Error("Tu sesión no es válida o no tienes autorización.");
-  }
+  comprobarRespuesta(respuesta);
 
-  // Comprobar otros errores.
-  if (!respuesta.ok) {
-    throw new Error("No se pudieron actualizar tus datos.");
-  }
-
-  // Devolver el perfil actualizado.
-  return respuesta.json();
+  return normalizarUsuario((await respuesta.json()) as UsuarioRespuesta);
 }
 
-export async function obtenerUsuariosAdminApi(): Promise<PerfilUsuarioApi[]> {
-  // Obtener el JWT del administrador.
-  const token = sessionStorage.getItem("sonidoVivoToken");
+// ELIMINAR USUARIO (ADMIN).
+export async function eliminarUsuarioAdminApi(id: number): Promise<void> {
+  const token = obtenerToken();
 
-  if (!token) {
-    throw new Error("Debes iniciar sesión.");
-  }
-
-  // Consultar los usuarios registrados en MySQL.
-  const respuesta = await fetch(URL_API, {
-    method: "GET",
+  const respuesta = await fetch(`${URL_API}/${id}`, {
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  // Comprobar los permisos.
-  if (respuesta.status === 401 || respuesta.status === 403) {
-    throw new Error("No tienes autorización para consultar los usuarios.");
-  }
-
-  // Comprobar otros errores.
-  if (!respuesta.ok) {
-    throw new Error("No se pudo obtener la lista de usuarios.");
-  }
-
-  // Devolver los usuarios registrados.
-  const usuarios: unknown = await respuesta.json();
-
-  if (!Array.isArray(usuarios)) {
-    throw new Error("El servidor no devolvió una lista válida.");
-  }
-
-  return usuarios as PerfilUsuarioApi[];
+  comprobarRespuesta(respuesta);
 }
 
-
-export async function eliminarUsuarioAdminApi(
-    id: number
-): Promise<void> {
-
-    // Comprobar que el ID sea válido.
-    if (!Number.isSafeInteger(id) || id <= 0) {
-        throw new Error("El ID del usuario no es válido.");
-    }
-
-    // Obtener el JWT del administrador.
-    const token = sessionStorage.getItem("sonidoVivoToken");
-
-    if (!token) {
-        throw new Error("Debes iniciar sesión.");
-    }
-
-    // Solicitar la eliminación al microservicio.
-    const respuesta = await fetch(`${URL_API}/${id}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-
-    // Comprobar permisos.
-    if (respuesta.status === 401 ||
-        respuesta.status === 403) {
-        throw new Error(
-            "No tienes autorización para eliminar usuarios."
-        );
-    }
-
-    // Comprobar si el usuario existe.
-    if (respuesta.status === 404) {
-        throw new Error("El usuario no existe.");
-    }
-
-    // Comprobar otros errores.
-    if (!respuesta.ok) {
-        throw new Error("No se pudo eliminar el usuario.");
-    }
+// Convertir los datos al formato utilizado por React.
+export function mapearUsuario(datos: PerfilUsuarioApi) {
+  return {
+    id: datos.id,
+    run: datos.run ?? "",
+    nombre: datos.nombre,
+    apellidos: datos.apellidos ?? "",
+    correo: datos.email,
+    rol: datos.rol === "ADMIN" ? "Administrador" : "Cliente",
+    fechaNacimiento: datos.fechaNacimiento ?? "",
+    direccion: datos.direccion ?? "",
+    region: datos.region ?? "",
+    comuna: datos.comuna ?? "",
+  };
 }
-
-
-export type DatosEditarUsuarioAdminApi = {
-    nombre: string;
-    apellidos: string;
-    rol: "ADMIN" | "CLIENTE";
-};
-
-// Actualiza un usuario desde el panel administrador.
-export async function actualizarUsuarioAdminApi(
-    id: number,
-    datos: DatosEditarUsuarioAdminApi
-): Promise<PerfilUsuarioApi> {
-
-    // Validar el identificador del usuario.
-    if (!Number.isSafeInteger(id) || id <= 0) {
-        throw new Error("El ID del usuario no es válido.");
-    }
-
-    // Obtener el JWT del administrador.
-    const token = sessionStorage.getItem("sonidoVivoToken");
-
-    if (!token) {
-        throw new Error("Debes iniciar sesión.");
-    }
-
-    // Enviar los cambios a Spring Boot.
-    const respuesta = await fetch(`${URL_API}/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            nombre: datos.nombre.trim(),
-            apellidos: datos.apellidos.trim(),
-            rol: datos.rol
-        })
-    });
-
-    // Comprobar permisos.
-    if (
-        respuesta.status === 401 ||
-        respuesta.status === 403
-    ) {
-        throw new Error(
-            "No tienes autorización para editar usuarios."
-        );
-    }
-
-    // Comprobar si existe el usuario.
-    if (respuesta.status === 404) {
-        throw new Error("El usuario no existe.");
-    }
-
-    // Comprobar errores del servidor.
-    if (!respuesta.ok) {
-        throw new Error(
-            "No se pudo actualizar el usuario."
-        );
-    }
-
-    // Devolver los datos actualizados desde MySQL.
-    return respuesta.json();
-}
-
-
-export type DatosCrearUsuarioAdminApi = {
-    run: string;
-    nombre: string;
-    apellidos: string;
-    correo: string;
-    clave: string;
-    rol: "ADMIN" | "CLIENTE";
-};
-
-// Crea un usuario desde el panel de administración.
-export async function crearUsuarioAdminApi(
-    datos: DatosCrearUsuarioAdminApi
-): Promise<PerfilUsuarioApi> {
-
-    // Obtener el JWT del administrador.
-    const token = sessionStorage.getItem("sonidoVivoToken");
-
-    if (!token) {
-        throw new Error("Debes iniciar sesión.");
-    }
-
-    // Enviar los datos al microservicio.
-    const respuesta = await fetch(URL_API, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            run: datos.run.trim(),
-            nombre: datos.nombre.trim(),
-            apellidos: datos.apellidos.trim(),
-            email: datos.correo.trim(),
-            password: datos.clave,
-            rol: datos.rol
-        })
-    });
-
-    // Verificar los permisos.
-    if (
-        respuesta.status === 401 ||
-        respuesta.status === 403
-    ) {
-        throw new Error(
-            "No tienes autorización para crear usuarios."
-        );
-    }
-
-    // Comprobar datos duplicados.
-    if (respuesta.status === 409) {
-        throw new Error(
-            "El correo o RUN ya está registrado."
-        );
-    }
-
-    // Comprobar datos incorrectos.
-    if (respuesta.status === 400) {
-        throw new Error(
-            "Los datos ingresados no son válidos."
-        );
-    }
-
-    // Comprobar otros errores.
-    if (!respuesta.ok) {
-        throw new Error(
-            "No se pudo crear el usuario."
-        );
-    }
-
-    // Devolver el usuario creado en MySQL.
-    return respuesta.json();
-}
-

@@ -1,52 +1,96 @@
+
 package cl.duoc.msUsuario.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
 @Component
 public class JwtUtil {
 
-    //Se encarga de generar el token, validar su firma y extraer el correo y los roles.
+    private final Key secretKey;
 
-    // Clave secreta segura para firmar el token (mínimo 256 bits)
-    private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long jwtExpirationMs = 86400000; // 24 horas
+    // Duración del token: 24 horas.
+    private final long jwtExpirationMs = 86400000;
 
-    // Generar token incluyendo el correo y el rol
+    // Leer la clave JWT desde Windows.
+    public JwtUtil() {
+
+        String secreto = System.getenv("JWT_SECRET");
+
+        if (secreto == null || secreto.isBlank()) {
+            throw new IllegalStateException(
+                "La variable JWT_SECRET no está configurada."
+            );
+        }
+
+        byte[] clave;
+
+        try {
+            clave = Base64.getDecoder().decode(secreto);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException(
+                "JWT_SECRET debe estar codificada en Base64.",
+                e
+            );
+        }
+
+        if (clave.length < 32) {
+            throw new IllegalStateException(
+                "JWT_SECRET debe tener al menos 32 bytes."
+            );
+        }
+
+        secretKey = Keys.hmacShaKeyFor(clave);
+    }
+
+    // Generar un JWT con el correo y el rol.
     public String generarToken(String email, String rol) {
+
         return Jwts.builder()
                 .setSubject(email)
                 .claim("rol", rol)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .setExpiration(
+                    new Date(
+                        System.currentTimeMillis() + jwtExpirationMs
+                    )
+                )
                 .signWith(secretKey)
                 .compact();
     }
 
-    // Extraer el email (subject) del token
+    // Extraer el correo del JWT.
     public String extraerEmail(String token) {
         return extraerClaim(token, Claims::getSubject);
     }
 
-    // Extraer el rol del token
+    // Extraer el rol del JWT.
     public String extraerRol(String token) {
         Claims claims = extraerTodosClaims(token);
         return claims.get("rol", String.class);
     }
 
-    public <T> T extraerClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extraerTodosClaims(token);
+    // Extraer un dato específico del JWT.
+    public <T> T extraerClaim(
+            String token,
+            Function<Claims, T> claimsResolver) {
+
+        Claims claims = extraerTodosClaims(token);
+
         return claimsResolver.apply(claims);
     }
 
+    // Verificar la firma y leer el contenido.
     private Claims extraerTodosClaims(String token) {
+
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
@@ -54,12 +98,24 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public boolean validarToken(String token, String emailUsuario) {
-        final String email = extraerEmail(token);
-        return (email.equals(emailUsuario) && !isTokenExpired(token));
+    // Comprobar que el JWT pertenece al usuario
+    // y que todavía no ha expirado.
+    public boolean validarToken(
+            String token,
+            String emailUsuario) {
+
+        String email = extraerEmail(token);
+
+        return email.equals(emailUsuario)
+                && !isTokenExpired(token);
     }
 
+    // Comprobar la fecha de expiración.
     private boolean isTokenExpired(String token) {
-        return extraerClaim(token, Claims::getExpiration).before(new Date());
+
+        return extraerClaim(
+            token,
+            Claims::getExpiration
+        ).before(new Date());
     }
 }
