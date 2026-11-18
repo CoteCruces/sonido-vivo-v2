@@ -1,6 +1,8 @@
+
 package cl.duoc.msUsuario.config;
 
 import cl.duoc.msUsuario.security.JwtFilter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,33 +16,81 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import jakarta.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    //Aquí definimos qué endpoints son públicos (como el registro y el login) 
-    //y cuáles requieren autenticación o roles específicos.
-
     @Autowired
     private JwtFilter jwtFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
+
         http
+            // Desactivar CSRF para nuestra API REST.
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+            // La autenticación se realizará mediante JWT.
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                )
+            )
+
+            // Definir los permisos.
             .authorizeHttpRequests(auth -> auth
-                // Endpoints públicos para autenticación y registro
-                .requestMatchers("/api/usuarios/login", "/api/usuarios/registro", "/api/usuarios").permitAll()
-                // Swagger UI y documentación pública si se utiliza
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                // Endpoints protegidos para administradores
-                .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
-                // Cualquier otra petición requiere estar autenticado
+                
+// Permitir que Spring Boot muestre los errores reales.
+.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+.requestMatchers("/error").permitAll()
+
+                // Cualquier visitante puede registrarse o iniciar sesión.
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/api/usuarios/login",
+                    "/api/usuarios/registro"
+                ).permitAll()
+
+                // Documentación Swagger.
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
+                ).permitAll()
+
+
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/usuarios/perfil"
+                ).authenticated()
+
+
+        // Cualquier usuario autenticado puede actualizar su perfil.
+        .requestMatchers(
+            HttpMethod.PUT,
+            "/api/usuarios/perfil"
+        ).authenticated()
+
+
+
+                // Solo administradores pueden administrar usuarios.
+                .requestMatchers(
+                    "/api/usuarios",
+                    "/api/usuarios/**"
+                ).hasRole("ADMIN")
+
+                // Las demás rutas requieren autenticación.
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+            // Comprobar el JWT antes de autorizar las solicitudes.
+            .addFilterBefore(
+                jwtFilter,
+                UsernamePasswordAuthenticationFilter.class
+            );
 
         return http.build();
     }
@@ -51,7 +101,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config
+    ) throws Exception {
         return config.getAuthenticationManager();
     }
 }

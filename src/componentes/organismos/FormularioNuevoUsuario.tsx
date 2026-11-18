@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import CampoFormulario from "../moleculas/CampoFormulario";
-import { crearUsuarioAdmin } from "../servicios/usuariosService";
+import { crearUsuarioAdminApi } from "../servicios/usuariosApi";
 import { validarRUN } from "../utilidades/validarRUN";
 
 type Rol = "Cliente" | "Administrador";
@@ -58,7 +58,7 @@ function FormularioNuevoUsuario() {
     };
 
     // Validar y guardar el nuevo usuario
-    const guardar = (e: FormEvent<HTMLFormElement>) => {
+    const guardar = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const nuevosErrores: Errores = {};
@@ -135,26 +135,34 @@ function FormularioNuevoUsuario() {
             return;
         }
 
-        try {
-            crearUsuarioAdmin({
-                run: datos.run.trim(),
-                nombre: datos.nombre.trim(),
-                apellidos: datos.apellidos.trim(),
-                correo: datos.correo.trim(),
-                clave: datos.clave,
-                rol: datos.rol
-            });
+        
+try {
+    // Convertir el rol de React al formato de Spring Boot.
+    const rolApi = datos.rol === "Administrador"
+        ? "ADMIN"
+        : "CLIENTE";
 
-            // Volver al mantenedor
-            navigate("/admin/usuarios");
+    // Crear el usuario en MySQL.
+    await crearUsuarioAdminApi({
+        run: datos.run.trim(),
+        nombre: datos.nombre.trim(),
+        apellidos: datos.apellidos.trim(),
+        correo: datos.correo.trim(),
+        clave: datos.clave,
+        rol: rolApi
+    });
 
-        } catch (error) {
-            setErrorGeneral(
-                error instanceof Error
-                    ? error.message
-                    : "No se pudo crear el usuario."
-            );
-        }
+    // Volver al listado después de guardar correctamente.
+    navigate("/admin/usuarios");
+
+} catch (error) {
+    setErrorGeneral(
+        error instanceof Error
+            ? error.message
+            : "No se pudo crear el usuario."
+    );
+}
+
     };
 
     return (

@@ -3,6 +3,7 @@ package cl.duoc.msUsuario.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import cl.duoc.msUsuario.dto.LoginRequest;
 import cl.duoc.msUsuario.dto.TokenResponse;
@@ -41,6 +42,53 @@ public class UsuarioController {
     @GetMapping
     public List<Usuario> obtenerTodos() {
         return usuarioService.listarTodos();
+    }
+
+
+    // GET: Consultar los datos del usuario autenticado.
+    @GetMapping("/perfil")
+    public ResponseEntity<Usuario> obtenerPerfil(
+            Authentication authentication) {
+
+        // Comprobar que exista una sesión autenticada.
+        if (authentication == null ||
+            !authentication.isAuthenticated() ||
+            "anonymousUser".equals(authentication.getPrincipal())) {
+
+            return ResponseEntity.status(401).build();
+        }
+
+        // Obtener el correo desde el JWT validado.
+        String email = authentication.getName();
+
+        // Buscar únicamente al usuario autenticado.
+        return usuarioService.buscarPorEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+    // PUT: Actualizar los datos del usuario autenticado.
+    @PutMapping("/perfil")
+    public ResponseEntity<Usuario> actualizarPerfil(
+            Authentication authentication,
+            @RequestBody Usuario datos) {
+
+        // Comprobar que exista una sesión autenticada.
+        if (authentication == null ||
+            !authentication.isAuthenticated() ||
+            "anonymousUser".equals(authentication.getPrincipal())) {
+
+            return ResponseEntity.status(401).build();
+        }
+
+        // Obtener el correo del usuario desde su JWT.
+        String email = authentication.getName();
+
+        // Actualizar únicamente su propia cuenta.
+        return usuarioService.actualizarPerfil(email, datos)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     
