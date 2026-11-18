@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GatewayApplication",
+            "request": "launch",
+            "mainClass": "cl.duoc.gateway.GatewayApplication",
+            "projectName": "gateway"
+        },
+        {
+            "type": "java",
+            "name": "MsConsultasApplication",
+            "request": "launch",
+            "mainClass": "cl.duoc.msConsultas.MsConsultasApplication",
+            "projectName": "msConsultas"
+        },
+        {
+            "type": "java",
+            "name": "MsCompraApplication",
+            "request": "launch",
+            "mainClass": "cl.duoc.msCompra.MsCompraApplication",
+            "projectName": "msCompra"
+        },
+        {
+            "type": "java",
             "name": "MsCarritoApplication",
             "request": "launch",
             "mainClass": "cl.duoc.msCarrito.MsCarritoApplication",
