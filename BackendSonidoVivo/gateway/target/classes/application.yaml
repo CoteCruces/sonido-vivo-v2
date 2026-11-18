@@ -1,0 +1,44 @@
+server:
+  port: 8090
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          routes:
+            - id: ms-consultas
+              uri: lb://ms-consultas
+              predicates:
+                - Path=/api/consultas/**
+
+            - id: ms-compra
+              uri: lb://ms-compra
+              predicates:
+                - Path=/api/compras/**
+
+            - id: ms-carrito
+              uri: lb://ms-carrito
+              predicates:
+                - Path=/api/carrito/**
+
+            - id: ms-producto
+              uri: lb://ms-producto
+              predicates:
+                - Path=/api/productos/**
+
+            - id: ms-usuario
+              uri: lb://ms-usuario
+              predicates:
+                - Path=/api/usuarios/**

@@ -5,6 +5,34 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "MsCarritoApplication",
+            "request": "launch",
+            "mainClass": "cl.duoc.msCarrito.MsCarritoApplication",
+            "projectName": "msCarrito"
+        },
+        {
+            "type": "java",
+            "name": "MsProductoApplication",
+            "request": "launch",
+            "mainClass": "cl.duoc.msProducto.MsProductoApplication",
+            "projectName": "msProducto"
+        },
+        {
+            "type": "java",
+            "name": "MsUsuarioApplication",
+            "request": "launch",
+            "mainClass": "cl.duoc.msUsuario.MsUsuarioApplication",
+            "projectName": "msUsuario"
+        },
+        {
+            "type": "java",
+            "name": "EurekaServerApplication",
+            "request": "launch",
+            "mainClass": "cl.duoc.eureka_server.EurekaServerApplication",
+            "projectName": "eureka-server"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Iniciar Chrome para localhost",

@@ -18,52 +18,27 @@ spring:
               enabled: true
               lower-case-service-id: true
           routes:
-            - id: administrador-ms
-              uri: lb://msAdministrador
+            - id: ms-consultas
+              uri: lb://ms-consultas
               predicates:
-                - Path=/api/v1/administradores/**
+                - Path=/api/consultas/**
 
-            - id: asiento-ms
-              uri: lb://msAsiento
+            - id: ms-compra
+              uri: lb://ms-compra
               predicates:
-                - Path=/api/v1/asientos/**, /api/v1/reservas/**
+                - Path=/api/compras/**
 
-            - id: comprador-ms
-              uri: lb://msComprador
+            - id: ms-carrito
+              uri: lb://ms-carrito
               predicates:
-                - Path=/api/v1/compradores/**
+                - Path=/api/carrito/**
 
-            - id: direccion-ms
-              uri: lb://msDireccion
+            - id: ms-producto
+              uri: lb://ms-producto
               predicates:
-                - Path=/api/v1/direccion/**
+                - Path=/api/productos/**
 
-            - id: evento-ms
-              uri: lb://msEvento
+            - id: ms-usuario
+              uri: lb://ms-usuario
               predicates:
-                - Path=/api/v1/eventos/**
-
-            - id: facturacion-ms
-              uri: lb://msFacturacion
-              predicates:
-                - Path=/api/v1/facturacion/**
-
-            - id: gestionArtistica-ms
-              uri: lb://msGestionArtistica
-              predicates:
-                - Path=/api/v1/artistas/**, /api/v1/managers/** , /api/v1/productoras/**
-
-            - id: login-ms
-              uri: lb://msLogin
-              predicates:
-                - Path=/api/v1/usuarios/**
-
-            - id: ubicacion-ms
-              uri: lb://msUbicacion
-              predicates:
-                - Path=/api/v1/ubicaciones/**
-
-            - id: ventaTicket-ms
-              uri: lb://msVentaTicket
-              predicates:
-                - Path=/api/v1/boletas/** , /api/v1/detalles/** ,/api/v1/tickets/**
+                - Path=/api/usuarios/**
