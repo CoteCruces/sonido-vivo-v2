@@ -1,10 +1,10 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
-import Navbar from './componentes/organismos/Navbar.tsx';
-import Inicio from './componentes/paginas/Inicio.tsx';
-import Catalogo from './componentes/paginas/Catalogo.tsx';
-import Nosotros from './componentes/paginas/Nosotros.tsx';
-import Noticias from './componentes/paginas/Noticias.tsx';
-import Contactanos from './componentes/paginas/Contactanos.tsx';
+import { Route, Routes, useLocation } from "react-router-dom";
+import Navbar from "./componentes/organismos/Navbar.tsx";
+import Inicio from "./componentes/paginas/Inicio.tsx";
+import Catalogo from "./componentes/paginas/Catalogo.tsx";
+import Nosotros from "./componentes/paginas/Nosotros.tsx";
+import Noticias from "./componentes/paginas/Noticias.tsx";
+import Contactanos from "./componentes/paginas/Contactanos.tsx";
 import DetalleProducto from "./componentes/paginas/DetalleProducto";
 import Login from "./componentes/paginas/Login";
 import Registro from "./componentes/paginas/Registro";
@@ -21,128 +21,70 @@ import RutaAdmin from "./componentes/utilidades/RutaAdmin";
 import Carrito from "./componentes/paginas/Carrito";
 import Pago from "./componentes/paginas/Pago";
 import DetalleNoticia from "./componentes/paginas/DetalleNoticia";
-import PreguntasFrecuentes from './componentes/paginas/PreguntasFrecuentes.tsx';
-
+import PreguntasFrecuentes from "./componentes/paginas/PreguntasFrecuentes.tsx";
+import ProductosApi from "./componentes/paginas/ProductosApi";
 
 function App() {
-    const esAdmin = useLocation().pathname.startsWith("/admin");
+  const esAdmin = useLocation().pathname.startsWith("/admin");
 
-    return (
-        <div className="d-flex flex-column min-vh-100">
+  return (
+    <div className="d-flex flex-column min-vh-100">
+      {!esAdmin && <Navbar />}
 
-            {!esAdmin && <Navbar />}
+      <div className={`flex-grow-1 ${esAdmin ? "" : "pb-5"}`}>
+        <Routes>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/productos-api" element={<ProductosApi />} />
+          <Route path="/nosotros" element={<Nosotros />} />
+          <Route path="/noticias" element={<Noticias />} />
 
-            <div className={`flex-grow-1 ${esAdmin ? "" : "pb-5"}`}>
+          <Route path="/noticias/:id" element={<DetalleNoticia />} />
 
-                <Routes>
-                    <Route
-                      path = "/"
-                      element = {<Inicio />} 
-                    />
-                    <Route
-                      path = "/catalogo"
-                      element = {<Catalogo />} 
-                    />
-                    <Route
-                      path = "/nosotros"
-                      element = {<Nosotros />} 
-                    />
-                    <Route 
-                      path="/noticias" 
-                      element={<Noticias />} 
-                    />
+          <Route path="/contactanos" element={<Contactanos />} />
+          <Route path="/producto/:id" element={<DetalleProducto />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
 
-                    <Route
-                      path="/noticias/:id"
-                      element={<DetalleNoticia />}
-                    />
-                    
-                    <Route
-                      path = "/contactanos"
-                      element = {<Contactanos />} 
-                    />
-                    <Route
-                      path="/producto/:id"
-                      element={<DetalleProducto />}
-                    />
-                    <Route
-                      path="/login"
-                      element={<Login />}
-                    />
-                    <Route 
-                      path="/registro" 
-                      element={<Registro />} 
-                    />
+          <Route path="/mi-cuenta" element={<MiCuenta />} />
 
-                    <Route 
-                      path="/mi-cuenta" 
-                      element={<MiCuenta />} 
-                    />
+          <Route path="/carrito" element={<Carrito />} />
 
-                    <Route
-                      path="/carrito"
-                      element={<Carrito />}
-                    />
+          <Route path="/pago" element={<Pago />} />
 
-                    <Route
-                      path="/pago"
-                      element={<Pago />}
-                    />
+          <Route
+            path="/preguntas-frecuentes"
+            element={<PreguntasFrecuentes />}
+          />
 
-                    <Route
-                      path="/preguntas-frecuentes"
-                      element={<PreguntasFrecuentes />}
-                    />
-                    
-                {/* Rutas exclusivas del administrador */}
-                <Route element={<RutaAdmin />}>
+          {/* Rutas exclusivas del administrador */}
+          <Route element={<RutaAdmin />}>
+            <Route path="/admin" element={<PanelAdmin />} />
 
-                    <Route
-                        path="/admin"
-                        element={<PanelAdmin />}
-                    />
+            <Route path="/admin/productos" element={<AdministrarProductos />} />
 
-                    <Route
-                        path="/admin/productos"
-                        element={<AdministrarProductos />}
-                    />
+            <Route path="/admin/productos/nuevo" element={<NuevoProducto />} />
 
-                    <Route
-                        path="/admin/productos/nuevo"
-                        element={<NuevoProducto />}
-                    />
+            <Route
+              path="/admin/productos/editar/:id"
+              element={<EditarProducto />}
+            />
 
-                    <Route
-                        path="/admin/productos/editar/:id"
-                        element={<EditarProducto />}
-                    />
+            <Route path="/admin/usuarios" element={<AdministrarUsuarios />} />
 
-                    <Route
-                        path="/admin/usuarios"
-                        element={<AdministrarUsuarios />}
-                    />
+            <Route path="/admin/usuarios/nuevo" element={<NuevoUsuario />} />
 
-                    <Route
-                        path="/admin/usuarios/nuevo"
-                        element={<NuevoUsuario />}
-                    />
+            <Route
+              path="/admin/usuarios/editar/:run"
+              element={<EditarUsuario />}
+            />
+          </Route>
+        </Routes>
+      </div>
 
-                    <Route
-                        path="/admin/usuarios/editar/:run"
-                        element={<EditarUsuario />}
-                    />
-
-                </Route>
-
-
-                </Routes>
-
-            </div>
-
-            {!esAdmin && <Footer />}
-
-        </div>
-    );
+      {!esAdmin && <Footer />}
+    </div>
+  );
 }
 
 export default App;

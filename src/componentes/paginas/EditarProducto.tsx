@@ -1,82 +1,113 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import NavbarAdmin from "../organismos/NavbarAdmin";
 import FooterAdmin from "../organismos/FooterAdmin";
 import FormularioNuevoProducto from "../organismos/FormularioNuevoProducto";
 
-import { obtenerProductos } from "../servicios/productosService";
+import { obtenerProductoApi } from "../servicios/productosApi";
+import type { Producto } from "../utilidades/tipos";
 
 function EditarProducto() {
+  const { id } = useParams();
 
-    // Obtener el ID del producto desde la URL
-    const { id } = useParams();
+  const [producto, setProducto] = useState<Producto | null>(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState("");
 
-    // Buscar el producto correspondiente
-    const producto = obtenerProductos().find(
-        (p) => p.id === Number(id)
-    );
+  // Consulta el producto desde MySQL utilizando su ID.
+  useEffect(() => {
+    let activo = true;
 
-    return (
-        <div className="panel-admin d-flex flex-column min-vh-100">
+    setCargando(true);
+    setError("");
+    setProducto(null);
 
-            <NavbarAdmin />
+    const productoId = Number(id);
 
-            <main className="container my-5 flex-grow-1">
+    if (!id || !Number.isSafeInteger(productoId) || productoId <= 0) {
+      setCargando(false);
+      return;
+    }
 
-                <div className="row justify-content-center">
+    obtenerProductoApi(productoId)
+      .then((datos) => {
+        if (!activo || !datos) return;
 
-                    <div className="col-12 col-lg-9">
+        // Completa los campos opcionales.
+        const productoActualizado: Producto = {
+          ...datos,
+          categoria: datos.categoria ?? "",
+          imagen: datos.imagen ?? "",
+          descripcionLarga: datos.descripcionLarga ?? "",
+        };
 
-                        {!producto ? (
+        setProducto(productoActualizado);
+      })
+      .catch(() => {
+        if (activo) {
+          setError("No se pudo cargar el producto desde el servidor.");
+        }
+      })
+      .finally(() => {
+        if (activo) {
+          setCargando(false);
+        }
+      });
 
-                            <div className="alert alert-danger">
-                                <h4>Producto no encontrado</h4>
+    return () => {
+      activo = false;
+    };
+  }, [id]);
 
-                                <Link
-                                    to="/admin/productos"
-                                    className="btn btn-secondary mt-3"
-                                >
-                                    Volver al Mantenedor
-                                </Link>
-                            </div>
+  return (
+    <div className="panel-admin d-flex flex-column min-vh-100">
+      <NavbarAdmin />
 
-                        ) : (
+      <main className="container my-5 flex-grow-1">
+        <div className="row justify-content-center">
+          <div className="col-12 col-lg-9">
+            {cargando ? (
+              <p>Cargando producto...</p>
+            ) : error ? (
+              <div className="alert alert-danger" role="alert">
+                <p>{error}</p>
 
-                            <div className="card shadow-sm border-0 rounded-4">
+                <Link to="/admin/productos" className="btn btn-secondary mt-3">
+                  Volver al Mantenedor
+                </Link>
+              </div>
+            ) : !producto ? (
+              <div className="alert alert-danger" role="alert">
+                <h4>Producto no encontrado</h4>
 
-                                <div className="card-body p-4 p-md-5 text-dark">
+                <Link to="/admin/productos" className="btn btn-secondary mt-3">
+                  Volver al Mantenedor
+                </Link>
+              </div>
+            ) : (
+              <div className="card shadow-sm border-0 rounded-4">
+                <div className="card-body p-4 p-md-5 text-dark">
+                  <h2 className="fw-bold mb-3">Editar Producto</h2>
 
-                                    <h2 className="fw-bold mb-3">
-                                        Editar Producto
-                                    </h2>
+                  <p className="text-muted mb-4">
+                    Modifica los datos del producto seleccionado.
+                  </p>
 
-                                    <p className="text-muted mb-4">
-                                        Modifica los datos del producto
-                                        seleccionado.
-                                    </p>
-
-                                    {/* Formulario con los datos actuales */}
-                                    <FormularioNuevoProducto
-                                        key={producto.id}
-                                        producto={producto}
-                                    />
-
-                                </div>
-
-                            </div>
-
-                        )}
-
-                    </div>
-
+                  <FormularioNuevoProducto
+                    key={producto.id}
+                    producto={producto}
+                  />
                 </div>
-
-            </main>
-
-            <FooterAdmin />
-
+              </div>
+            )}
+          </div>
         </div>
-    );
+      </main>
+
+      <FooterAdmin />
+    </div>
+  );
 }
 
 export default EditarProducto;

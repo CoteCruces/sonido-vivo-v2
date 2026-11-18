@@ -26,12 +26,23 @@ public class ProductoService {
         return productoRepository.save(producto);
     }
 
+    
     public Producto actualizar(Long id, Producto productoDetalles) {
         return productoRepository.findById(id).map(producto -> {
             producto.setNombre(productoDetalles.getNombre());
             producto.setDescripcion(productoDetalles.getDescripcion());
             producto.setPrecio(productoDetalles.getPrecio());
             producto.setStock(productoDetalles.getStock());
+
+            // Actualiza la categoría del producto.
+            producto.setCategoria(productoDetalles.getCategoria());
+
+            // Actualiza la ruta de la imagen del producto.
+            producto.setImagen(productoDetalles.getImagen());
+
+            // Actualiza la descripción larga del producto.
+            producto.setDescripcionLarga(productoDetalles.getDescripcionLarga());
+
             return productoRepository.save(producto);
         }).orElseGet(() -> {
             productoDetalles.setId(id);

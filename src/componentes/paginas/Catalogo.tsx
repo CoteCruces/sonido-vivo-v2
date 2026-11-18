@@ -1,15 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CardCatalogo from "../moleculas/CardCatalogo";
 import { obtenerProductos } from "../servicios/productosService";
 import type { Producto } from "../utilidades/tipos";
 import FiltroCategoria from "../moleculas/FiltroCategoria";
 import { useSearchParams } from "react-router-dom";
+import { obtenerProductosApi } from "../servicios/productosApi";
+import { guardarProductos } from "../servicios/productosService";
+import { obtenerCarrito, vaciarCarrito } from "../servicios/carritoService";
 
 function Catalogo() {
 
-    const [listaProductos] = useState<Producto[]>(
+    const [listaProductos, setListaProductos] = useState<Producto[]>(
         obtenerProductos
     );
+
+    const [errorApi, setErrorApi] = useState("");
+
+    // Consulta los productos de MySQL al abrir el catálogo.
+    useEffect(() => {
+        let activo = true;
+
+        obtenerProductosApi()
+            .then((productosApi) => {
+                if (!activo) return;
+
+                // Completa los campos opcionales que puedan venir vacíos.
+                const productosActualizados = productosApi.map((producto) => ({
+                    ...producto,
+                    categoria: producto.categoria ?? "Sin categoría",
+                    imagen: producto.imagen ?? "",
+                    descripcionLarga: producto.descripcionLarga ?? ""
+                }));
+
+                const productosAnteriores = obtenerProductos();
+                const carrito = obtenerCarrito();
+
+                // Evita conservar productos con IDs que ahora pertenecen a otros artículos.
+                const carritoIncompatible = carrito.some((item) => {
+                    const anterior = productosAnteriores.find(
+                        (producto) => producto.id === item.id
+                    );
+
+                    const actual = productosActualizados.find(
+                        (producto) => producto.id === item.id
+                    );
+
+                    return !anterior || !actual ||
+                        anterior.nombre !== actual.nombre;
+                });
+
+                if (carritoIncompatible) {
+                    vaciarCarrito();
+                }
+
+                // Sincroniza temporalmente los datos para el detalle y el carrito local.
+                guardarProductos(productosActualizados);
+                setListaProductos(productosActualizados);
+                setErrorApi("");
+            })
+            .catch(() => {
+                if (activo) {
+                    setErrorApi(
+                        "No se pudo conectar con el servidor. Se muestran los datos locales."
+                    );
+                }
+            });
+
+        return () => {
+            activo = false;
+        };
+    }, []);
+
     
     const [parametros, setParametros] = useSearchParams();
 
@@ -59,6 +120,12 @@ function Catalogo() {
         <div className="container mt-4">
 
             <h1>Productos</h1>
+
+            {errorApi && (
+                <div className="alert alert-warning" role="alert">
+                    {errorApi}
+                </div>
+            )}
 
             {/* Barra de búsqueda */}
             
