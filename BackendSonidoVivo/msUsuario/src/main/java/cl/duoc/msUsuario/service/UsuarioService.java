@@ -1,7 +1,5 @@
 package cl.duoc.msUsuario.service;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,7 +47,7 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
-    // Siempre encripta la contraseña antes de guardar para que no quede segura
+    // Siempre encripta la contraseña antes de guardar para que quede segura
 public Usuario guardar(Usuario usuario) {
     if (usuario.getPassword() != null && !usuario.getPassword().startsWith("$2a$")) {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
