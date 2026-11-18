@@ -47,3 +47,7 @@ cliente@sonidovivo.test | Cliente123
 **Url Swagger**
 http://localhost:8081/swagger-ui/index.html#/
 #Cambiar puerto de microservicio
+
+
+**URL Microservicio GET**
+http://localhost:8090/api/usuarios
