@@ -36,6 +36,8 @@ public class ConsultaService {
             consulta.setAsunto(consultaDetalles.getAsunto());
             consulta.setMensaje(consultaDetalles.getMensaje());
             consulta.setRespuesta(consultaDetalles.getRespuesta());
+            consulta.setNombre(consultaDetalles.getNombre());
+            consulta.setCorreo(consultaDetalles.getCorreo());
             return consultaRepository.save(consulta);
         }).orElseGet(() -> {
             consultaDetalles.setId(id);

@@ -11,6 +11,11 @@ public class Consulta {
     private Long id;
 
     private Long usuarioId;
+    @Column(length = 100)
+    private String nombre;
+
+    @Column(length = 100)
+    private String correo;
     private String asunto;
     private String mensaje;
     private String respuesta;
@@ -39,4 +44,20 @@ public class Consulta {
 
     public String getRespuesta() { return respuesta; }
     public void setRespuesta(String respuesta) { this.respuesta = respuesta; }
+
+    public String getNombre() {
+    return nombre;
+}
+
+public void setNombre(String nombre) {
+    this.nombre = nombre;
+}
+
+public String getCorreo() {
+    return correo;
+}
+
+public void setCorreo(String correo) {
+    this.correo = correo;
+}
 }

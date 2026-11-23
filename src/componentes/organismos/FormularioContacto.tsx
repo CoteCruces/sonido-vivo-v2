@@ -64,10 +64,12 @@ function FormularioContacto() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    usuarioId: null,
-                    asunto: `Contacto: ${nombreLimpio} (${correoLimpio})`,
+                    nombre: nombreLimpio,
+                    correo: correoLimpio,
+                    asunto: "Consulta de contacto",
                     mensaje: mensajeLimpio,
-                    respuesta: null
+                    respuesta: null,
+                    usuarioId: null,
                 })
             });
 
