@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./componentes/organismos/Navbar.tsx";
 import Inicio from "./componentes/paginas/Inicio.tsx";
 import Catalogo from "./componentes/paginas/Catalogo.tsx";
@@ -15,7 +15,6 @@ import AdministrarProductos from "./componentes/paginas/AdministrarProductos";
 import EditarProducto from "./componentes/paginas/EditarProducto";
 import MiCuenta from "./componentes/paginas/MiCuenta";
 import AdministrarUsuarios from "./componentes/paginas/AdministrarUsuarios";
-import EditarUsuario from "./componentes/paginas/EditarUsuario";
 import NuevoUsuario from "./componentes/paginas/NuevoUsuario";
 import RutaAdmin from "./componentes/utilidades/RutaAdmin";
 import Carrito from "./componentes/paginas/Carrito";
@@ -75,8 +74,8 @@ function App() {
             <Route path="/admin/usuarios/nuevo" element={<NuevoUsuario />} />
 
             <Route
-              path="/admin/usuarios/editar/:run"
-              element={<EditarUsuario />}
+                path="/admin/usuarios/editar/:run"
+                element={<Navigate to="/admin/usuarios" replace />}
             />
           </Route>
         </Routes>

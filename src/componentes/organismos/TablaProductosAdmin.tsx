@@ -6,7 +6,6 @@ import {
   eliminarProductoApi,
 } from "../servicios/productosApi";
 
-import { guardarProductos } from "../servicios/productosService";
 import type { Producto } from "../utilidades/tipos";
 
 function TablaProductosAdmin() {
@@ -32,8 +31,6 @@ function TablaProductosAdmin() {
 
         setProductos(lista);
 
-        // Mantiene la copia local mientras conectamos los otros servicios.
-        guardarProductos(lista);
       })
       .catch(() => {
         if (activo) {
@@ -74,7 +71,6 @@ function TablaProductosAdmin() {
       const listaActualizada = productos.filter((p) => p.id !== id);
 
       setProductos(listaActualizada);
-      guardarProductos(listaActualizada);
     } catch {
       setError("No se pudo eliminar el producto.");
     } finally {

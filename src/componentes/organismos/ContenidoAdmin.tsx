@@ -1,21 +1,61 @@
+import { useEffect, useState } from "react";
 import "../../Admin.css";
+
 import CardEstadistica from "../moleculas/CardEstadistica";
 import CardGestion from "../moleculas/CardGestion";
-import { obtenerProductos } from "../servicios/productosService";
-import { obtenerUsuarios } from "../servicios/usuariosService";
+
+import { obtenerProductosApi } from "../servicios/productosApi";
+import { obtenerUsuariosAdminApi } from "../servicios/usuariosApi";
+
+import type { Producto } from "../utilidades/tipos";
+import type { PerfilUsuarioApi } from "../servicios/usuariosApi";
 
 function ContenidoAdmin() {
-    const productos = obtenerProductos();
-    const usuarios = obtenerUsuarios();
-    const sinStock = productos.filter(producto => producto.stock <= 0).length;
+    const [productos, setProductos] = useState<Producto[]>([]);
+    const [usuarios, setUsuarios] = useState<PerfilUsuarioApi[]>([]);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        let activo = true;
+
+        Promise.all([
+            obtenerProductosApi(),
+            obtenerUsuariosAdminApi()
+        ])
+            .then(([datosProductos, datosUsuarios]) => {
+                if (!activo) return;
+
+                setProductos(datosProductos);
+                setUsuarios(datosUsuarios);
+            })
+            .catch((errorCapturado) => {
+                if (!activo) return;
+
+                setError(
+                    errorCapturado instanceof Error
+                        ? errorCapturado.message
+                        : "No se pudieron cargar las estadísticas."
+                );
+            })
+            .finally(() => {
+                if (activo) setCargando(false);
+            });
+
+        return () => {
+            activo = false;
+        };
+    }, []);
+
+    const sinStock = productos.filter(
+        producto => producto.stock <= 0
+    ).length;
 
     return (
         <main className="container my-5 flex-grow-1">
 
-            {/* Encabezado */}
             <div className="card shadow-lg border-0 mb-4">
                 <div className="card-body p-4 text-start">
-
                     <h2 className="fw-bold text-dark mb-2">
                         Panel de Control General
                     </h2>
@@ -24,17 +64,25 @@ function ContenidoAdmin() {
                         Gestión de catálogo, cuentas de usuarios
                         y parámetros del sistema.
                     </p>
-
                 </div>
             </div>
 
-            {/* Estadísticas */}
+            {error && (
+                <div className="alert alert-danger" role="alert">
+                    {error}
+                </div>
+            )}
+
             <div className="row g-3 mb-4">
 
                 <div className="col-12 col-md-4">
                     <CardEstadistica
                         titulo="Productos"
-                        cantidad={`${productos.length} Registrados`}
+                        cantidad={
+                            cargando || error
+                                ? "—"
+                                : `${productos.length} Registrados`
+                        }
                         icono="box-seam"
                         color="primary"
                     />
@@ -43,7 +91,11 @@ function ContenidoAdmin() {
                 <div className="col-12 col-md-4">
                     <CardEstadistica
                         titulo="Usuarios"
-                        cantidad={`${usuarios.length} Registrados`}
+                        cantidad={
+                            cargando || error
+                                ? "—"
+                                : `${usuarios.length} Registrados`
+                        }
                         icono="people"
                         color="success"
                     />
@@ -52,7 +104,11 @@ function ContenidoAdmin() {
                 <div className="col-12 col-md-4">
                     <CardEstadistica
                         titulo="Sin Stock"
-                        cantidad={`${sinStock} Productos`}
+                        cantidad={
+                            cargando || error
+                                ? "—"
+                                : `${sinStock} Productos`
+                        }
                         icono="exclamation-triangle"
                         color="warning"
                     />
@@ -60,7 +116,6 @@ function ContenidoAdmin() {
 
             </div>
 
-            {/* Opciones de administración */}
             <div className="row g-4">
 
                 <div className="col-md-6">

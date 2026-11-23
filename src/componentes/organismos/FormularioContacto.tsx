@@ -1,101 +1,101 @@
-
 import { useState } from "react";
 import type { FormEvent } from "react";
 import CampoFormulario from "../moleculas/CampoFormulario";
 
 function FormularioContacto() {
-
-    // Estados para guardar los datos
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
     const [mensaje, setMensaje] = useState("");
 
-    // Validaciones
-    const manejarEnvio = (e: FormEvent<HTMLFormElement>) => {
+    const [enviando, setEnviando] = useState(false);
+    const [errorEnvio, setErrorEnvio] = useState("");
+    const [exito, setExito] = useState("");
+
+    const manejarEnvio = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (enviando) return;
 
         const nombreLimpio = nombre.trim();
         const correoLimpio = correo.trim();
         const mensajeLimpio = mensaje.trim();
 
-        // Valida que el nombre completo no lleve números ni símbolos incorrectos.
+        setErrorEnvio("");
+        setExito("");
+
         const soloLetras = /^[\p{L}]+(?:[ '-][\p{L}]+)*$/u;
-        if (nombreLimpio && !soloLetras.test(nombreLimpio)) {
-            alert("El nombre solo puede contener letras.");
+
+        if (!soloLetras.test(nombreLimpio)) {
+            alert("Ingrese un nombre válido.");
             return;
         }
 
-        // Valida que el nombre completo sea obligatorio y contenga nombre y apellido.
-        if (nombreLimpio === "") {
-            alert("Debe ingresar su nombre y apellido.");
+        if (
+            nombreLimpio.length < 6 ||
+            nombreLimpio.length > 100 ||
+            nombreLimpio.split(/\s+/).length < 2
+        ) {
+            alert("Ingrese nombre y apellido (6 a 100 caracteres).");
             return;
         }
 
-        if (nombreLimpio.length < 6) {
-            alert("El nombre completo debe tener al menos 6 caracteres.");
+        if (
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoLimpio) ||
+            correoLimpio.length > 100
+        ) {
+            alert("Ingrese un correo válido.");
             return;
         }
 
-        // Valida que el nombre completo no supere 100 caracteres.
-        if (nombreLimpio.length > 100) {
-            alert("El nombre completo no puede superar 100 caracteres.");
+        if (
+            mensajeLimpio.length < 30 ||
+            mensajeLimpio.length > 255
+        ) {
+            alert("El mensaje debe tener entre 30 y 255 caracteres.");
             return;
         }
 
-        const palabrasNombre = nombreLimpio.split(/\s+/);
+        setEnviando(true);
 
-        if (palabrasNombre.length < 2) {
-            alert("Por favor ingrese su nombre y apellido.");
-            return;
+        try {
+            const respuesta = await fetch("/api/consultas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    usuarioId: null,
+                    asunto: `Contacto: ${nombreLimpio} (${correoLimpio})`,
+                    mensaje: mensajeLimpio,
+                    respuesta: null
+                })
+            });
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    `Error al enviar la consulta (${respuesta.status}).`
+                );
+            }
+
+            setExito("Tu mensaje fue enviado correctamente.");
+
+            setNombre("");
+            setCorreo("");
+            setMensaje("");
+
+        } catch (error) {
+            setErrorEnvio(
+                error instanceof Error
+                    ? error.message
+                    : "No se pudo enviar el mensaje."
+            );
+        } finally {
+            setEnviando(false);
         }
-
-        // Valida que el correo sea obligatorio y tenga formato correcto.
-        if (correoLimpio === "") {
-            alert("Debe ingresar su correo.");
-            return;
-        }
-
-        const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!regexCorreo.test(correoLimpio)) {
-            alert("Debe ingresar un correo válido.");
-            return;
-        }
-
-        // Valida que el correo no supere 100 caracteres.
-        if (correoLimpio.length > 100) {
-            alert("El correo no puede superar 100 caracteres.");
-            return;
-        }
-
-        // Valida que el mensaje sea obligatorio y tenga entre 30 y 500 caracteres.
-        if (mensajeLimpio === "") {
-            alert("Debe ingresar un mensaje.");
-            return;
-        }
-
-        if (mensajeLimpio.length < 30) {
-            alert("El mensaje debe tener al menos 30 caracteres.");
-            return;
-        }
-
-        if (mensajeLimpio.length > 500) {
-            alert("El mensaje no puede superar los 500 caracteres.");
-            return;
-        }
-
-        // Todas las validaciones fueron correctas
-        alert("Formulario validado correctamente.");
-
-        // Limpiar campos
-        setNombre("");
-        setCorreo("");
-        setMensaje("");
     };
 
     return (
         <form onSubmit={manejarEnvio} noValidate>
-
             <CampoFormulario
                 etiqueta="Nombre Completo"
                 tipo="text"
@@ -132,13 +132,25 @@ function FormularioContacto() {
                 />
             </div>
 
+            {errorEnvio && (
+                <div className="alert alert-danger" role="alert">
+                    {errorEnvio}
+                </div>
+            )}
+
+            {exito && (
+                <div className="alert alert-success" role="status">
+                    {exito}
+                </div>
+            )}
+
             <button
                 type="submit"
                 className="btn btn-primary"
+                disabled={enviando}
             >
-                Enviar mensaje
+                {enviando ? "Enviando..." : "Enviar mensaje"}
             </button>
-
         </form>
     );
 }
