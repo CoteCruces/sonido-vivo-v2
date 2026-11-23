@@ -8,14 +8,28 @@ function Navbar() {
     const [abierto, setAbierto] = useState(false);
 
     
-    const [cantidadCarrito, setCantidadCarrito] = useState(
-        contarProductosCarrito()
-    );
+    
+    const [cantidadCarrito, setCantidadCarrito] = useState(0);
 
     useEffect(() => {
-        const actualizarContador = () => {
-            setCantidadCarrito(contarProductosCarrito());
+        let activo = true;
+        let ultimaSolicitud = 0;
+
+        const actualizarContador = async () => {
+            const solicitud = ++ultimaSolicitud;
+
+            try {
+                const cantidad = await contarProductosCarrito();
+
+                if (activo && solicitud === ultimaSolicitud) {
+                    setCantidadCarrito(cantidad);
+                }
+            } catch (error) {
+                console.error("Error al consultar el carrito:", error);
+            }
         };
+
+        void actualizarContador();
 
         window.addEventListener(
             "carritoActualizado",
@@ -23,12 +37,15 @@ function Navbar() {
         );
 
         return () => {
+            activo = false;
+
             window.removeEventListener(
                 "carritoActualizado",
                 actualizarContador
             );
         };
     }, []);
+
 
 
     return (

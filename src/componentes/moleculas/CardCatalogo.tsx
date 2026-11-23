@@ -9,16 +9,31 @@ interface Props {
 }
 
 function CardCatalogo({ producto }: Props) {
-
     const [mensaje, setMensaje] = useState("");
+    const [error, setError] = useState(false);
+    const [procesando, setProcesando] = useState(false);
 
-    const agregar = () => {
-        const agregado = agregarAlCarrito(producto.id);
+    const agregar = async () => {
+        if (procesando) return;
 
-        if (agregado) {
-            setMensaje("Producto agregado al carrito.");
-        } else {
-            setMensaje("No hay más unidades disponibles.");
+        setProcesando(true);
+        setMensaje("");
+        setError(false);
+
+        try {
+            const agregado = await agregarAlCarrito(producto.id);
+
+            if (agregado) {
+                setMensaje("Producto agregado al carrito.");
+            } else {
+                setMensaje("No hay más unidades disponibles.");
+                setError(true);
+            }
+        } catch {
+            setMensaje("No se pudo agregar el producto.");
+            setError(true);
+        } finally {
+            setProcesando(false);
         }
     };
 
@@ -54,14 +69,24 @@ function CardCatalogo({ producto }: Props) {
                 <div className="mt-auto d-grid gap-2">
                     <Boton id={producto.id} />
 
-                    <BotonAgregarCarrito
-                        alAgregar={agregar}
-                        sinStock={producto.stock <= 0}
-                    />
+                    <fieldset
+                        disabled={procesando}
+                        className="border-0 p-0 m-0 d-grid"
+                    >
+                        <BotonAgregarCarrito
+                            alAgregar={agregar}
+                            sinStock={producto.stock <= 0}
+                        />
+                    </fieldset>
                 </div>
 
                 {mensaje && (
-                    <p className="text-success mt-2 mb-0" role="status">
+                    <p
+                        className={`mt-2 mb-0 ${
+                            error ? "text-danger" : "text-success"
+                        }`}
+                        role="status"
+                    >
                         {mensaje}
                     </p>
                 )}

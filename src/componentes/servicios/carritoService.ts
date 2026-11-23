@@ -1,120 +1,122 @@
-
 import type { ItemCarrito } from "../utilidades/tipos";
-import { obtenerProductos } from "./productosService";
+import { obtenerProductoApi } from "./productosApi";
 
-const CLAVE = "sonidoVivoCarrito";
+import {
+    obtenerCarritoApi,
+    agregarCarritoApi,
+    actualizarCarritoApi,
+    eliminarCarritoApi
+} from "./carritoApi";
 
-// Avisar a la aplicación cuando cambia el carrito.
+// Avisar a React cuando cambia el carrito.
 function avisarCambioCarrito(): void {
     window.dispatchEvent(new Event("carritoActualizado"));
 }
 
-// Obtener los productos guardados en el carrito
-export function obtenerCarrito(): ItemCarrito[] {
-    const guardados = localStorage.getItem(CLAVE);
+// Obtener carrito desde MySQL.
+export async function obtenerCarrito(): Promise<ItemCarrito[]> {
+    const registros = await obtenerCarritoApi();
 
-    if (!guardados) {
-        return [];
-    }
-
-    try {
-        return JSON.parse(guardados) as ItemCarrito[];
-    } catch {
-        return [];
-    }
+    return registros.map((registro) => ({
+        id: registro.productoId,
+        cantidad: registro.cantidad
+    }));
 }
 
-// Agregar una unidad de un producto al carrito
-export function agregarAlCarrito(id: number): boolean {
-    const producto = obtenerProductos().find(
-        (p) => p.id === id
-    );
+// Agregar una unidad de un producto.
+export async function agregarAlCarrito(
+    id: number
+): Promise<boolean> {
+    const producto = await obtenerProductoApi(id);
 
     if (!producto || producto.stock <= 0) {
         return false;
     }
 
-    const carrito = obtenerCarrito();
+    const registros = await obtenerCarritoApi();
 
-    const item = carrito.find(
-        (item) => item.id === id
+    const existente = registros.find(
+        (item) => item.productoId === id
     );
 
-    if (item) {
-        if (item.cantidad >= producto.stock) {
+    if (existente) {
+        if (existente.cantidad >= producto.stock) {
             return false;
         }
 
-        item.cantidad += 1;
+        await actualizarCarritoApi(
+            existente,
+            existente.cantidad + 1
+        );
     } else {
-        carrito.push({
-            id: id,
-            cantidad: 1
-        });
+        await agregarCarritoApi(id, 1);
     }
 
-    localStorage.setItem(
-    CLAVE,
-    JSON.stringify(carrito)
-    );
-
     avisarCambioCarrito();
-
     return true;
 }
 
-// Cambiar la cantidad de un producto del carrito
-export function cambiarCantidad(
+// Cambiar la cantidad de un producto.
+export async function cambiarCantidad(
     id: number,
     cantidad: number
-): boolean {
-    const producto = obtenerProductos().find(
-        (p) => p.id === id
+): Promise<boolean> {
+    if (!Number.isInteger(cantidad) || cantidad < 1) {
+        return false;
+    }
+
+    const producto = await obtenerProductoApi(id);
+
+    if (!producto || cantidad > producto.stock) {
+        return false;
+    }
+
+    const registros = await obtenerCarritoApi();
+
+    const existente = registros.find(
+        (item) => item.productoId === id
     );
 
-    if (!producto || cantidad < 1 ||
-        cantidad > producto.stock ||
-        !Number.isInteger(cantidad)) {
+    if (!existente) {
         return false;
     }
 
-    const carrito = obtenerCarrito();
-    const item = carrito.find((item) => item.id === id);
-
-    if (!item) {
-        return false;
-    }
-
-    item.cantidad = cantidad;
-
-    localStorage.setItem(CLAVE, JSON.stringify(carrito));
+    await actualizarCarritoApi(existente, cantidad);
 
     avisarCambioCarrito();
-
     return true;
 }
 
-// Eliminar un producto del carrito
-export function eliminarDelCarrito(id: number): void {
-    const carrito = obtenerCarrito().filter(
-        (item) => item.id !== id
+// Eliminar un producto del carrito.
+export async function eliminarDelCarrito(
+    id: number
+): Promise<void> {
+    const registros = await obtenerCarritoApi();
+
+    const existente = registros.find(
+        (item) => item.productoId === id
     );
 
-    localStorage.setItem(CLAVE, JSON.stringify(carrito));
+    if (existente) {
+        await eliminarCarritoApi(existente.id);
+        avisarCambioCarrito();
+    }
+}
+
+// Vaciar el carrito.
+export async function vaciarCarrito(): Promise<void> {
+    const registros = await obtenerCarritoApi();
+
+    for (const registro of registros) {
+        await eliminarCarritoApi(registro.id);
+    }
 
     avisarCambioCarrito();
 }
 
-// Vaciar completamente el carrito
-export function vaciarCarrito(): void {
-    localStorage.removeItem(CLAVE);
-
-    avisarCambioCarrito();
-}
-
-// Contar todas las unidades agregadas al carrito.
-export function contarProductosCarrito(): number {
-    const carrito = obtenerCarrito();
+// Contar unidades del carrito.
+export async function contarProductosCarrito(): Promise<number> {
+    const carrito = await obtenerCarrito();
 
     return carrito.reduce(
         (total, item) => total + item.cantidad,
