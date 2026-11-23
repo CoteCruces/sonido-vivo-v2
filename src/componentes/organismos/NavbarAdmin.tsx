@@ -70,6 +70,13 @@ function NavbarAdmin() {
                             Mantenedor Usuarios
                         </Link>
 
+                        <Link
+                            className="nav-link"
+                            to="/admin/consultas"
+                            >
+                            Consultas de Clientes
+                            </Link>
+
                     </div>
 
                     <div className="d-flex flex-wrap gap-3">

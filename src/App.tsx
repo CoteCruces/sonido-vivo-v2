@@ -22,6 +22,7 @@ import Pago from "./componentes/paginas/Pago";
 import DetalleNoticia from "./componentes/paginas/DetalleNoticia";
 import PreguntasFrecuentes from "./componentes/paginas/PreguntasFrecuentes.tsx";
 import ProductosApi from "./componentes/paginas/ProductosApi";
+import AdministrarConsultas from "./componentes/paginas/AdministrarConsultas";
 
 function App() {
   const esAdmin = useLocation().pathname.startsWith("/admin");
@@ -76,6 +77,11 @@ function App() {
             <Route
                 path="/admin/usuarios/editar/:run"
                 element={<Navigate to="/admin/usuarios" replace />}
+            />
+
+            <Route
+              path="/admin/consultas"
+              element={<AdministrarConsultas />}
             />
           </Route>
         </Routes>
